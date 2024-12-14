@@ -1,0 +1,1 @@
+{"version":3,"file":"trigger-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/trigger-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,6BAA6B,CAAC;AACzD,OAAO,EAAE,eAAe,EAAE,MAAM,6BAA6B,CAAC;AAE9D,MAAM,MAAM,gBAAgB,GAAG;IAC7B,IAAI,EAAE,IAAI,MAAM,CAAC;IACjB,IAAI,MAAM,IAAI,eAAe,CAAC;CAC/B,GAAG,UAAU,CAAC"}

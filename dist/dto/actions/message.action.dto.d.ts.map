@@ -1,0 +1,1 @@
+{"version":3,"file":"message.action.dto.d.ts","sourceRoot":"src/","sources":["dto/actions/message.action.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,qCAAqC,CAAC;AAC3E,OAAO,EAAE,SAAS,EAAE,MAAM,cAAc,CAAC;AAEzC,MAAM,MAAM,gBAAgB,GAAG;IAC7B,IAAI,EAAE,oBAAoB,CAAC,OAAO,CAAC;CACpC,GAAG,SAAS,CAAC"}

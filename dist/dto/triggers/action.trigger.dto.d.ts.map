@@ -1,0 +1,1 @@
+{"version":3,"file":"action.trigger.dto.d.ts","sourceRoot":"src/","sources":["dto/triggers/action.trigger.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,eAAe,CAAC;AAC3C,OAAO,EAAE,YAAY,EAAE,MAAM,oBAAoB,CAAC;AAElD,MAAM,MAAM,gBAAgB,GAAG;IAC7B,MAAM,CAAC,EAAE,YAAY,CAAC;CACvB,GAAG,UAAU,CAAC"}

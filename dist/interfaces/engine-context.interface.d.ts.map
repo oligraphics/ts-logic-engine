@@ -1,0 +1,1 @@
+{"version":3,"file":"engine-context.interface.d.ts","sourceRoot":"src/","sources":["interfaces/engine-context.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,wBAAwB,CAAC;AACrD,OAAO,EAAE,cAAc,EAAE,MAAM,oBAAoB,CAAC;AAEpD,MAAM,MAAM,cAAc,GAAG;IAC3B,IAAI,MAAM,IAAI,WAAW,CAAC;CAC3B,GAAG,cAAc,CAAC"}

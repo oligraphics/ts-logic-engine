@@ -1,0 +1,1 @@
+{"version":3,"file":"run-program.context.dto.d.ts","sourceRoot":"src/","sources":["dto/contexts/run-program.context.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,uBAAuB,CAAC;AAE1D,MAAM,MAAM,oBAAoB,GAAG;IACjC,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE;QAAE,CAAC,GAAG,EAAE,MAAM,GAAG,OAAO,CAAA;KAAE,CAAC;CACvC,GAAG,iBAAiB,CAAC"}

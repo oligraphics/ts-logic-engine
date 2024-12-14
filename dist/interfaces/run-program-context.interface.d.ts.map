@@ -1,0 +1,1 @@
+{"version":3,"file":"run-program-context.interface.d.ts","sourceRoot":"src/","sources":["interfaces/run-program-context.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,6BAA6B,CAAC;AAE9D,MAAM,MAAM,kBAAkB,GAAG;IAC/B,IAAI,QAAQ,IAAI,MAAM,CAAC;IACvB,SAAS,CAAC,EAAE;QAAE,CAAC,GAAG,EAAE,MAAM,GAAG,OAAO,CAAA;KAAE,GAAG,SAAS,CAAC;CACpD,GAAG,eAAe,CAAC"}

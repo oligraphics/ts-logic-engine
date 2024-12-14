@@ -1,0 +1,1 @@
+{"version":3,"file":"dummy-action.handler.d.ts","sourceRoot":"src/","sources":["actions/dummy-action.handler.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,iCAAiC,CAAC;AACjE,OAAO,EAAE,mBAAmB,EAAE,MAAM,sCAAsC,CAAC;AAC3E,OAAO,EAAE,iBAAiB,EAAE,MAAM,qCAAqC,CAAC;AAGxE,eAAO,MAAM,kBAAkB;oBAMhB,iBAAiB,CAAC,cAAc,EAAE,mBAAmB,CAAC,GAC9D,OAAO;;;;;;;CAMR,CAAC"}

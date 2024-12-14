@@ -1,0 +1,53 @@
+{
+  "id": "test:hello-world",
+  "actions": {
+    "main": {
+      "type": "condition",
+      "properties": {
+        "fruit-1": {
+          "name": "Apple",
+          "color": "green"
+        },
+        "fruit-2": {
+          "name": "Orange",
+          "color": "orange"
+        }
+      },
+      "computed": {
+        "colors": [
+          "{fruit-1.color}",
+          "{fruit-2.color}"
+        ]
+      },
+      "target": "{source}",
+      "apply": {
+        "condition": {
+          "type": "equal",
+          "value": "{colors}",
+          "equals": [
+            "green",
+            "orange"
+          ]
+        },
+        "true": "say-hello-world",
+        "false": "sit-down-and-think"
+      }
+    },
+    "say-hello-world": {
+      "type": "message",
+      "apply": {
+        "message": "Hello World!",
+        "data": {
+          "who": "{source.name}",
+          "to": "{target.name}"
+        }
+      }
+    },
+    "sit-down-and-think": {
+      "type": "message",
+      "apply": {
+        "message": "The condition failed, figure out why."
+      }
+    }
+  }
+}

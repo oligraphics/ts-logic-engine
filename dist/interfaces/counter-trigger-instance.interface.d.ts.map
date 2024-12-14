@@ -1,0 +1,1 @@
+{"version":3,"file":"counter-trigger-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/counter-trigger-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,EAAE,MAAM,8BAA8B,CAAC;AAChE,OAAO,EAAE,iBAAiB,EAAE,MAAM,8BAA8B,CAAC;AAEjE,MAAM,MAAM,uBAAuB,GAAG;IACpC,IAAI,EAAE,iBAAiB,CAAC;IACxB,MAAM,EAAE,MAAM,CAAC;CAChB,GAAG,gBAAgB,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"counter-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/counter-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,6BAA6B,CAAC;AAC9D,OAAO,EAAE,uBAAuB,EAAE,MAAM,sCAAsC,CAAC;AAE/E,MAAM,MAAM,gBAAgB,GAAG;IAC7B,IAAI,MAAM,IAAI,eAAe,CAAC;IAC9B,IAAI,OAAO,IAAI,MAAM,CAAC;IACtB,IAAI,QAAQ,IAAI,uBAAuB,EAAE,CAAC;CAC3C,CAAC"}

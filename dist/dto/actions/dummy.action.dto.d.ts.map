@@ -1,0 +1,1 @@
+{"version":3,"file":"dummy.action.dto.d.ts","sourceRoot":"src/","sources":["dto/actions/dummy.action.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,qCAAqC,CAAC;AAC3E,OAAO,EAAE,SAAS,EAAE,MAAM,cAAc,CAAC;AAEzC,MAAM,MAAM,cAAc,GAAG;IAC3B,IAAI,EAAE,oBAAoB,CAAC,KAAK,CAAC;IACjC,KAAK,EAAE,MAAM,CAAC;CACf,GAAG,SAAS,CAAC"}

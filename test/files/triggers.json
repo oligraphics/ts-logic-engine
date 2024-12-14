@@ -1,0 +1,47 @@
+{
+  "id": "test:triggers",
+  "actions": {
+    "main": {
+      "type": "compound",
+      "apply": {
+        "compound": [
+          "listener",
+          "trigger"
+        ]
+      }
+    },
+    "listener": {
+      "type": "message",
+      "triggers": [
+        {
+          "event": "action",
+          "phase": "performed",
+          "filter": {
+            "type": "and",
+            "conditions": [
+              {
+                "type": "equal",
+                "value": "{event.action}",
+                "equals": {
+                  "program": {
+                    "id": "test:triggers"
+                  },
+                  "actionId": "trigger"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "apply": {
+        "message": "I just got triggered"
+      }
+    },
+    "trigger": {
+      "type": "message",
+      "apply": {
+        "message": "I am the trigger!"
+      }
+    }
+  }
+}

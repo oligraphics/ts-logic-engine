@@ -1,0 +1,1 @@
+{"version":3,"file":"actor.interface.d.ts","sourceRoot":"src/","sources":["interfaces/actor.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,oBAAoB,CAAC;AAEjD,MAAM,MAAM,MAAM,GAAG;IACnB,IAAI,EAAE,IAAI,MAAM,CAAC;IACjB,IAAI,IAAI,IAAI,MAAM,CAAC;CACpB,GAAG,WAAW,CAAC"}
