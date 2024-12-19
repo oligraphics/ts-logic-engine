@@ -1,8 +1,8 @@
 import { IActionInstance } from '../interfaces/action-instance.interface';
-import { IdService } from './id.service';
 import { ICreateActionContext } from '../interfaces/create-action-context.interface';
 import { ActionTriggerBuilderService } from './action-trigger-builder.service';
 import { StackCounterBuilderService } from './stack-counter-builder.service';
+import { IdService } from 'ts-logic-framework';
 
 export const ActionBuilderService = new (class ActionBuilderService {
   build(context: ICreateActionContext): IActionInstance {

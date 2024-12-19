@@ -5,14 +5,14 @@ import { ITriggerContext } from './trigger-context.interface';
 import { IActionInstance } from './action-instance.interface';
 
 export interface IActionHandler {
-  apply(context: ITriggerContext): boolean;
-  trigger(context: ITriggerContext): boolean;
-  perform(context: ITriggerContext, callNext: boolean): boolean;
+  apply(context: ITriggerContext): Promise<boolean>;
+  trigger(context: ITriggerContext): Promise<boolean>;
+  perform(context: ITriggerContext, callNext: boolean): Promise<boolean>;
   remove(action: IActionInstance): void;
   onEvent(
     action: IActionInstance,
     event: EventDto,
     phase: EventPhaseEnum,
-  ): void;
+  ): Promise<void>;
   setAttached(status: StatusStateDto, triggerContext: ITriggerContext): void;
 }

@@ -9,20 +9,20 @@ export const CompoundActionHandler =
     CompoundActionDto,
     CompoundActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<CompoundActionDto, CompoundActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       for (const subActionReference of context.action.state.compound) {
         const subActionId = LogicService.resolve<string>(
           subActionReference,
           context,
         );
         if (
-          !context.action.engine.tryRun({
+          !(await context.action.engine.tryRun({
             ...context.action,
             actionId: subActionId,
             debug: context.action.debug,
-          })
+          }))
         ) {
           if (context.action.debug) {
             console.warn('Compound action', subActionId, 'failed.');

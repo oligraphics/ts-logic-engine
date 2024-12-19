@@ -47,6 +47,10 @@ export class LogicEngine implements IActor {
     return this._state;
   }
 
+  get allowTargeting(): boolean {
+    return true;
+  }
+
   get bus(): EventBus {
     return this.eventSystem.bus;
   }
@@ -76,9 +80,9 @@ export class LogicEngine implements IActor {
     this.eventSystem = new EventSystem(this);
   }
 
-  start() {
+  async start() {
     this.bus.trigger('start');
-    this.tryRun({
+    await this.tryRun({
       ...this.context,
       ...DynamicContextService.createContext({
         program: this.program,
@@ -89,12 +93,34 @@ export class LogicEngine implements IActor {
     });
   }
 
+  stop() {
+    this.bus.trigger('stop');
+  }
+
+  getValue<T>(property: string, debug?: boolean): T {
+    switch (property) {
+      case 'state':
+        return this.state as T;
+      default:
+        if (debug) {
+          console.error(
+            `Trying to read unknown property ${property} on LogicEngine`,
+          );
+        }
+        return undefined as T;
+    }
+  }
+
+  getActionHandler(actionType: string): IActionHandler | undefined {
+    return this.actionHandlers[actionType];
+  }
+
   update(deltaTime: number) {
     this.bus.trigger('update', deltaTime);
   }
 
-  tryRun(context: IRunProgramContext): boolean {
-    return this.callEvent(
+  async tryRun(context: IRunProgramContext): Promise<boolean> {
+    return await this.callEvent(
       context.source,
       <ProgramEventDto>{
         type: BuiltinEventTypeEnum.PROGRAM,
@@ -107,7 +133,7 @@ export class LogicEngine implements IActor {
     );
   }
 
-  run(context: IRunProgramContext): boolean {
+  async run(context: IRunProgramContext): Promise<boolean> {
     const action = context.program.actions[context.actionId];
     if (!action) {
       console.error(
@@ -144,7 +170,7 @@ export class LogicEngine implements IActor {
       return false;
     }
     for (const target of targets) {
-      this.apply({
+      await this.apply({
         ...context,
         ...DynamicContextService.createContext({
           target,
@@ -191,41 +217,15 @@ export class LogicEngine implements IActor {
     );
   }
 
-  stop() {
-    this.bus.trigger('stop');
-  }
-
-  get allowTargeting(): boolean {
-    return true;
-  }
-
-  getValue<T>(property: string, debug?: boolean): T {
-    switch (property) {
-      case 'state':
-        return this.state as T;
-      default:
-        if (debug) {
-          console.error(
-            `Trying to read unknown property ${property} on LogicEngine`,
-          );
-        }
-        return undefined as T;
-    }
-  }
-
-  getActionHandler(actionType: string): IActionHandler | undefined {
-    return this.actionHandlers[actionType];
-  }
-
-  callEvent<T extends EventDto>(
+  async callEvent<T extends EventDto>(
     source: IEventSource,
     event: T,
-    perform?: (event: T) => boolean,
-  ): boolean {
-    return this.eventSystem.callEvent(source, event, perform);
+    perform?: (event: T) => Promise<boolean>,
+  ): Promise<boolean> {
+    return await this.eventSystem.callEvent(source, event, perform);
   }
 
-  trigger(trigger: ITriggerInstance, event: EventDto) {
+  async trigger(trigger: ITriggerInstance, event: EventDto) {
     const handler = this.triggerHandlers[trigger.type];
     if (!handler) {
       throw new Error(
@@ -234,7 +234,7 @@ export class LogicEngine implements IActor {
         }\n${JSON.stringify(trigger.action.action, null, 2)}`,
       );
     }
-    handler.handle(trigger, event);
+    await handler.handle(trigger, event);
   }
 
   remove(action: IActionInstance) {

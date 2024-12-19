@@ -5,8 +5,8 @@ import { StackCounterService } from '../../services/stack-counter.service';
 
 export const StackCounterTriggerHandler =
   new (class StackCounterTriggerHandler extends TriggerHandler<ICounterTriggerInstance> {
-    handle(trigger: ICounterTriggerInstance, event: EventDto) {
-      StackCounterService.tryChange(
+    async handle(trigger: ICounterTriggerInstance, event: EventDto) {
+      await StackCounterService.tryChange(
         {
           trigger,
           event,

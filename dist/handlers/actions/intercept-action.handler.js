@@ -4,7 +4,7 @@ exports.InterceptActionHandler = void 0;
 const action_handler_1 = require("./action.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
 exports.InterceptActionHandler = new (class InterceptActionHandler extends action_handler_1.ActionHandler {
-    tryRun(context) {
+    async tryRun(context) {
         const debug = context.action.debug;
         const trigger = context.trigger;
         const reactionId = trigger && trigger.reaction
@@ -60,7 +60,7 @@ exports.InterceptActionHandler = new (class InterceptActionHandler extends actio
                     ts_logic_framework_1.LogicService.resolve(value, context, debug),
                 ]))
                 : {};
-            context.action.engine.tryRun({
+            await context.action.engine.tryRun({
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     engine: context.action.engine,
                     program: context.action.program,

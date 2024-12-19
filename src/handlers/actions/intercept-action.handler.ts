@@ -11,9 +11,9 @@ export const InterceptActionHandler =
     InterceptActionDto,
     InterceptActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<InterceptActionDto, InterceptActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       const debug = context.action.debug;
       const trigger = context.trigger as ActionTriggerDto;
       const reactionId =
@@ -98,7 +98,7 @@ export const InterceptActionHandler =
               ]),
             )
           : {};
-        context.action.engine.tryRun({
+        await context.action.engine.tryRun({
           ...DynamicContextService.createContext(
             {
               engine: context.action.engine,

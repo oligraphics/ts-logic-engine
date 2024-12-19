@@ -18,60 +18,87 @@ export class EventSystem {
     this.engine = engine;
   }
 
-  callEvent<T extends EventDto>(
+  async callEvent<T extends EventDto>(
     source: IEventSource,
     event: T,
-    perform?: (event: T) => boolean,
-  ): boolean {
+    perform?: (event: T) => Promise<boolean>,
+  ): Promise<boolean> {
     const eventListeners = this.listeners.get(event.type);
     if (!eventListeners) {
-      if (perform && !perform(event)) {
+      if (perform && !(await perform(event))) {
         return false;
       }
       this.bus.trigger(event.type, event);
       return true;
     }
-    if (!this._callPhase(eventListeners, source, event, EventPhaseEnum.ALLOW)) {
+    if (
+      !(await this._callPhase(
+        eventListeners,
+        source,
+        event,
+        EventPhaseEnum.ALLOW,
+      ))
+    ) {
       return false;
     }
     if (
-      !this._callPhase(eventListeners, source, event, EventPhaseEnum.PREPARE)
+      !(await this._callPhase(
+        eventListeners,
+        source,
+        event,
+        EventPhaseEnum.PREPARE,
+      ))
     ) {
-      this._callCanceled(eventListeners, source, event);
+      await this._callCanceled(eventListeners, source, event);
       return false;
     }
     if (
-      !this._callPhase(eventListeners, source, event, EventPhaseEnum.PERFORM)
+      !(await this._callPhase(
+        eventListeners,
+        source,
+        event,
+        EventPhaseEnum.PERFORM,
+      ))
     ) {
-      this._callCanceled(eventListeners, source, event);
+      await this._callCanceled(eventListeners, source, event);
       return false;
     }
-    if (perform && !perform(event)) {
-      this._callCanceled(eventListeners, source, event);
+    if (perform && !(await perform(event))) {
+      await this._callCanceled(eventListeners, source, event);
       return false;
     }
     event.performed = true;
     this.bus.trigger(event.type, event);
-    this._callPhase(eventListeners, source, event, EventPhaseEnum.PERFORMED);
-    this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
+    await this._callPhase(
+      eventListeners,
+      source,
+      event,
+      EventPhaseEnum.PERFORMED,
+    );
+    await this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
     return true;
   }
 
-  _callCanceled(
+  async _callCanceled(
     eventListeners: EventListeners,
     source: IEventSource,
     event: EventDto,
   ) {
-    this._callPhase(eventListeners, source, event, EventPhaseEnum.CANCELED);
-    this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
+    await this._callPhase(
+      eventListeners,
+      source,
+      event,
+      EventPhaseEnum.CANCELED,
+    );
+    await this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
   }
 
-  _callPhase(
+  async _callPhase(
     eventListeners: EventListeners,
     source: IEventSource,
     event: EventDto,
     phase: EventPhaseEnum,
-  ): boolean {
+  ): Promise<boolean> {
     const phaseListeners = eventListeners.get(phase);
     if (!phaseListeners) {
       return !event.cancelable || !event.canceled;
@@ -99,7 +126,7 @@ export class EventSystem {
       }
 
       try {
-        listener.action.engine.trigger(listener, event);
+        await listener.action.engine.trigger(listener, event);
       } catch (e) {
         console.error(e);
       }

@@ -4,7 +4,7 @@ import { EventDto } from '../../dto/events/event.dto';
 
 export const ActionTriggerHandler =
   new (class ActionTriggerHandler extends TriggerHandler<ITriggerInstance> {
-    handle(trigger: ITriggerInstance, event: EventDto) {
+    async handle(trigger: ITriggerInstance, event: EventDto) {
       const handler = trigger.action.engine.getActionHandler(
         trigger.action.action.type,
       );
@@ -15,7 +15,7 @@ export const ActionTriggerHandler =
           }\n${JSON.stringify(trigger.action.action, null, 2)}`,
         );
       }
-      handler.trigger({
+      await handler.trigger({
         trigger,
         event,
         action: trigger.action,

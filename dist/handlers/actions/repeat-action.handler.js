@@ -5,7 +5,7 @@ const action_handler_1 = require("./action.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
 const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum");
 exports.RepeatActionHandler = new (class RepeatActionHandler extends action_handler_1.ActionHandler {
-    tryRun(context) {
+    async tryRun(context) {
         const repeat = ts_logic_framework_1.LogicService.resolve(context.action.state.repeat, context);
         if (context.action.debug) {
             console.warn(`Repeat action repeats ${repeat} times`);
@@ -26,7 +26,7 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
             params: context.action.state.params ?? {},
             cancelable: true,
         };
-        return context.action.engine.callEvent(context.action.source, event, (event) => {
+        return await context.action.engine.callEvent(context.action.source, event, async (event) => {
             for (let i = 0; i < event.repeat; i++) {
                 const params = Object.fromEntries(Object.entries(event.params).map(([key, value]) => [
                     key,
@@ -37,7 +37,7 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
                         }),
                     }),
                 ]));
-                context.action.engine.tryRun({
+                await context.action.engine.tryRun({
                     engine: context.action.engine,
                     program: context.action.program,
                     initiator: context.action.source,

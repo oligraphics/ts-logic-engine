@@ -18,7 +18,9 @@ export abstract class ActionHandler<
   TActionState extends ActionStateDto,
 > implements IActionHandler
 {
-  apply(context: TriggerContextDto<TAction, TActionState>): boolean {
+  async apply(
+    context: TriggerContextDto<TAction, TActionState>,
+  ): Promise<boolean> {
     if (context.action.action.attachable) {
       const statusHolder = context.action.target as IStatusHolder;
       if (statusHolder) {
@@ -38,7 +40,9 @@ export abstract class ActionHandler<
       return this.trigger(context);
     }
   }
-  trigger(context: TriggerContextDto<TAction, TActionState>): boolean {
+  async trigger(
+    context: TriggerContextDto<TAction, TActionState>,
+  ): Promise<boolean> {
     if (
       context.event === undefined ||
       context.action.statusEffect === undefined
@@ -47,11 +51,11 @@ export abstract class ActionHandler<
     }
     throw new Error('Not yet implemented.');
   }
-  perform(
+  async perform(
     context: TriggerContextDto<TAction, TActionState>,
     callNext: boolean,
-  ): boolean {
-    if (!this.tryRun(context)) {
+  ): Promise<boolean> {
+    if (!(await this.tryRun(context))) {
       if (context.action.debug) {
         console.debug('Action', context.action.action.type, 'failed to run');
       }
@@ -64,7 +68,7 @@ export abstract class ActionHandler<
       for (const trigger of context.action.stacks.triggers.filter(
         (t) => t.event === BuiltinEventTypeEnum.TRIGGER,
       )) {
-        StackCounterTriggerHandler.handle(trigger, event);
+        await StackCounterTriggerHandler.handle(trigger, event);
       }
     }
     if (callNext && context.action.action.next) {
@@ -81,7 +85,7 @@ export abstract class ActionHandler<
               ]),
             )
           : {};
-        context.action.engine.tryRun({
+        await context.action.engine.tryRun({
           ...DynamicContextService.createContext(
             {
               engine: context.action.engine,
@@ -104,12 +108,14 @@ export abstract class ActionHandler<
     }
     return true;
   }
-  abstract tryRun(context: TriggerContextDto<TAction, TActionState>): boolean;
+  abstract tryRun(
+    context: TriggerContextDto<TAction, TActionState>,
+  ): Promise<boolean>;
   remove(action: ActionInstanceDto<TAction, TActionState>) {
     action.engine.detachStack(action);
     action.engine.detachTriggers(action);
   }
-  onEvent(
+  async onEvent(
     action: ActionInstanceDto<TAction, TActionState>,
     event: EventDto,
     phase: EventPhaseEnum,

@@ -1,3 +1,3 @@
 import { ActionStateDto } from './action.state.dto';
 
-export type DummyActionStateDto = {} & ActionStateDto;
+export type DummyActionStateDto = ActionStateDto;

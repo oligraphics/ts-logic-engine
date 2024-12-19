@@ -11,9 +11,9 @@ export const RepeatActionHandler =
     RepeatActionDto,
     RepeatActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<RepeatActionDto, RepeatActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       const repeat = LogicService.resolve<number>(
         context.action.state.repeat,
         context,
@@ -41,10 +41,10 @@ export const RepeatActionHandler =
         params: context.action.state.params ?? {},
         cancelable: true,
       };
-      return context.action.engine.callEvent(
+      return await context.action.engine.callEvent(
         context.action.source,
         event,
-        (event) => {
+        async (event) => {
           for (let i = 0; i < event.repeat; i++) {
             const params = Object.fromEntries(
               Object.entries(event.params).map(([key, value]) => [
@@ -57,7 +57,7 @@ export const RepeatActionHandler =
                 }),
               ]),
             );
-            context.action.engine.tryRun({
+            await context.action.engine.tryRun({
               engine: context.action.engine,
               program: context.action.program,
               initiator: context.action.source,

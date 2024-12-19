@@ -1,5 +1,5 @@
 import { CounterTriggerDto } from '../dto/triggers/counter.trigger.dto';
-import { IdService } from './id.service';
+import { IdService } from 'ts-logic-framework';
 import { CounterMethodEnum } from '../enums/counter-method.enum';
 import { LogicService } from 'ts-logic-framework';
 import { IActionInstance } from '../interfaces/action-instance.interface';

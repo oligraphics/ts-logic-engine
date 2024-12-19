@@ -1,5 +1,5 @@
 import { ActionTriggerDto } from '../dto/triggers/action.trigger.dto';
-import { IdService } from './id.service';
+import { IdService } from 'ts-logic-framework';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { BuiltinTriggerTypeEnum } from '../enums/builtin-trigger-type.enum';
 import { IActionTriggerInstance } from '../interfaces/action-trigger-instance.interface';

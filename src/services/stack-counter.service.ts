@@ -10,11 +10,11 @@ import { IStackCounterInstance } from '../interfaces/stack-counter-instance.inte
 import { StackRemoveEventDto } from '../dto/events/stack-remove.event.dto';
 
 export const StackCounterService = new (class StackCounterService {
-  tryChange(
+  async tryChange(
     context: ITriggerContext,
     method: CounterMethodEnum,
     amount: number,
-  ): boolean {
+  ): Promise<boolean> {
     const { trigger, action } = context as {
       trigger: ICounterTriggerInstance;
       event: EventDto;
@@ -42,10 +42,10 @@ export const StackCounterService = new (class StackCounterService {
       change,
       cancelable: true,
     };
-    const success = action.engine.callEvent(
+    const success = await action.engine.callEvent(
       trigger.action.target,
       event,
-      (event) => {
+      async (event) => {
         stack.value = CounterMethodService.getChangedValue(
           stack.value,
           event.method,
@@ -55,16 +55,16 @@ export const StackCounterService = new (class StackCounterService {
       },
     );
     if (success) {
-      this.changed(stack);
+      await this.changed(stack);
     }
     return success;
   }
-  changed(stack: IStackCounterInstance) {
+  async changed(stack: IStackCounterInstance) {
     if (stack.value <= 0 && !stack.persistent) {
-      this.remove(stack);
+      await this.remove(stack);
     }
   }
-  remove(stack: IStackCounterInstance) {
+  async remove(stack: IStackCounterInstance) {
     if (stack.removed) {
       console.error('Trying to remove an already removed stack');
       return;
@@ -74,7 +74,7 @@ export const StackCounterService = new (class StackCounterService {
       type: BuiltinEventTypeEnum.STACK_REMOVE,
       stack,
     };
-    stack.action.engine.callEvent(stack.action.target, event);
+    await stack.action.engine.callEvent(stack.action.target, event);
     stack.action.engine.remove(stack.action);
   }
 })();

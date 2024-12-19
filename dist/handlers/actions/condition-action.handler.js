@@ -4,7 +4,7 @@ exports.ConditionActionHandler = void 0;
 const ts_logic_framework_1 = require("ts-logic-framework");
 const action_handler_1 = require("./action.handler");
 exports.ConditionActionHandler = new (class ConditionActionHandler extends action_handler_1.ActionHandler {
-    tryRun(context) {
+    async tryRun(context) {
         const { action } = context;
         const { state, template, debug } = action;
         const checkResult = ts_logic_framework_1.ConditionService.testCondition(state.condition, context);
@@ -13,17 +13,17 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
         }
         if (checkResult === true) {
             if (state.true) {
-                return this.handleCase(context, state.true);
+                return await this.handleCase(context, state.true);
             }
         }
         else {
             if (state.false) {
-                return this.handleCase(context, state.false);
+                return await this.handleCase(context, state.false);
             }
         }
         return true;
     }
-    handleCase(context, subActionReference) {
+    async handleCase(context, subActionReference) {
         const { action } = context;
         const { engine, program, template, debug } = action;
         const subActionId = ts_logic_framework_1.LogicService.resolve(subActionReference, context);
@@ -39,7 +39,7 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
             return false;
         }
         if (subAction) {
-            return engine.tryRun({
+            return await engine.tryRun({
                 ...context.action,
                 actionId: subActionId,
                 debug: debug || subAction.debug,

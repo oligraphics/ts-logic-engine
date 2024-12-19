@@ -23,6 +23,7 @@ export declare class LogicEngine implements IActor {
     get id(): string;
     get name(): string;
     get state(): ActionStateDto | undefined;
+    get allowTargeting(): boolean;
     get bus(): EventBus;
     toJSON(): {
         id: string;
@@ -33,17 +34,16 @@ export declare class LogicEngine implements IActor {
     }, triggerHandlers?: {
         [triggerType: string]: ITriggerHandler;
     });
-    start(): void;
-    update(deltaTime: number): void;
-    tryRun(context: IRunProgramContext): boolean;
-    run(context: IRunProgramContext): boolean;
-    apply(context: IActionContext): boolean;
+    start(): Promise<void>;
     stop(): void;
-    get allowTargeting(): boolean;
     getValue<T>(property: string, debug?: boolean): T;
     getActionHandler(actionType: string): IActionHandler | undefined;
-    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => boolean): boolean;
-    trigger(trigger: ITriggerInstance, event: EventDto): void;
+    update(deltaTime: number): void;
+    tryRun(context: IRunProgramContext): Promise<boolean>;
+    run(context: IRunProgramContext): Promise<boolean>;
+    apply(context: IActionContext): Promise<boolean>;
+    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean>): Promise<boolean>;
+    trigger(trigger: ITriggerInstance, event: EventDto): Promise<void>;
     remove(action: IActionInstance): void;
     attachStack(action: IActionInstance): void;
     detachStack(action: IActionInstance): void;

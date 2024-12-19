@@ -25,6 +25,9 @@ class LogicEngine {
     get state() {
         return this._state;
     }
+    get allowTargeting() {
+        return true;
+    }
     get bus() {
         return this.eventSystem.bus;
     }
@@ -46,9 +49,9 @@ class LogicEngine {
         this.triggerHandlers = triggerHandlers ?? { ...builtin_trigger_handlers_interface_1.BuiltinTriggerHandlers };
         this.eventSystem = new event_system_model_1.EventSystem(this);
     }
-    start() {
+    async start() {
         this.bus.trigger('start');
-        this.tryRun({
+        await this.tryRun({
             ...this.context,
             ...ts_logic_framework_1.DynamicContextService.createContext({
                 program: this.program,
@@ -58,11 +61,28 @@ class LogicEngine {
             }),
         });
     }
+    stop() {
+        this.bus.trigger('stop');
+    }
+    getValue(property, debug) {
+        switch (property) {
+            case 'state':
+                return this.state;
+            default:
+                if (debug) {
+                    console.error(`Trying to read unknown property ${property} on LogicEngine`);
+                }
+                return undefined;
+        }
+    }
+    getActionHandler(actionType) {
+        return this.actionHandlers[actionType];
+    }
     update(deltaTime) {
         this.bus.trigger('update', deltaTime);
     }
-    tryRun(context) {
-        return this.callEvent(context.source, {
+    async tryRun(context) {
+        return await this.callEvent(context.source, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.PROGRAM,
             engine: context.engine,
             program: context.program,
@@ -70,7 +90,7 @@ class LogicEngine {
             source: context.source,
         }, () => this.run(context));
     }
-    run(context) {
+    async run(context) {
         const action = context.program.actions[context.actionId];
         if (!action) {
             console.error('Action', context.actionId, 'not found in program', context.program.id, '. Available:', ...Object.keys(context.program.actions));
@@ -90,7 +110,7 @@ class LogicEngine {
             return false;
         }
         for (const target of targets) {
-            this.apply({
+            await this.apply({
                 ...context,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     target,
@@ -127,35 +147,15 @@ class LogicEngine {
             });
         });
     }
-    stop() {
-        this.bus.trigger('stop');
+    async callEvent(source, event, perform) {
+        return await this.eventSystem.callEvent(source, event, perform);
     }
-    get allowTargeting() {
-        return true;
-    }
-    getValue(property, debug) {
-        switch (property) {
-            case 'state':
-                return this.state;
-            default:
-                if (debug) {
-                    console.error(`Trying to read unknown property ${property} on LogicEngine`);
-                }
-                return undefined;
-        }
-    }
-    getActionHandler(actionType) {
-        return this.actionHandlers[actionType];
-    }
-    callEvent(source, event, perform) {
-        return this.eventSystem.callEvent(source, event, perform);
-    }
-    trigger(trigger, event) {
+    async trigger(trigger, event) {
         const handler = this.triggerHandlers[trigger.type];
         if (!handler) {
             throw new Error(`No trigger handler found for trigger of type ${trigger.type}\n${JSON.stringify(trigger.action.action, null, 2)}`);
         }
-        handler.handle(trigger, event);
+        await handler.handle(trigger, event);
     }
     remove(action) {
         const handler = this.actionHandlers[action.action.type];

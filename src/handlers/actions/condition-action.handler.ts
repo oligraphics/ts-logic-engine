@@ -1,5 +1,4 @@
 import { ConditionActionDto } from '../../dto/actions/condition.action.dto';
-import { LogicEngine } from '../../engine/logic.engine';
 import { ConditionActionStateDto } from '../../dto/action-states/condition-action.state.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import {
@@ -14,9 +13,9 @@ export const ConditionActionHandler =
     ConditionActionDto,
     ConditionActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<ConditionActionDto, ConditionActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       const { action } = context;
       const { state, template, debug } = action;
       const checkResult = ConditionService.testCondition(
@@ -28,19 +27,19 @@ export const ConditionActionHandler =
       }
       if (checkResult === true) {
         if (state.true) {
-          return this.handleCase(context, state.true);
+          return await this.handleCase(context, state.true);
         }
       } else {
         if (state.false) {
-          return this.handleCase(context, state.false);
+          return await this.handleCase(context, state.false);
         }
       }
       return true;
     }
-    handleCase(
+    async handleCase(
       context: TriggerContextDto<ConditionActionDto, ConditionActionStateDto>,
       subActionReference: DynamicValue,
-    ): boolean {
+    ): Promise<boolean> {
       const { action } = context;
       const { engine, program, template, debug } = action;
       const subActionId = LogicService.resolve<string>(
@@ -59,7 +58,7 @@ export const ConditionActionHandler =
         return false;
       }
       if (subAction) {
-        return engine.tryRun({
+        return await engine.tryRun({
           ...context.action,
           actionId: subActionId,
           debug: debug || subAction.debug,

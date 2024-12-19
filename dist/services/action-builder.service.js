@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionBuilderService = void 0;
-const id_service_1 = require("./id.service");
 const action_trigger_builder_service_1 = require("./action-trigger-builder.service");
 const stack_counter_builder_service_1 = require("./stack-counter-builder.service");
+const ts_logic_framework_1 = require("ts-logic-framework");
 exports.ActionBuilderService = new (class ActionBuilderService {
     build(context) {
-        const id = id_service_1.IdService.createRandomId();
+        const id = ts_logic_framework_1.IdService.createRandomId();
         const { action } = context;
         const result = {
             id,

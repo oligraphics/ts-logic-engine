@@ -11,9 +11,9 @@ export const MessageActionHandler =
     MessageActionDto,
     MessageActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<MessageActionDto, MessageActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       const { action } = context;
       const { state, debug } = action;
       const message = LogicService.resolve<string>(
@@ -42,7 +42,7 @@ export const MessageActionHandler =
         }
       }
 
-      return context.action.engine.callEvent(
+      return await context.action.engine.callEvent(
         context.action,
         <MessageEventDto>{
           type: BuiltinEventTypeEnum.MESSAGE,
@@ -51,7 +51,7 @@ export const MessageActionHandler =
           variables,
           data,
         },
-        (event) => {
+        async (event) => {
           if (context.action.debug) {
             console.log('DEBUG Message:', event.message);
           }

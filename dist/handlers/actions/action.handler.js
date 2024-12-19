@@ -5,7 +5,7 @@ const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum")
 const stack_counter_trigger_handler_1 = require("../triggers/stack-counter-trigger.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
 class ActionHandler {
-    apply(context) {
+    async apply(context) {
         if (context.action.action.attachable) {
             const statusHolder = context.action.target;
             if (statusHolder) {
@@ -26,15 +26,15 @@ class ActionHandler {
             return this.trigger(context);
         }
     }
-    trigger(context) {
+    async trigger(context) {
         if (context.event === undefined ||
             context.action.statusEffect === undefined) {
             return this.perform(context, true);
         }
         throw new Error('Not yet implemented.');
     }
-    perform(context, callNext) {
-        if (!this.tryRun(context)) {
+    async perform(context, callNext) {
+        if (!(await this.tryRun(context))) {
             if (context.action.debug) {
                 console.debug('Action', context.action.action.type, 'failed to run');
             }
@@ -45,7 +45,7 @@ class ActionHandler {
                 type: builtin_event_type_enum_1.BuiltinEventTypeEnum.TRIGGER,
             };
             for (const trigger of context.action.stacks.triggers.filter((t) => t.event === builtin_event_type_enum_1.BuiltinEventTypeEnum.TRIGGER)) {
-                stack_counter_trigger_handler_1.StackCounterTriggerHandler.handle(trigger, event);
+                await stack_counter_trigger_handler_1.StackCounterTriggerHandler.handle(trigger, event);
             }
         }
         if (callNext && context.action.action.next) {
@@ -57,7 +57,7 @@ class ActionHandler {
                         ts_logic_framework_1.LogicService.resolve(value, context),
                     ]))
                     : {};
-                context.action.engine.tryRun({
+                await context.action.engine.tryRun({
                     ...ts_logic_framework_1.DynamicContextService.createContext({
                         engine: context.action.engine,
                         program: context.action.program,
@@ -77,7 +77,7 @@ class ActionHandler {
         action.engine.detachStack(action);
         action.engine.detachTriggers(action);
     }
-    onEvent(action, event, phase) {
+    async onEvent(action, event, phase) {
         throw new Error('onEvent() not implemented for handler ' + this.constructor.name);
     }
     setAttached(effect, triggerContext) {

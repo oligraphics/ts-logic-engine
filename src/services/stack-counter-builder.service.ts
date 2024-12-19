@@ -6,7 +6,6 @@ import { BuiltinTriggerTypeEnum } from '../enums/builtin-trigger-type.enum';
 import { StackCounterDto } from '../dto/stacks/stack-counter.dto';
 import { CounterTriggerBuilderService } from './counter-trigger-builder.service';
 import { EventPhaseEnum } from '../enums/event-phase.enum';
-import { BooleanLogicTypeEnum, EqualConditionDto } from 'ts-logic-framework';
 import { BuiltinEventTypeEnum } from '../enums/builtin-event-type.enum';
 
 export const StackCounterBuilderService =

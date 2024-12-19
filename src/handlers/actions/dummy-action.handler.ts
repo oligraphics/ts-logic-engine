@@ -8,9 +8,9 @@ export const DummyActionHandler =
     DummyActionDto,
     DummyActionStateDto
   > {
-    tryRun(
+    async tryRun(
       context: TriggerContextDto<DummyActionDto, DummyActionStateDto>,
-    ): boolean {
+    ): Promise<boolean> {
       if (context.action.debug) {
         console.debug('Running dummy action', context.action.template);
       }

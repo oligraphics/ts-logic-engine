@@ -11,41 +11,41 @@ class EventSystem {
     constructor(engine) {
         this.engine = engine;
     }
-    callEvent(source, event, perform) {
+    async callEvent(source, event, perform) {
         const eventListeners = this.listeners.get(event.type);
         if (!eventListeners) {
-            if (perform && !perform(event)) {
+            if (perform && !(await perform(event))) {
                 return false;
             }
             this.bus.trigger(event.type, event);
             return true;
         }
-        if (!this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW)) {
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW))) {
             return false;
         }
-        if (!this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PREPARE)) {
-            this._callCanceled(eventListeners, source, event);
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PREPARE))) {
+            await this._callCanceled(eventListeners, source, event);
             return false;
         }
-        if (!this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORM)) {
-            this._callCanceled(eventListeners, source, event);
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORM))) {
+            await this._callCanceled(eventListeners, source, event);
             return false;
         }
-        if (perform && !perform(event)) {
-            this._callCanceled(eventListeners, source, event);
+        if (perform && !(await perform(event))) {
+            await this._callCanceled(eventListeners, source, event);
             return false;
         }
         event.performed = true;
         this.bus.trigger(event.type, event);
-        this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED);
-        this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED);
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
         return true;
     }
-    _callCanceled(eventListeners, source, event) {
-        this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.CANCELED);
-        this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
+    async _callCanceled(eventListeners, source, event) {
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.CANCELED);
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
     }
-    _callPhase(eventListeners, source, event, phase) {
+    async _callPhase(eventListeners, source, event, phase) {
         const phaseListeners = eventListeners.get(phase);
         if (!phaseListeners) {
             return !event.cancelable || !event.canceled;
@@ -66,7 +66,7 @@ class EventSystem {
                 continue;
             }
             try {
-                listener.action.engine.trigger(listener, event);
+                await listener.action.engine.trigger(listener, event);
             }
             catch (e) {
                 console.error(e);

@@ -5,7 +5,7 @@ const ts_logic_framework_1 = require("ts-logic-framework");
 const action_handler_1 = require("./action.handler");
 const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum");
 exports.MessageActionHandler = new (class MessageActionHandler extends action_handler_1.ActionHandler {
-    tryRun(context) {
+    async tryRun(context) {
         const { action } = context;
         const { state, debug } = action;
         const message = ts_logic_framework_1.LogicService.resolve(state.message, context, debug);
@@ -27,13 +27,13 @@ exports.MessageActionHandler = new (class MessageActionHandler extends action_ha
                 data[key] = ts_logic_framework_1.LogicService.resolve(valueBuilder, context, debug);
             }
         }
-        return context.action.engine.callEvent(context.action, {
+        return await context.action.engine.callEvent(context.action, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.MESSAGE,
             action,
             message,
             variables,
             data,
-        }, (event) => {
+        }, async (event) => {
             if (context.action.debug) {
                 console.log('DEBUG Message:', event.message);
             }

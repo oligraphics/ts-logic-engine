@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CounterTriggerHandler = void 0;
 const trigger_handler_1 = require("./trigger.handler");
 exports.CounterTriggerHandler = new (class CounterTriggerHandler extends trigger_handler_1.TriggerHandler {
-    handle(trigger, event) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async handle(trigger, event) {
         throw new Error('Not yet implemented');
     }
 })();

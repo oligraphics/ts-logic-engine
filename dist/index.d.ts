@@ -80,10 +80,10 @@ export * from './services/counter-builder.service';
 export * from './services/counter-method.service';
 export * from './services/counter-trigger-builder.service';
 export * from './services/engine-context.service';
-export * from './services/id.service';
 export * from './services/intercept-trigger-builder.service';
 export * from './services/program-context.service';
 export * from './services/stack-counter.service';
 export * from './services/stack-counter-builder.service';
 export * from './services/target.service';
+export * from './services/wait.service';
 //# sourceMappingURL=index.d.ts.map
