@@ -1,0 +1,1 @@
+{"version":3,"file":"engine-context.service.js","sourceRoot":"src/","sources":["services/engine-context.service.ts"],"names":[],"mappings":";;;AAEa,QAAA,oBAAoB,GAAG,IAAI,CAAC,MAAM,oBAAoB;IACjE,IAAI,CAAC,OAAuB;QAC1B,OAAO;YACL,MAAM,EAAE,OAAO,CAAC,MAAM;SACvB,CAAC;IACJ,CAAC;CACF,CAAC,EAAE,CAAC"}

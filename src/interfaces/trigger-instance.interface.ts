@@ -3,5 +3,6 @@ import { IActionInstance } from './action-instance.interface';
 
 export type ITriggerInstance = {
   get id(): string;
+  get type(): string;
   get action(): IActionInstance;
 } & TriggerDto;

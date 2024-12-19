@@ -1,0 +1,1 @@
+{"version":3,"file":"counter-method.service.d.ts","sourceRoot":"src/","sources":["services/counter-method.service.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,8BAA8B,CAAC;AAEjE,eAAO,MAAM,oBAAoB;2BACR,MAAM,UAAU,iBAAiB,UAAU,MAAM;CAYtE,CAAC"}

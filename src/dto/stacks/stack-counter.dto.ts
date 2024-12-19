@@ -1,3 +1,5 @@
 import { CounterDto } from '../counters/counter.dto';
 
-export type StackCounterDto = CounterDto;
+export type StackCounterDto = {
+  persistent: boolean;
+} & CounterDto;

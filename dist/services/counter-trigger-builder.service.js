@@ -4,11 +4,11 @@ exports.CounterTriggerBuilderService = void 0;
 const id_service_1 = require("./id.service");
 const ts_logic_framework_1 = require("ts-logic-framework");
 exports.CounterTriggerBuilderService = new (class CounterTriggerBuilderService {
-    buildAll(configurations, defaultMethod, defaultAmount, action) {
-        return configurations.map((c) => this.build(c, defaultMethod, defaultAmount, action));
+    buildAll(configurations, triggerType, defaultMethod, defaultAmount, action) {
+        return configurations.map((c) => this.build(c, triggerType, defaultMethod, defaultAmount, action));
     }
-    build(configuration, defaultMethod, defaultAmount, action) {
-        const type = (configuration.method
+    build(configuration, triggerType, defaultMethod, defaultAmount, action) {
+        const method = (configuration.method
             ? ts_logic_framework_1.LogicService.resolve(configuration.method, action, configuration.debug)
             : undefined) ?? defaultMethod;
         const amount = (configuration.amount
@@ -16,9 +16,10 @@ exports.CounterTriggerBuilderService = new (class CounterTriggerBuilderService {
             : undefined) ?? defaultAmount;
         return {
             id: id_service_1.IdService.createRandomId(),
+            type: triggerType,
             action,
             ...configuration,
-            type,
+            method,
             amount,
         };
     }

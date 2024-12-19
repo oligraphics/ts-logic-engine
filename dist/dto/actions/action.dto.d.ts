@@ -1,4 +1,4 @@
-import { ActionStateDto } from '../states/action.state.dto';
+import { ActionStateDto } from '../action-states/action.state.dto';
 import { ActionTriggerDto } from '../triggers/action.trigger.dto';
 import { DynamicValue } from 'ts-logic-framework';
 import { StackCounterDto } from '../stacks/stack-counter.dto';

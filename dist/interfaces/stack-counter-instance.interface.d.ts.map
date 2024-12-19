@@ -1,1 +1,1 @@
-{"version":3,"file":"stack-counter-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/stack-counter-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,EAAE,MAAM,8BAA8B,CAAC;AAEhE,MAAM,MAAM,qBAAqB,GAAG,gBAAgB,CAAC"}
+{"version":3,"file":"stack-counter-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/stack-counter-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,EAAE,MAAM,8BAA8B,CAAC;AAEhE,MAAM,MAAM,qBAAqB,GAAG,gBAAgB,GAAG;IACrD,IAAI,UAAU,IAAI,OAAO,CAAC;CAC3B,CAAC"}

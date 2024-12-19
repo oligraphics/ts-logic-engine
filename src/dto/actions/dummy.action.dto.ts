@@ -1,7 +1,7 @@
-import { GlobalActionTypeEnum } from '../../enums/global-action-type.enum';
+import { BuiltinActionTypeEnum } from '../../enums/builtin-action-type.enum';
 import { ActionDto } from './action.dto';
 
 export type DummyActionDto = {
-  type: GlobalActionTypeEnum.DUMMY;
+  type: BuiltinActionTypeEnum.DUMMY;
   apply: object;
 } & ActionDto;

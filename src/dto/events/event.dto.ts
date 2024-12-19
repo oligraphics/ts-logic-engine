@@ -1,5 +1,6 @@
 export type EventDto = {
   type: string;
   cancelable?: boolean;
-  canceled: false;
+  performed?: boolean;
+  canceled?: boolean;
 };

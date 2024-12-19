@@ -9,21 +9,23 @@ export const CounterTriggerBuilderService =
   new (class CounterTriggerBuilderService {
     buildAll(
       configurations: CounterTriggerDto[],
+      triggerType: string,
       defaultMethod: CounterMethodEnum,
       defaultAmount: number,
       action: IActionInstance,
     ): ICounterTriggerInstance[] {
       return configurations.map((c) =>
-        this.build(c, defaultMethod, defaultAmount, action),
+        this.build(c, triggerType, defaultMethod, defaultAmount, action),
       );
     }
     build(
       configuration: CounterTriggerDto,
+      triggerType: string,
       defaultMethod: CounterMethodEnum,
       defaultAmount: number,
       action: IActionInstance,
     ): ICounterTriggerInstance {
-      const type =
+      const method =
         (configuration.method
           ? LogicService.resolve<CounterMethodEnum>(
               configuration.method,
@@ -41,9 +43,10 @@ export const CounterTriggerBuilderService =
           : undefined) ?? defaultAmount;
       return {
         id: IdService.createRandomId(),
+        type: triggerType,
         action,
         ...configuration,
-        type,
+        method,
         amount,
       };
     }

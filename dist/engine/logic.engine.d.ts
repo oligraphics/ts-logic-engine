@@ -1,21 +1,24 @@
 import { EventBus } from 'ts-event-bus';
-import { ActionStateDto } from '../dto/states/action.state.dto';
+import { ActionStateDto } from '../dto/action-states/action.state.dto';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { IActionContext } from '../interfaces/action-context.interface';
 import { IProgram } from '../interfaces/program.interface';
-import { CreateEngineContextDto } from '../dto/contexts/create-engine.context';
+import { CreateEngineContextDto } from '../dto/contexts/create-engine.context.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
 import { EventDto } from '../dto/events/event.dto';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { IEventSource } from '../interfaces/event-source.interface';
+import { ITriggerHandler } from '../interfaces/trigger-handler.interface';
 export declare class LogicEngine implements IActor {
     private readonly context;
     private readonly program;
-    private readonly actionResolvers;
+    private readonly triggerHandlers;
+    private readonly actionHandlers;
     private readonly eventSystem;
     private _state;
+    private _listeningStackActions;
     private _listeningActions;
     get id(): string;
     get name(): string;
@@ -25,8 +28,10 @@ export declare class LogicEngine implements IActor {
         id: string;
         name: string;
     };
-    constructor(program: IProgram, context: CreateEngineContextDto, actionResolvers: {
+    constructor(program: IProgram, context: CreateEngineContextDto, actionHandlers: {
         [actionType: string]: IActionHandler;
+    }, triggerHandlers?: {
+        [triggerType: string]: ITriggerHandler;
     });
     start(): void;
     update(deltaTime: number): void;
@@ -36,8 +41,12 @@ export declare class LogicEngine implements IActor {
     stop(): void;
     get allowTargeting(): boolean;
     getValue<T>(property: string, debug?: boolean): T;
+    getActionHandler(actionType: string): IActionHandler | undefined;
     callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => boolean): boolean;
-    trigger<T extends EventDto>(trigger: ITriggerInstance, event: T): void;
+    trigger(trigger: ITriggerInstance, event: EventDto): void;
+    remove(action: IActionInstance): void;
+    attachStack(action: IActionInstance): void;
+    detachStack(action: IActionInstance): void;
     attachTriggers(action: IActionInstance): void;
     detachTriggers(action: IActionInstance): void;
 }

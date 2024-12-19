@@ -1,6 +1,8 @@
-import { GlobalActionTypeEnum } from '../../enums/global-action-type.enum';
+import { BuiltinActionTypeEnum } from '../../enums/builtin-action-type.enum';
 import { ActionDto } from './action.dto';
+import { MessageActionStateDto } from '../action-states/message-action.state.dto';
 
 export type MessageActionDto = {
-  type: GlobalActionTypeEnum.MESSAGE;
+  type: BuiltinActionTypeEnum.MESSAGE;
+  apply: MessageActionStateDto;
 } & ActionDto;

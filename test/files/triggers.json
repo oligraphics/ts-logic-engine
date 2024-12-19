@@ -6,41 +6,84 @@
       "apply": {
         "compound": [
           "listener",
-          "trigger"
+          "repeater"
         ]
       }
     },
     "listener": {
-      "type": "message",
+      "type": "intercept",
       "triggers": [
         {
-          "event": "action",
-          "phase": "performed",
+          "event": "message",
+          "phase": "perform",
           "filter": {
-            "type": "and",
-            "conditions": [
-              {
-                "type": "equal",
-                "value": "{event.action}",
-                "equals": {
-                  "program": {
-                    "id": "test:triggers"
-                  },
-                  "actionId": "trigger"
-                }
-              }
-            ]
-          }
+            "type": "equal",
+            "value": "{event.action}",
+            "equals": {
+              "program": {
+                "id": "test:triggers"
+              },
+              "actionId": "trigger"
+            }
+          },
+          "reaction": "send"
         }
       ],
       "apply": {
-        "message": "I just got triggered"
+        "actions": {
+          "send": {
+            "change": {
+              "message": "I am the (modified) trigger!"
+            },
+            "params": {
+              "message": "I just got triggered!"
+            },
+            "action": "message"
+          }
+        }
+      },
+      "stacks": {
+        "value": 1
+      }
+    },
+    "message": {
+      "type": "message",
+      "apply": {
+        "message": "#message"
+      },
+      "out": {
+        "proof": "#message",
+        "second-proof": "second proof"
+      },
+      "next": "follow-up"
+    },
+    "follow-up": {
+      "type": "message",
+      "apply": {
+        "message": "And I'm the follow-up",
+        "data": {
+          "proof": "#proof",
+          "second-proof": "#second-proof"
+        }
+      }
+    },
+    "repeater": {
+      "type": "repeat",
+      "apply": {
+        "repeat": 3,
+        "action": "trigger",
+        "params": {
+          "iteration": "{iteration}"
+        }
       }
     },
     "trigger": {
       "type": "message",
       "apply": {
-        "message": "I am the trigger!"
+        "message": "I am the trigger!",
+        "data": {
+          "iteration": "#iteration"
+        }
       }
     }
   }

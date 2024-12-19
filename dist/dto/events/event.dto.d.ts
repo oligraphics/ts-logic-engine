@@ -1,6 +1,7 @@
 export type EventDto = {
     type: string;
     cancelable?: boolean;
-    canceled: false;
+    performed?: boolean;
+    canceled?: boolean;
 };
 //# sourceMappingURL=event.dto.d.ts.map

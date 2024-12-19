@@ -1,7 +1,9 @@
 export declare enum BuiltinActionTypeEnum {
-    COMPOUND = "builtin:compound",
-    CONDITION = "builtin:condition",
-    DUMMY = "builtin:dummy",
-    MESSAGE = "builtin:message"
+    COMPOUND = "compound",
+    CONDITION = "condition",
+    DUMMY = "dummy",
+    INTERCEPT = "intercept",
+    MESSAGE = "message",
+    REPEAT = "repeat"
 }
 //# sourceMappingURL=builtin-action-type.enum.d.ts.map

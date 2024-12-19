@@ -2,6 +2,7 @@ import { ActionTriggerDto } from '../dto/triggers/action.trigger.dto';
 import { IdService } from './id.service';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
+import { BuiltinTriggerTypeEnum } from '../enums/builtin-trigger-type.enum';
 
 export const InterceptTriggerBuilderService =
   new (class InterceptTriggerBuilderService {
@@ -17,6 +18,7 @@ export const InterceptTriggerBuilderService =
     ): ITriggerInstance {
       return {
         id: IdService.createRandomId(),
+        type: BuiltinTriggerTypeEnum.ACTION,
         ...configuration,
         action,
       };
