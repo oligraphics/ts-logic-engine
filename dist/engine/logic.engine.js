@@ -51,15 +51,17 @@ class LogicEngine {
     }
     async start() {
         this.bus.trigger('start');
-        await this.tryRun({
-            ...this.context,
-            ...ts_logic_framework_1.DynamicContextService.createContext({
-                program: this.program,
-                actionId: this.program.main ?? 'main',
-                initiator: this,
-                source: this,
-            }),
-        });
+        if (this.program) {
+            await this.tryRun({
+                ...this.context,
+                ...ts_logic_framework_1.DynamicContextService.createContext({
+                    program: this.program,
+                    actionId: this.program.main ?? 'main',
+                    initiator: this,
+                    source: this,
+                }),
+            });
+        }
     }
     stop() {
         this.bus.trigger('stop');

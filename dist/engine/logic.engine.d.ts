@@ -29,7 +29,7 @@ export declare class LogicEngine implements IActor {
         id: string;
         name: string;
     };
-    constructor(program: IProgram, context: CreateEngineContextDto, actionHandlers: {
+    constructor(program: IProgram | undefined, context: CreateEngineContextDto, actionHandlers: {
         [actionType: string]: IActionHandler;
     }, triggerHandlers?: {
         [triggerType: string]: ITriggerHandler;

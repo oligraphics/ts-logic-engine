@@ -25,7 +25,7 @@ import { BuiltinTriggerHandlers } from '../interfaces/builtin-trigger-handlers.i
 
 export class LogicEngine implements IActor {
   private readonly context: IEngineContext;
-  private readonly program: IProgram;
+  private readonly program: IProgram | undefined;
   private readonly triggerHandlers: { [triggerType: string]: ITriggerHandler };
   private readonly actionHandlers: { [actionType: string]: IActionHandler };
 
@@ -64,7 +64,7 @@ export class LogicEngine implements IActor {
   }
 
   constructor(
-    program: IProgram,
+    program: IProgram | undefined,
     context: CreateEngineContextDto,
     actionHandlers: { [actionType: string]: IActionHandler },
     triggerHandlers?: { [triggerType: string]: ITriggerHandler },
@@ -82,15 +82,17 @@ export class LogicEngine implements IActor {
 
   async start() {
     this.bus.trigger('start');
-    await this.tryRun({
-      ...this.context,
-      ...DynamicContextService.createContext({
-        program: this.program,
-        actionId: this.program.main ?? 'main',
-        initiator: this,
-        source: this,
-      }),
-    });
+    if (this.program) {
+      await this.tryRun({
+        ...this.context,
+        ...DynamicContextService.createContext({
+          program: this.program,
+          actionId: this.program.main ?? 'main',
+          initiator: this,
+          source: this,
+        }),
+      });
+    }
   }
 
   stop() {
