@@ -11,9 +11,9 @@ export declare class EventSystem {
     readonly engine: LogicEngine;
     private readonly listeners;
     constructor(engine: LogicEngine);
-    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean>): Promise<boolean>;
+    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean | void>, debug?: boolean): Promise<boolean>;
     _callCanceled(eventListeners: EventListeners, source: IEventSource, event: EventDto): Promise<void>;
-    _callPhase(eventListeners: EventListeners, source: IEventSource, event: EventDto, phase: EventPhaseEnum): Promise<boolean>;
+    _callPhase(eventListeners: EventListeners, source: IEventSource, event: EventDto, phase: EventPhaseEnum, debug?: boolean): Promise<boolean>;
     attachTriggers(triggers: ITriggerInstance[]): void;
     detachTriggers(triggers: ITriggerInstance[]): void;
 }

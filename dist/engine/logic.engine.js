@@ -90,7 +90,7 @@ class LogicEngine {
             program: context.program,
             initiator: context.initiator,
             source: context.source,
-        }, () => this.run(context));
+        }, () => this.run(context), context.program.debug);
     }
     async run(context) {
         const action = context.program.actions[context.actionId];
@@ -147,10 +147,10 @@ class LogicEngine {
                     action: instance,
                 }),
             });
-        });
+        }, context.action.debug);
     }
-    async callEvent(source, event, perform) {
-        return await this.eventSystem.callEvent(source, event, perform);
+    async callEvent(source, event, perform, debug) {
+        return await this.eventSystem.callEvent(source, event, perform, debug);
     }
     async trigger(trigger, event) {
         const handler = this.triggerHandlers[trigger.type];

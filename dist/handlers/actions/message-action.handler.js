@@ -38,7 +38,7 @@ exports.MessageActionHandler = new (class MessageActionHandler extends action_ha
                 console.log('DEBUG Message:', event.message);
             }
             return true;
-        });
+        }, debug);
     }
 })();
 //# sourceMappingURL=message-action.handler.js.map

@@ -57,6 +57,7 @@ export const MessageActionHandler =
           }
           return true;
         },
+        debug,
       );
     }
   })();

@@ -27,7 +27,7 @@ exports.StackCounterService = new (class StackCounterService {
         const success = await action.engine.callEvent(trigger.action.target, event, async (event) => {
             stack.value = counter_method_service_1.CounterMethodService.getChangedValue(stack.value, event.method, event.amount);
             return true;
-        });
+        }, trigger.action.debug);
         if (success) {
             await this.changed(stack);
         }
@@ -48,8 +48,9 @@ exports.StackCounterService = new (class StackCounterService {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.STACK_REMOVE,
             stack,
         };
-        await stack.action.engine.callEvent(stack.action.target, event);
-        stack.action.engine.remove(stack.action);
+        await stack.action.engine.callEvent(stack.action.target, event, async () => {
+            stack.action.engine.remove(stack.action);
+        }, stack.action.debug);
     }
 })();
 //# sourceMappingURL=stack-counter.service.js.map

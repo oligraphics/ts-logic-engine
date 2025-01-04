@@ -68,6 +68,7 @@ export const RepeatActionHandler =
           }
           return true;
         },
+        context.action.debug,
       );
     }
   })();

@@ -53,6 +53,7 @@ export const StackCounterService = new (class StackCounterService {
         );
         return true;
       },
+      trigger.action.debug,
     );
     if (success) {
       await this.changed(stack);
@@ -74,7 +75,13 @@ export const StackCounterService = new (class StackCounterService {
       type: BuiltinEventTypeEnum.STACK_REMOVE,
       stack,
     };
-    await stack.action.engine.callEvent(stack.action.target, event);
-    stack.action.engine.remove(stack.action);
+    await stack.action.engine.callEvent(
+      stack.action.target,
+      event,
+      async () => {
+        stack.action.engine.remove(stack.action);
+      },
+      stack.action.debug,
+    );
   }
 })();

@@ -42,7 +42,7 @@ export declare class LogicEngine implements IActor {
     tryRun(context: IRunProgramContext): Promise<boolean>;
     run(context: IRunProgramContext): Promise<boolean>;
     apply(context: IActionContext): Promise<boolean>;
-    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean>): Promise<boolean>;
+    callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean | void>, debug?: boolean): Promise<boolean>;
     trigger(trigger: ITriggerInstance, event: EventDto): Promise<void>;
     remove(action: IActionInstance): void;
     attachStack(action: IActionInstance): void;

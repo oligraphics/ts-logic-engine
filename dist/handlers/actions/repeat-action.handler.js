@@ -47,7 +47,7 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
                 });
             }
             return true;
-        });
+        }, context.action.debug);
     }
 })();
 //# sourceMappingURL=repeat-action.handler.js.map

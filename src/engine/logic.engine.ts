@@ -132,6 +132,7 @@ export class LogicEngine implements IActor {
         source: context.source,
       },
       () => this.run(context),
+      context.program.debug,
     );
   }
 
@@ -216,15 +217,17 @@ export class LogicEngine implements IActor {
           }),
         });
       },
+      context.action.debug,
     );
   }
 
   async callEvent<T extends EventDto>(
     source: IEventSource,
     event: T,
-    perform?: (event: T) => Promise<boolean>,
+    perform?: (event: T) => Promise<boolean | void>,
+    debug?: boolean,
   ): Promise<boolean> {
-    return await this.eventSystem.callEvent(source, event, perform);
+    return await this.eventSystem.callEvent(source, event, perform, debug);
   }
 
   async trigger(trigger: ITriggerInstance, event: EventDto) {

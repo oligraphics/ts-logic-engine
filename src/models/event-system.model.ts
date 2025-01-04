@@ -21,12 +21,29 @@ export class EventSystem {
   async callEvent<T extends EventDto>(
     source: IEventSource,
     event: T,
-    perform?: (event: T) => Promise<boolean>,
+    perform?: (event: T) => Promise<boolean | void>,
+    debug?: boolean,
   ): Promise<boolean> {
+    if (debug) {
+      console.debug('Call event', event.type);
+    }
     const eventListeners = this.listeners.get(event.type);
     if (!eventListeners) {
-      if (perform && !(await perform(event))) {
+      if (debug) {
+        console.debug('No event listeners for event', event.type);
+      }
+      if (perform && (await perform(event)) === false) {
+        if (debug) {
+          console.debug(
+            'Event',
+            event.type,
+            'was aborted by the perform function',
+          );
+        }
         return false;
+      }
+      if (debug) {
+        console.debug('Call the event', event.type, 'publicly');
       }
       this.bus.trigger(event.type, event);
       return true;
@@ -37,6 +54,7 @@ export class EventSystem {
         source,
         event,
         EventPhaseEnum.ALLOW,
+        debug,
       ))
     ) {
       return false;
@@ -47,6 +65,7 @@ export class EventSystem {
         source,
         event,
         EventPhaseEnum.PREPARE,
+        debug,
       ))
     ) {
       await this._callCanceled(eventListeners, source, event);
@@ -58,12 +77,13 @@ export class EventSystem {
         source,
         event,
         EventPhaseEnum.PERFORM,
+        debug,
       ))
     ) {
       await this._callCanceled(eventListeners, source, event);
       return false;
     }
-    if (perform && !(await perform(event))) {
+    if (perform && (await perform(event)) === false) {
       await this._callCanceled(eventListeners, source, event);
       return false;
     }
@@ -74,8 +94,15 @@ export class EventSystem {
       source,
       event,
       EventPhaseEnum.PERFORMED,
+      debug,
     );
-    await this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
+    await this._callPhase(
+      eventListeners,
+      source,
+      event,
+      EventPhaseEnum.AFTER,
+      debug,
+    );
     return true;
   }
 
@@ -98,10 +125,20 @@ export class EventSystem {
     source: IEventSource,
     event: EventDto,
     phase: EventPhaseEnum,
+    debug?: boolean,
   ): Promise<boolean> {
+    if (debug) {
+      console.debug('Call phase', phase, 'for event', event.type);
+    }
     const phaseListeners = eventListeners.get(phase);
-    if (!phaseListeners) {
+    if (!phaseListeners || phaseListeners.size === 0) {
+      if (debug) {
+        console.debug(0, 'listeners found');
+      }
       return !event.cancelable || !event.canceled;
+    }
+    if (debug) {
+      console.debug(phaseListeners.size, 'listeners found');
     }
     const context = DynamicContextService.createContext({
       source,

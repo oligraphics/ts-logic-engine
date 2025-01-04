@@ -11,44 +11,65 @@ class EventSystem {
     constructor(engine) {
         this.engine = engine;
     }
-    async callEvent(source, event, perform) {
+    async callEvent(source, event, perform, debug) {
+        if (debug) {
+            console.debug('Call event', event.type);
+        }
         const eventListeners = this.listeners.get(event.type);
         if (!eventListeners) {
-            if (perform && !(await perform(event))) {
+            if (debug) {
+                console.debug('No event listeners for event', event.type);
+            }
+            if (perform && (await perform(event)) === false) {
+                if (debug) {
+                    console.debug('Event', event.type, 'was aborted by the perform function');
+                }
                 return false;
+            }
+            if (debug) {
+                console.debug('Call the event', event.type, 'publicly');
             }
             this.bus.trigger(event.type, event);
             return true;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW))) {
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW, debug))) {
             return false;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PREPARE))) {
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PREPARE, debug))) {
             await this._callCanceled(eventListeners, source, event);
             return false;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORM))) {
+        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORM, debug))) {
             await this._callCanceled(eventListeners, source, event);
             return false;
         }
-        if (perform && !(await perform(event))) {
+        if (perform && (await perform(event)) === false) {
             await this._callCanceled(eventListeners, source, event);
             return false;
         }
         event.performed = true;
         this.bus.trigger(event.type, event);
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED);
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED, debug);
+        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER, debug);
         return true;
     }
     async _callCanceled(eventListeners, source, event) {
         await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.CANCELED);
         await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
     }
-    async _callPhase(eventListeners, source, event, phase) {
+    async _callPhase(eventListeners, source, event, phase, debug) {
+        if (debug) {
+            console.debug('Call phase', phase, 'for event', event.type);
+        }
         const phaseListeners = eventListeners.get(phase);
-        if (!phaseListeners) {
+        if (!phaseListeners || phaseListeners.size === 0) {
+            if (debug) {
+                console.debug(0, 'listeners found');
+            }
             return !event.cancelable || !event.canceled;
+        }
+        if (debug) {
+            console.debug(phaseListeners.size, 'listeners found');
         }
         const context = ts_logic_framework_1.DynamicContextService.createContext({
             source,
