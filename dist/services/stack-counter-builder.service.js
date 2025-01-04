@@ -18,7 +18,7 @@ exports.StackCounterBuilderService = new (class StackCounterBuilderService {
         }
         return {
             ...counter,
-            persistent: configuration.persistent,
+            persistent: !!configuration.persistent,
         };
     }
 })();

@@ -1,5 +1,5 @@
 import { CounterDto } from '../counters/counter.dto';
 export type StackCounterDto = {
-    persistent: boolean;
+    persistent?: boolean;
 } & CounterDto;
 //# sourceMappingURL=stack-counter.dto.d.ts.map

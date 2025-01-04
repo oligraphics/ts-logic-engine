@@ -37,7 +37,7 @@ export const StackCounterBuilderService =
       }
       return {
         ...counter,
-        persistent: configuration.persistent,
+        persistent: !!configuration.persistent,
       };
     }
   })();
