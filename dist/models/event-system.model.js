@@ -85,6 +85,9 @@ class EventSystem {
             phaseListeners.set(trigger.id, trigger);
             eventListeners.set(trigger.phase, phaseListeners);
             this.listeners.set(trigger.event, eventListeners);
+            if (trigger.debug) {
+                console.debug('Attach trigger', trigger.event, '>', trigger.phase);
+            }
         }
     }
     detachTriggers(triggers) {
@@ -95,6 +98,9 @@ class EventSystem {
                 if (phaseListeners) {
                     phaseListeners.delete(trigger.id);
                 }
+            }
+            if (trigger.debug) {
+                console.debug('Detach trigger', trigger.event, '>', trigger.phase);
             }
         }
     }

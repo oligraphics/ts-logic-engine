@@ -17,13 +17,19 @@ export const ConditionActionHandler =
       context: TriggerContextDto<ConditionActionDto, ConditionActionStateDto>,
     ): Promise<boolean> {
       const { action } = context;
-      const { state, template, debug } = action;
+      const { state, actionId, debug } = action;
       const checkResult = ConditionService.testCondition(
         state.condition,
         context,
       );
       if (debug) {
-        console.debug('Condition check result', template.type, checkResult);
+        console.debug(
+          'Condition check result',
+          action.program.id,
+          '>',
+          actionId,
+          checkResult,
+        );
       }
       if (checkResult === true) {
         if (state.true) {
@@ -41,7 +47,7 @@ export const ConditionActionHandler =
       subActionReference: DynamicValue,
     ): Promise<boolean> {
       const { action } = context;
-      const { engine, program, template, debug } = action;
+      const { engine, program, action: template, debug } = action;
       const subActionId = LogicService.resolve<string>(
         subActionReference,
         context,

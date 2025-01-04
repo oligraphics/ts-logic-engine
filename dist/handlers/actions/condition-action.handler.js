@@ -6,10 +6,10 @@ const action_handler_1 = require("./action.handler");
 exports.ConditionActionHandler = new (class ConditionActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
         const { action } = context;
-        const { state, template, debug } = action;
+        const { state, actionId, debug } = action;
         const checkResult = ts_logic_framework_1.ConditionService.testCondition(state.condition, context);
         if (debug) {
-            console.debug('Condition check result', template.type, checkResult);
+            console.debug('Condition check result', action.program.id, '>', actionId, checkResult);
         }
         if (checkResult === true) {
             if (state.true) {
@@ -25,7 +25,7 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
     }
     async handleCase(context, subActionReference) {
         const { action } = context;
-        const { engine, program, template, debug } = action;
+        const { engine, program, action: template, debug } = action;
         const subActionId = ts_logic_framework_1.LogicService.resolve(subActionReference, context);
         if (!program) {
             console.error('Program missing in action', action);

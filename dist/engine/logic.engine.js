@@ -160,6 +160,9 @@ class LogicEngine {
         await handler.handle(trigger, event);
     }
     remove(action) {
+        if (action.debug) {
+            console.debug('Remove action', action.program.id, '>', action.actionId);
+        }
         const handler = this.actionHandlers[action.action.type];
         if (!handler) {
             throw new Error(`No action handler found for action of type ${action.type}\n${JSON.stringify(action, null, 2)}`);
@@ -167,6 +170,9 @@ class LogicEngine {
         handler.remove(action);
     }
     attachStack(action) {
+        if (action.debug) {
+            console.debug('Attach stack of action', action.program.id, '>', action.actionId);
+        }
         const stack = action.stacks;
         if (stack) {
             this.eventSystem.attachTriggers(stack.triggers);
@@ -174,6 +180,9 @@ class LogicEngine {
         this._listeningStackActions.set(action.id, action);
     }
     detachStack(action) {
+        if (action.debug) {
+            console.debug('Detach stack of action', action.program.id, '>', action.actionId);
+        }
         const stack = action.stacks;
         if (stack) {
             this.eventSystem.detachTriggers(stack.triggers);
@@ -181,12 +190,18 @@ class LogicEngine {
         this._listeningStackActions.delete(action.id);
     }
     attachTriggers(action) {
+        if (action.debug) {
+            console.debug('Attach triggers of action', action.program.id, '>', action.actionId);
+        }
         this._listeningActions.set(action.id, action);
         if (action.triggers) {
             this.eventSystem.attachTriggers(action.triggers);
         }
     }
     detachTriggers(action) {
+        if (action.debug) {
+            console.debug('Detach triggers of action', action.program.id, '>', action.actionId);
+        }
         this._listeningActions.delete(action.id);
         if (action.triggers) {
             this.eventSystem.detachTriggers(action.triggers);

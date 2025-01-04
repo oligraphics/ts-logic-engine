@@ -240,6 +240,9 @@ export class LogicEngine implements IActor {
   }
 
   remove(action: IActionInstance) {
+    if (action.debug) {
+      console.debug('Remove action', action.program.id, '>', action.actionId);
+    }
     const handler = this.actionHandlers[action.action.type];
     if (!handler) {
       throw new Error(
@@ -252,6 +255,14 @@ export class LogicEngine implements IActor {
   }
 
   attachStack(action: IActionInstance) {
+    if (action.debug) {
+      console.debug(
+        'Attach stack of action',
+        action.program.id,
+        '>',
+        action.actionId,
+      );
+    }
     const stack = action.stacks;
     if (stack) {
       this.eventSystem.attachTriggers(stack.triggers);
@@ -260,6 +271,14 @@ export class LogicEngine implements IActor {
   }
 
   detachStack(action: IActionInstance) {
+    if (action.debug) {
+      console.debug(
+        'Detach stack of action',
+        action.program.id,
+        '>',
+        action.actionId,
+      );
+    }
     const stack = action.stacks;
     if (stack) {
       this.eventSystem.detachTriggers(stack.triggers);
@@ -268,6 +287,14 @@ export class LogicEngine implements IActor {
   }
 
   attachTriggers(action: IActionInstance) {
+    if (action.debug) {
+      console.debug(
+        'Attach triggers of action',
+        action.program.id,
+        '>',
+        action.actionId,
+      );
+    }
     this._listeningActions.set(action.id, action);
     if (action.triggers) {
       this.eventSystem.attachTriggers(action.triggers);
@@ -275,6 +302,14 @@ export class LogicEngine implements IActor {
   }
 
   detachTriggers(action: IActionInstance) {
+    if (action.debug) {
+      console.debug(
+        'Detach triggers of action',
+        action.program.id,
+        '>',
+        action.actionId,
+      );
+    }
     this._listeningActions.delete(action.id);
     if (action.triggers) {
       this.eventSystem.detachTriggers(action.triggers);

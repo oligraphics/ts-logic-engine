@@ -19,4 +19,7 @@ const resolvers: { [actionType: string]: IActionHandler } = {
 };
 
 const engine = new LogicEngine(program, context, resolvers);
-engine.start();
+engine
+  .start()
+  .then(() => console.log('Done!'))
+  .catch(console.error);
