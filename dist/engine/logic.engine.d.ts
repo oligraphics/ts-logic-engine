@@ -4,13 +4,12 @@ import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { IActionContext } from '../interfaces/action-context.interface';
 import { IProgram } from '../interfaces/program.interface';
-import { CreateEngineContextDto } from '../dto/contexts/create-engine.context.dto';
+import { CreateEngineOptionsDto } from '../dto/options/create-engine-options.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
 import { EventDto } from '../dto/events/event.dto';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { IEventSource } from '../interfaces/event-source.interface';
-import { ITriggerHandler } from '../interfaces/trigger-handler.interface';
 export declare class LogicEngine implements IActor {
     private readonly context;
     private readonly program;
@@ -29,11 +28,7 @@ export declare class LogicEngine implements IActor {
         id: string;
         name: string;
     };
-    constructor(program: IProgram | undefined, context: CreateEngineContextDto, actionHandlers: {
-        [actionType: string]: IActionHandler;
-    }, triggerHandlers?: {
-        [triggerType: string]: ITriggerHandler;
-    });
+    constructor(program: IProgram | undefined, options: CreateEngineOptionsDto);
     start(): Promise<void>;
     stop(): void;
     getValue<T>(property: string, debug?: boolean): T;

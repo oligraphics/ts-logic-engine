@@ -6,26 +6,24 @@ import {
 } from '../../src';
 import { readFileSync } from 'fs';
 import { join } from 'node:path';
-import { DynamicContext, DynamicContextService } from 'ts-logic-framework';
-import { MessageEventDto } from '../../src/dto/events/message.event.dto';
-import { BuiltinEventTypeEnum } from '../../src/enums/builtin-event-type.enum';
-
-// You could add global properties here
-const context: DynamicContext = DynamicContextService.createContext({});
+import { MessageEventDto } from '../../src';
+import { BuiltinEventTypeEnum } from '../../src';
 
 // Load a program
 const program: IProgram = JSON.parse(
   readFileSync(join(__dirname, '../files/triggers.json')).toString('utf-8'),
 );
 
-// Create resolvers map
-const resolvers: { [actionType: string]: IActionHandler } = {
+// Create action handlers map
+const actionHandlers: { [actionType: string]: IActionHandler } = {
   ...BuiltinActionHandlers,
   // Add custom resolvers here
 };
 
 // Create the engine
-const engine = new LogicEngine(program, context, resolvers);
+const engine = new LogicEngine(program, {
+  actionHandlers,
+});
 // Demonstrate that you can listen to engine events from outside
 engine.bus.on(BuiltinEventTypeEnum.MESSAGE, (event) =>
   console.log(
@@ -36,4 +34,7 @@ engine.bus.on(BuiltinEventTypeEnum.MESSAGE, (event) =>
   ),
 );
 // Start the engine
-engine.start();
+engine
+  .start()
+  .then(() => console.log('Done!'))
+  .catch(console.error);

@@ -32,7 +32,7 @@ __exportStar(require("./dto/actions/repeat.action.dto"), exports);
 __exportStar(require("./dto/configurations/intercept-reaction.configuration.dto"), exports);
 __exportStar(require("./dto/contexts/action.context.dto"), exports);
 __exportStar(require("./dto/contexts/create-action.context.dto"), exports);
-__exportStar(require("./dto/contexts/create-engine.context.dto"), exports);
+__exportStar(require("./dto/options/create-engine-options.dto"), exports);
 __exportStar(require("./dto/contexts/engine.context.dto"), exports);
 __exportStar(require("./dto/contexts/program.context.dto"), exports);
 __exportStar(require("./dto/contexts/run-program.context.dto"), exports);

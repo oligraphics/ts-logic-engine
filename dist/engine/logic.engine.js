@@ -38,22 +38,27 @@ class LogicEngine {
             name: this.name,
         };
     }
-    constructor(program, context, actionHandlers, triggerHandlers) {
+    constructor(program, options) {
         this.context = {
-            engine: this,
-            actors: context.actors ?? [],
-            programs: context.programs ?? [],
+            ...(options.globalContext ?? {}),
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                engine: this,
+                actors: options.actors ?? [],
+                programs: options.programs ?? [],
+            }),
         };
         this.program = program;
-        this.actionHandlers = actionHandlers;
-        this.triggerHandlers = triggerHandlers ?? { ...builtin_trigger_handlers_interface_1.BuiltinTriggerHandlers };
+        this.actionHandlers = options.actionHandlers;
+        this.triggerHandlers = options.triggerHandlers ?? {
+            ...builtin_trigger_handlers_interface_1.BuiltinTriggerHandlers,
+        };
         this.eventSystem = new event_system_model_1.EventSystem(this);
     }
     async start() {
         this.bus.trigger('start');
         if (this.program) {
             await this.tryRun({
-                ...this.context,
+                engine: this,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     program: this.program,
                     actionId: this.program.main ?? 'main',
@@ -90,7 +95,10 @@ class LogicEngine {
             program: context.program,
             initiator: context.initiator,
             source: context.source,
-        }, () => this.run(context), context.program.debug);
+        }, () => this.run({
+            ...this.context,
+            ...context,
+        }), context.program.debug);
     }
     async run(context) {
         const action = context.program.actions[context.actionId];

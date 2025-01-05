@@ -1,24 +1,29 @@
 import {
   BuiltinActionHandlers,
+  BuiltinEventTypeEnum,
   IActionHandler,
   IProgram,
   LogicEngine,
+  MessageEventDto,
 } from '../../src';
 import { readFileSync } from 'fs';
 import { join } from 'node:path';
-import { DynamicContext } from 'ts-logic-framework';
-
-const context: DynamicContext = {};
 
 const program: IProgram = JSON.parse(
   readFileSync(join(__dirname, '../files/hello-world.json')).toString('utf-8'),
 );
 
-const resolvers: { [actionType: string]: IActionHandler } = {
+const actionHandlers: { [actionType: string]: IActionHandler } = {
   ...BuiltinActionHandlers,
 };
 
-const engine = new LogicEngine(program, context, resolvers);
+const engine = new LogicEngine(program, {
+  actionHandlers,
+});
+engine.bus.on(
+  BuiltinEventTypeEnum.MESSAGE,
+  (event: MessageEventDto | undefined) => console.log(event?.message),
+);
 engine
   .start()
   .then(() => console.log('Done!'))

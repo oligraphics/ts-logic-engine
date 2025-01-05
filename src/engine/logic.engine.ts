@@ -7,7 +7,7 @@ import { ICreateActionContext } from '../interfaces/create-action-context.interf
 import { IActionContext } from '../interfaces/action-context.interface';
 import { IProgram } from '../interfaces/program.interface';
 import { IEngineContext } from '../interfaces/engine-context.interface';
-import { CreateEngineContextDto } from '../dto/contexts/create-engine.context.dto';
+import { CreateEngineOptionsDto } from '../dto/options/create-engine-options.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
 import { DynamicContextService } from 'ts-logic-framework';
@@ -63,20 +63,20 @@ export class LogicEngine implements IActor {
     };
   }
 
-  constructor(
-    program: IProgram | undefined,
-    context: CreateEngineContextDto,
-    actionHandlers: { [actionType: string]: IActionHandler },
-    triggerHandlers?: { [triggerType: string]: ITriggerHandler },
-  ) {
+  constructor(program: IProgram | undefined, options: CreateEngineOptionsDto) {
     this.context = {
-      engine: this,
-      actors: context.actors ?? [],
-      programs: context.programs ?? [],
+      ...(options.globalContext ?? {}),
+      ...DynamicContextService.createContext({
+        engine: this,
+        actors: options.actors ?? [],
+        programs: options.programs ?? [],
+      }),
     };
     this.program = program;
-    this.actionHandlers = actionHandlers;
-    this.triggerHandlers = triggerHandlers ?? { ...BuiltinTriggerHandlers };
+    this.actionHandlers = options.actionHandlers;
+    this.triggerHandlers = options.triggerHandlers ?? {
+      ...BuiltinTriggerHandlers,
+    };
     this.eventSystem = new EventSystem(this);
   }
 
@@ -84,7 +84,7 @@ export class LogicEngine implements IActor {
     this.bus.trigger('start');
     if (this.program) {
       await this.tryRun({
-        ...this.context,
+        engine: this,
         ...DynamicContextService.createContext({
           program: this.program,
           actionId: this.program.main ?? 'main',
@@ -131,7 +131,11 @@ export class LogicEngine implements IActor {
         initiator: context.initiator,
         source: context.source,
       },
-      () => this.run(context),
+      () =>
+        this.run({
+          ...this.context,
+          ...context,
+        }),
       context.program.debug,
     );
   }

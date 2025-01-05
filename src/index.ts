@@ -20,7 +20,7 @@ export * from './dto/configurations/intercept-reaction.configuration.dto';
 
 export * from './dto/contexts/action.context.dto';
 export * from './dto/contexts/create-action.context.dto';
-export * from './dto/contexts/create-engine.context.dto';
+export * from './dto/options/create-engine-options.dto';
 export * from './dto/contexts/engine.context.dto';
 export * from './dto/contexts/program.context.dto';
 export * from './dto/contexts/run-program.context.dto';
