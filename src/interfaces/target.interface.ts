@@ -1,5 +1,3 @@
-import { IQueryable } from './queryable.interface';
-
-export interface ITargetable extends IQueryable {
-  get allowTargeting(): boolean;
+export interface ITargetable {
+  allowTargeting?: boolean;
 }
