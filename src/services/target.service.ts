@@ -10,9 +10,11 @@ export const TargetService = new (class TargetService {
     const result = LogicService.resolve(value, context, debug);
     if (Array.isArray(result)) {
       return result
-        .filter((t) => (t as ITargetable)?.allowTargeting)
+        .filter((t) => (t as ITargetable)?.allowTargeting !== false)
         .map((t) => t as ITargetable);
     }
-    return (result as ITargetable)?.allowTargeting ? [<ITargetable>result] : [];
+    return (result as ITargetable)?.allowTargeting !== false
+      ? [<ITargetable>result]
+      : [];
   }
 })();

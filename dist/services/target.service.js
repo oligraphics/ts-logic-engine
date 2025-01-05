@@ -7,10 +7,12 @@ exports.TargetService = new (class TargetService {
         const result = ts_logic_framework_1.LogicService.resolve(value, context, debug);
         if (Array.isArray(result)) {
             return result
-                .filter((t) => t?.allowTargeting)
+                .filter((t) => t?.allowTargeting !== false)
                 .map((t) => t);
         }
-        return result?.allowTargeting ? [result] : [];
+        return result?.allowTargeting !== false
+            ? [result]
+            : [];
     }
 })();
 //# sourceMappingURL=target.service.js.map
