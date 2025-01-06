@@ -1,3 +1,3 @@
-export interface ITargetable {
+export type ITargetable = {
   allowTargeting?: boolean;
-}
+};

@@ -1,0 +1,1 @@
+{"version":3,"file":"group-target.model.js","sourceRoot":"src/","sources":["models/group-target.model.ts"],"names":[],"mappings":";;;AAEA,MAAa,WAAW;IACb,OAAO,CAAgB;IAEhC,IAAI,cAAc;QAChB,OAAO,IAAI,CAAC,OAAO,CAAC,IAAI,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,cAAc,CAAC,CAAC;IACpD,CAAC;IAED,YAAY,OAAsB;QAChC,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IACzB,CAAC;CACF;AAVD,kCAUC"}

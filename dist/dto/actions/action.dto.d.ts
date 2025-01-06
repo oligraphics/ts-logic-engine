@@ -12,6 +12,7 @@ export type ActionDto = {
         [key: string]: DynamicValue;
     };
     target?: DynamicValue;
+    targets?: DynamicValue;
     triggers?: ActionTriggerDto[];
     apply: ActionStateDto;
     stacks?: StackCounterDto;

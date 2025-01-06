@@ -10,7 +10,7 @@ import { IEngineContext } from '../interfaces/engine-context.interface';
 import { CreateEngineOptionsDto } from '../dto/options/create-engine-options.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
-import { DynamicContextService } from 'ts-logic-framework';
+import { DynamicContext, DynamicContextService } from 'ts-logic-framework';
 import { TargetService } from '../services/target.service';
 import { ITargetable } from '../interfaces/target.interface';
 import { EventDto } from '../dto/events/event.dto';
@@ -152,18 +152,19 @@ export class LogicEngine implements IActor {
         ...Object.keys(context.program.actions),
       );
     }
-    const targets: ITargetable[] = action.target
-      ? TargetService.resolveTargets(
-          action.target,
-          {
-            ...context,
-            ...DynamicContextService.createContext({
-              action,
-            }),
-          },
-          context.program.debug || action.debug,
-        )
-      : [context.source];
+    const actionContext = {
+      ...context,
+      ...DynamicContextService.createContext({
+        action,
+        ...(action.properties ?? {}),
+        ...(action.computed ?? {}),
+      }),
+    };
+    const targets: ITargetable[] = TargetService.resolveTargets(
+      action,
+      actionContext,
+      context.program.debug || action.debug,
+    ) ?? [context.source];
     if (targets.length === 0) {
       if (context.program.debug) {
         console.error(
@@ -178,10 +179,9 @@ export class LogicEngine implements IActor {
     }
     for (const target of targets) {
       await this.apply({
-        ...context,
+        ...actionContext,
         ...DynamicContextService.createContext({
           target,
-          action,
         }),
       });
     }
@@ -199,10 +199,6 @@ export class LogicEngine implements IActor {
     }
     const createContext: ICreateActionContext = {
       ...context,
-      ...DynamicContextService.createContext({
-        ...(context.action.properties ?? {}),
-        ...(context.action.computed ?? {}),
-      }),
     };
     const instance: IActionInstance = ActionBuilderService.build(createContext);
     return this.callEvent(

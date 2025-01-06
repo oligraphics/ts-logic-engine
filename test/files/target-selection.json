@@ -1,0 +1,42 @@
+{
+  "id": "test:target-selection",
+  "actions": {
+  "main": {
+    "type": "message",
+    "properties": {
+      "items": [
+        {
+          "id": "apple",
+          "shape": "round"
+        },
+        {
+          "id": "orange",
+          "shape": "round"
+        },
+        {
+          "id": "banana",
+          "shape": "curved"
+        }
+      ]
+    },
+    "computed": {
+      "targets": {
+        "select": {
+          "from": "{items}",
+          "where": {
+            "if": {
+              "type": "equal",
+              "value": "{value.shape}",
+              "equals": "round"
+            }
+          }
+        }
+      }
+    },
+    "target": "{targets}",
+    "apply": {
+      "message": "{target.targets}"
+    }
+  }
+}
+  }

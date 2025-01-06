@@ -105,14 +105,15 @@ class LogicEngine {
         if (!action) {
             console.error('Action', context.actionId, 'not found in program', context.program.id, '. Available:', ...Object.keys(context.program.actions));
         }
-        const targets = action.target
-            ? target_service_1.TargetService.resolveTargets(action.target, {
-                ...context,
-                ...ts_logic_framework_1.DynamicContextService.createContext({
-                    action,
-                }),
-            }, context.program.debug || action.debug)
-            : [context.source];
+        const actionContext = {
+            ...context,
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                action,
+                ...(action.properties ?? {}),
+                ...(action.computed ?? {}),
+            }),
+        };
+        const targets = target_service_1.TargetService.resolveTargets(action, actionContext, context.program.debug || action.debug) ?? [context.source];
         if (targets.length === 0) {
             if (context.program.debug) {
                 console.error('Action', context.actionId, 'in program', context.program.id, 'provided no valid target.');
@@ -121,10 +122,9 @@ class LogicEngine {
         }
         for (const target of targets) {
             await this.apply({
-                ...context,
+                ...actionContext,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     target,
-                    action,
                 }),
             });
         }
@@ -137,10 +137,6 @@ class LogicEngine {
         }
         const createContext = {
             ...context,
-            ...ts_logic_framework_1.DynamicContextService.createContext({
-                ...(context.action.properties ?? {}),
-                ...(context.action.computed ?? {}),
-            }),
         };
         const instance = action_builder_service_1.ActionBuilderService.build(createContext);
         return this.callEvent(context.source, {

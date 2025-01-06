@@ -9,6 +9,7 @@ export type ActionDto = {
   properties?: { [key: string]: DynamicValue };
   computed?: { [key: string]: DynamicValue };
   target?: DynamicValue;
+  targets?: DynamicValue;
   triggers?: ActionTriggerDto[];
   apply: ActionStateDto;
   stacks?: StackCounterDto;
