@@ -15,10 +15,16 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
             if (state.true) {
                 return await this.handleCase(context, state.true);
             }
+            else if (debug) {
+                console.debug('Condition action provides no true case', state);
+            }
         }
         else {
             if (state.false) {
                 return await this.handleCase(context, state.false);
+            }
+            else if (debug) {
+                console.debug('Condition action provides no false case', state);
             }
         }
         return true;
