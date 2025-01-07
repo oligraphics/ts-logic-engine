@@ -36,8 +36,10 @@ export abstract class ActionHandler<
     if ((context.action.triggers?.length ?? 0) > 0) {
       context.action.engine.attachTriggers(context.action);
       return true;
-    } else {
+    } else if (!context.action.stacks) {
       return this.trigger(context);
+    } else {
+      return true;
     }
   }
   async trigger(

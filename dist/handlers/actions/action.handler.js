@@ -23,8 +23,11 @@ class ActionHandler {
             context.action.engine.attachTriggers(context.action);
             return true;
         }
-        else {
+        else if (!context.action.stacks) {
             return this.trigger(context);
+        }
+        else {
+            return true;
         }
     }
     async trigger(context) {
