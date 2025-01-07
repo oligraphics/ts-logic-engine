@@ -12,6 +12,14 @@
     },
     "listener": {
       "type": "intercept",
+      "computed": {
+        "condition": {
+          "program": {
+            "id": "test:triggers"
+          },
+          "actionId": "trigger"
+        }
+      },
       "triggers": [
         {
           "event": "message",
@@ -19,12 +27,7 @@
           "filter": {
             "type": "equal",
             "value": "{event.action}",
-            "equals": {
-              "program": {
-                "id": "test:triggers"
-              },
-              "actionId": "trigger"
-            }
+            "equals": "{condition}"
           },
           "reaction": "send"
         }

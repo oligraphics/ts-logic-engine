@@ -98,13 +98,7 @@ class LogicEngine {
             params: context.params,
         }, () => this.run({
             ...this.context,
-            ...ts_logic_framework_1.DynamicContextService.createContext({
-                engine: context.engine,
-                initiator: context.initiator,
-                source: context.source,
-                program: context.program,
-                actionId: context.actionId,
-            }, context.params ?? {}),
+            ...context,
         }), context.program.debug);
     }
     async run(context) {
@@ -113,12 +107,16 @@ class LogicEngine {
             console.error('Action', context.actionId, 'not found in program', context.program.id, '. Available:', ...Object.keys(context.program.actions));
         }
         const actionContext = {
-            ...context,
             ...ts_logic_framework_1.DynamicContextService.createContext({
+                engine: context.engine,
+                initiator: context.initiator,
+                source: context.source,
+                program: context.program,
+                actionId: context.actionId,
                 action,
                 ...(action.properties ?? {}),
                 ...(action.computed ?? {}),
-            }),
+            }, context.params ?? {}),
         };
         const targets = target_service_1.TargetService.resolveTargets(action, actionContext, context.program.debug || action.debug) ?? [context.source];
         if (targets.length === 0) {
@@ -129,6 +127,7 @@ class LogicEngine {
         }
         for (const target of targets) {
             await this.apply({
+                params: context.params ?? {},
                 ...actionContext,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     target,
@@ -142,17 +141,14 @@ class LogicEngine {
         if (!resolver) {
             throw new Error(`No action handler found for action of type ${context.action.type}\n${JSON.stringify(context.action, null, 2)}`);
         }
-        const createContext = {
-            ...context,
-        };
-        const instance = action_builder_service_1.ActionBuilderService.build(createContext);
+        const instance = action_builder_service_1.ActionBuilderService.build(context, { ...context.action.properties, ...context.action.computed }, context.params);
         return this.callEvent(context.source, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.ACTION,
             action: instance,
             cancelable: true,
         }, () => {
             return resolver.apply({
-                ...createContext,
+                ...context,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     engine: this,
                     action: instance,
@@ -176,7 +172,7 @@ class LogicEngine {
         }
         const handler = this.actionHandlers[action.action.type];
         if (!handler) {
-            throw new Error(`No action handler found for action of type ${action.type}\n${JSON.stringify(action, null, 2)}`);
+            throw new Error(`No action handler found for action of type ${action.action.type}\n${JSON.stringify(action, null, 2)}`);
         }
         handler.remove(action);
     }

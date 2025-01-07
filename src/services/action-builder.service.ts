@@ -2,13 +2,19 @@ import { IActionInstance } from '../interfaces/action-instance.interface';
 import { ICreateActionContext } from '../interfaces/create-action-context.interface';
 import { ActionTriggerBuilderService } from './action-trigger-builder.service';
 import { StackCounterBuilderService } from './stack-counter-builder.service';
-import { IdService } from 'ts-logic-framework';
+import { DynamicContextService, IdService } from 'ts-logic-framework';
 
 export const ActionBuilderService = new (class ActionBuilderService {
-  build(context: ICreateActionContext): IActionInstance {
+  build(
+    context: ICreateActionContext,
+    properties: { [key: string]: unknown },
+    variables: { [key: string]: unknown },
+  ): IActionInstance {
     const id = IdService.createRandomId();
     const { action } = context;
     const result: IActionInstance = {
+      ...DynamicContextService.createContext(properties, variables),
+      params: variables,
       id,
       engine: context.engine,
       program: context.program,

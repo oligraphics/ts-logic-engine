@@ -153,16 +153,23 @@ export class EventSystem {
     for (const listener of phaseListeners.values()) {
       let filterResult: true | Condition;
       if (listener.filter) {
-        const filterContext: DynamicContext = listener.action.context
+        const filterContext: DynamicContext = listener.action
           ? {
-              ...listener.action.context,
+              ...listener.action,
               ...context,
             }
           : context;
+        if (listener.debug) {
+          console.log(
+            'Action context keys:',
+            Object.keys(listener.action ?? {}),
+          );
+          console.log('Listener context keys:', Object.keys(filterContext));
+        }
         filterResult = ConditionService.testCondition(
           listener.filter,
           filterContext,
-          listener.debug,
+          // listener.debug,
         );
       } else {
         filterResult = true;

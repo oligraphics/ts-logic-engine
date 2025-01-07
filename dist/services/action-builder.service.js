@@ -5,10 +5,12 @@ const action_trigger_builder_service_1 = require("./action-trigger-builder.servi
 const stack_counter_builder_service_1 = require("./stack-counter-builder.service");
 const ts_logic_framework_1 = require("ts-logic-framework");
 exports.ActionBuilderService = new (class ActionBuilderService {
-    build(context) {
+    build(context, properties, variables) {
         const id = ts_logic_framework_1.IdService.createRandomId();
         const { action } = context;
         const result = {
+            ...ts_logic_framework_1.DynamicContextService.createContext(properties, variables),
+            params: variables,
             id,
             engine: context.engine,
             program: context.program,

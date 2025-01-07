@@ -79,13 +79,17 @@ class EventSystem {
         for (const listener of phaseListeners.values()) {
             let filterResult;
             if (listener.filter) {
-                const filterContext = listener.action.context
+                const filterContext = listener.action
                     ? {
-                        ...listener.action.context,
+                        ...listener.action,
                         ...context,
                     }
                     : context;
-                filterResult = ts_logic_framework_1.ConditionService.testCondition(listener.filter, filterContext, listener.debug);
+                if (listener.debug) {
+                    console.log('Action context keys:', Object.keys(listener.action ?? {}));
+                    console.log('Listener context keys:', Object.keys(filterContext));
+                }
+                filterResult = ts_logic_framework_1.ConditionService.testCondition(listener.filter, filterContext);
             }
             else {
                 filterResult = true;

@@ -82,7 +82,6 @@ export * from './interfaces/trigger-handler.interface';
 export * from './interfaces/trigger-instance.interface';
 
 export * from './services/action-builder.service';
-export * from './services/action-context.service';
 export * from './services/action-trigger-builder.service';
 export * from './services/counter-builder.service';
 export * from './services/counter-method.service';

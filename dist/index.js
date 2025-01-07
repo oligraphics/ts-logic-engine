@@ -82,7 +82,6 @@ __exportStar(require("./interfaces/trigger-context.interface"), exports);
 __exportStar(require("./interfaces/trigger-handler.interface"), exports);
 __exportStar(require("./interfaces/trigger-instance.interface"), exports);
 __exportStar(require("./services/action-builder.service"), exports);
-__exportStar(require("./services/action-context.service"), exports);
 __exportStar(require("./services/action-trigger-builder.service"), exports);
 __exportStar(require("./services/counter-builder.service"), exports);
 __exportStar(require("./services/counter-method.service"), exports);

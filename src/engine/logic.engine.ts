@@ -135,16 +135,7 @@ export class LogicEngine implements IActor {
       () =>
         this.run({
           ...this.context,
-          ...DynamicContextService.createContext(
-            {
-              engine: context.engine,
-              initiator: context.initiator,
-              source: context.source,
-              program: context.program,
-              actionId: context.actionId,
-            },
-            context.params ?? {},
-          ),
+          ...context,
         }),
       context.program.debug,
     );
@@ -163,12 +154,19 @@ export class LogicEngine implements IActor {
       );
     }
     const actionContext = {
-      ...context,
-      ...DynamicContextService.createContext({
-        action,
-        ...(action.properties ?? {}),
-        ...(action.computed ?? {}),
-      }),
+      ...DynamicContextService.createContext(
+        {
+          engine: context.engine,
+          initiator: context.initiator,
+          source: context.source,
+          program: context.program,
+          actionId: context.actionId,
+          action,
+          ...(action.properties ?? {}),
+          ...(action.computed ?? {}),
+        },
+        context.params ?? {},
+      ),
     };
     const targets: ITargetable[] = TargetService.resolveTargets(
       action,
@@ -189,6 +187,7 @@ export class LogicEngine implements IActor {
     }
     for (const target of targets) {
       await this.apply({
+        params: context.params ?? {},
         ...actionContext,
         ...DynamicContextService.createContext({
           target,
@@ -207,10 +206,11 @@ export class LogicEngine implements IActor {
         }\n${JSON.stringify(context.action, null, 2)}`,
       );
     }
-    const createContext: ICreateActionContext = {
-      ...context,
-    };
-    const instance: IActionInstance = ActionBuilderService.build(createContext);
+    const instance: IActionInstance = ActionBuilderService.build(
+      context,
+      { ...context.action.properties, ...context.action.computed },
+      context.params,
+    );
     return this.callEvent(
       context.source,
       <ActionEventDto>{
@@ -220,7 +220,7 @@ export class LogicEngine implements IActor {
       },
       () => {
         return resolver.apply({
-          ...createContext,
+          ...context,
           ...DynamicContextService.createContext({
             engine: this,
             action: instance,
@@ -260,7 +260,7 @@ export class LogicEngine implements IActor {
     if (!handler) {
       throw new Error(
         `No action handler found for action of type ${
-          action.type
+          action.action.type
         }\n${JSON.stringify(action, null, 2)}`,
       );
     }

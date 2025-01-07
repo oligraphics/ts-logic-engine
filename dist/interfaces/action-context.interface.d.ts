@@ -15,5 +15,11 @@ export type IActionContext = {
      * The target of the action
      */
     get target(): ITargetable;
+    /**
+     * Action params
+     */
+    get params(): {
+        [key: string]: unknown;
+    };
 } & IProgramContext;
 //# sourceMappingURL=action-context.interface.d.ts.map
