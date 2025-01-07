@@ -5,11 +5,7 @@ const ts_logic_framework_1 = require("ts-logic-framework");
 const counter_trigger_builder_service_1 = require("./counter-trigger-builder.service");
 exports.CounterBuilderService = new (class CounterBuilderService {
     build(configuration, triggerType, defaultMethod, defaultAmount, action) {
-        const value = ts_logic_framework_1.LogicService.resolve(configuration.value, action);
-        if (value === undefined || Number.isNaN(value)) {
-            throw new Error('Counter value must be a valid number. ' +
-                JSON.stringify(configuration));
-        }
+        const value = ts_logic_framework_1.LogicService.resolve(configuration.value, action) ?? 0;
         return {
             action,
             triggers: configuration.triggers

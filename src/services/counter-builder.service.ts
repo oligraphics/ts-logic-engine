@@ -13,13 +13,8 @@ export const CounterBuilderService = new (class CounterBuilderService {
     defaultAmount: number,
     action: IActionInstance,
   ): ICounterInstance {
-    const value = LogicService.resolve<number>(configuration.value, action);
-    if (value === undefined || Number.isNaN(value)) {
-      throw new Error(
-        'Counter value must be a valid number. ' +
-          JSON.stringify(configuration),
-      );
-    }
+    const value =
+      LogicService.resolve<number>(configuration.value, action) ?? 0;
     return {
       action,
       triggers: configuration.triggers
