@@ -5,8 +5,9 @@ import { IStackCounterInstance } from '../interfaces/stack-counter-instance.inte
 import { BuiltinTriggerTypeEnum } from '../enums/builtin-trigger-type.enum';
 import { StackCounterDto } from '../dto/stacks/stack-counter.dto';
 import { CounterTriggerBuilderService } from './counter-trigger-builder.service';
-import { EventPhaseEnum } from '../enums/event-phase.enum';
+import { TriggerDto } from '../dto/triggers/trigger.dto';
 import { BuiltinEventTypeEnum } from '../enums/builtin-event-type.enum';
+import { EventPhaseEnum } from '../enums/event-phase.enum';
 
 export const StackCounterBuilderService =
   new (class StackCounterBuilderService {
@@ -21,7 +22,17 @@ export const StackCounterBuilderService =
         1,
         action,
       );
-      if (counter.triggers.length === 0) {
+      if (configuration.event) {
+        counter.triggers.push(
+          CounterTriggerBuilderService.build(
+            configuration as TriggerDto,
+            BuiltinTriggerTypeEnum.COUNTER,
+            CounterMethodEnum.REDUCE,
+            1,
+            action,
+          ),
+        );
+      } else if (counter.triggers.length === 0) {
         counter.triggers.push(
           CounterTriggerBuilderService.build(
             {
