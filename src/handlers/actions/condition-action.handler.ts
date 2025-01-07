@@ -3,8 +3,14 @@ import {
   ConditionActionStateDto,
 } from '../../dto/actions/condition.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
-import { ConditionService, Computable, LogicService } from 'ts-logic-framework';
+import {
+  ConditionService,
+  Computable,
+  LogicService,
+  DynamicContextService,
+} from 'ts-logic-framework';
 import { ActionHandler } from './action.handler';
+import { ParamsService } from '../../services/params.service';
 
 export const ConditionActionHandler =
   new (class ConditionActionHandler extends ActionHandler<
@@ -77,10 +83,24 @@ export const ConditionActionHandler =
         }
         return false;
       }
+      if (debug) {
+        console.debug('Run', subActionId);
+      }
+      const params = action.state.params
+        ? ParamsService.resolve(action.state.params, context.action)
+        : {};
       return await engine.tryRun({
-        ...context.action,
-        actionId: subActionId,
-        debug: debug || subAction.debug,
+        ...DynamicContextService.createContext(
+          {
+            engine: context.action.engine,
+            program: context.action.program,
+            initiator: context.action.initiator,
+            source: context.action.source,
+            actionId: subActionId,
+            debug: debug || subAction.debug,
+          },
+          params,
+        ),
       });
     }
   })();

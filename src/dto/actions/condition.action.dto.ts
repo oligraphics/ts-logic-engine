@@ -6,6 +6,7 @@ export type ConditionActionStateDto = {
   condition: Condition;
   true?: Computable<string>;
   false?: Computable<string>;
+  params?: { [key: string]: Computable<unknown> };
 } & ActionStateDto;
 
 export type ConditionActionDto = {

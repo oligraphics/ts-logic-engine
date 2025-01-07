@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConditionActionHandler = void 0;
 const ts_logic_framework_1 = require("ts-logic-framework");
 const action_handler_1 = require("./action.handler");
+const params_service_1 = require("../../services/params.service");
 exports.ConditionActionHandler = new (class ConditionActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
         const { action } = context;
@@ -56,10 +57,21 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
             }
             return false;
         }
+        if (debug) {
+            console.debug('Run', subActionId);
+        }
+        const params = action.state.params
+            ? params_service_1.ParamsService.resolve(action.state.params, context.action)
+            : {};
         return await engine.tryRun({
-            ...context.action,
-            actionId: subActionId,
-            debug: debug || subAction.debug,
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                engine: context.action.engine,
+                program: context.action.program,
+                initiator: context.action.initiator,
+                source: context.action.source,
+                actionId: subActionId,
+                debug: debug || subAction.debug,
+            }, params),
         });
     }
 })();

@@ -7,6 +7,7 @@ import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { DynamicContextService, LogicService } from 'ts-logic-framework';
 import { RepeatActionEventDto } from '../../dto/events/repeat-action.event.dto';
 import { BuiltinEventTypeEnum } from '../../enums/builtin-event-type.enum';
+import { ParamsService } from '../../services/params.service';
 
 export const RepeatActionHandler =
   new (class RepeatActionHandler extends ActionHandler<
@@ -46,17 +47,12 @@ export const RepeatActionHandler =
         event,
         async (event) => {
           for (let i = 0; i < event.repeat; i++) {
-            const params = Object.fromEntries(
-              Object.entries(event.params).map(([key, value]) => [
-                key,
-                LogicService.resolve(value, {
-                  ...context,
-                  ...DynamicContextService.createContext({
-                    iteration: i,
-                  }),
-                }),
-              ]),
-            );
+            const params = ParamsService.resolve(event.params, {
+              ...context,
+              ...DynamicContextService.createContext({
+                iteration: i,
+              }),
+            });
             await context.action.engine.tryRun({
               engine: context.action.engine,
               program: context.action.program,

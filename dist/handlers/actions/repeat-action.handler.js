@@ -4,6 +4,7 @@ exports.RepeatActionHandler = void 0;
 const action_handler_1 = require("./action.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
 const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum");
+const params_service_1 = require("../../services/params.service");
 exports.RepeatActionHandler = new (class RepeatActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
         const repeat = ts_logic_framework_1.LogicService.resolve(context.action.state.repeat, context) ?? 0;
@@ -28,15 +29,12 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
         };
         return await context.action.engine.callEvent(context.action.source, event, async (event) => {
             for (let i = 0; i < event.repeat; i++) {
-                const params = Object.fromEntries(Object.entries(event.params).map(([key, value]) => [
-                    key,
-                    ts_logic_framework_1.LogicService.resolve(value, {
-                        ...context,
-                        ...ts_logic_framework_1.DynamicContextService.createContext({
-                            iteration: i,
-                        }),
+                const params = params_service_1.ParamsService.resolve(event.params, {
+                    ...context,
+                    ...ts_logic_framework_1.DynamicContextService.createContext({
+                        iteration: i,
                     }),
-                ]));
+                });
                 await context.action.engine.tryRun({
                     engine: context.action.engine,
                     program: context.action.program,
