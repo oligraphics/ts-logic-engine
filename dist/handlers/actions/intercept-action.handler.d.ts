@@ -1,5 +1,4 @@
-import { InterceptActionDto } from '../../dto/actions/intercept.action.dto';
-import { InterceptActionStateDto } from '../../dto/action-states/intercept-action.state.dto';
+import { InterceptActionDto, InterceptActionStateDto } from '../../dto/actions/intercept.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { EventDto } from '../../dto/events/event.dto';
 export declare const InterceptActionHandler: {

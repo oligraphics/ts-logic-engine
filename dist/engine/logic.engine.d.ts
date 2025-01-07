@@ -1,5 +1,4 @@
 import { EventBus } from 'ts-event-bus';
-import { ActionStateDto } from '../dto/action-states/action.state.dto';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { IActionContext } from '../interfaces/action-context.interface';
@@ -10,6 +9,7 @@ import { IActor } from '../interfaces/actor.interface';
 import { EventDto } from '../dto/events/event.dto';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { IEventSource } from '../interfaces/event-source.interface';
+import { ActionStateDto } from '../dto/actions/action.dto';
 export declare class LogicEngine implements IActor {
     private readonly context;
     private readonly program;

@@ -1,11 +1,11 @@
-import { DynamicValue } from 'ts-logic-framework';
+import { Computable } from 'ts-logic-framework';
 export type InterceptReactionConfigurationDto = {
     change?: {
-        [property: string]: DynamicValue;
+        [property: string]: Computable<unknown>;
     };
     params?: {
-        [key: string]: DynamicValue;
+        [key: string]: Computable<unknown>;
     };
-    action?: DynamicValue;
+    action?: Computable<string>;
 };
 //# sourceMappingURL=intercept-reaction.configuration.dto.d.ts.map

@@ -1,5 +1,4 @@
-import { CompoundActionDto } from '../../dto/actions/compound.action.dto';
-import { CompoundActionStateDto } from '../../dto/action-states/compound-action.state.dto';
+import { CompoundActionDto, CompoundActionStateDto } from '../../dto/actions/compound.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 export declare const CompoundActionHandler: {
     tryRun(context: TriggerContextDto<CompoundActionDto, CompoundActionStateDto>): Promise<boolean>;

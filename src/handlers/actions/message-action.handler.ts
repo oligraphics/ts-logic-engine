@@ -1,5 +1,7 @@
-import { MessageActionDto } from '../../dto/actions/message.action.dto';
-import { MessageActionStateDto } from '../../dto/action-states/message-action.state.dto';
+import {
+  MessageActionDto,
+  MessageActionStateDto,
+} from '../../dto/actions/message.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { LogicService } from 'ts-logic-framework';
 import { ActionHandler } from './action.handler';
@@ -31,11 +33,12 @@ export const MessageActionHandler =
       const variables: { [key: string]: string } = {};
       if (state.variables) {
         for (const [key, valueBuilder] of Object.entries(state.variables)) {
-          variables[key] = LogicService.resolve(valueBuilder, context, debug);
+          variables[key] =
+            LogicService.resolve(valueBuilder, context, debug) ?? '';
         }
       }
 
-      const data: { [key: string]: string } = {};
+      const data: { [key: string]: string | undefined } = {};
       if (state.data) {
         for (const [key, valueBuilder] of Object.entries(state.data)) {
           data[key] = LogicService.resolve(valueBuilder, context, debug);

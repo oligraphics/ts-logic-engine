@@ -1,6 +1,5 @@
 import { CounterInstanceDto } from './counter.instance.dto';
-import { ActionDto } from '../actions/action.dto';
-import { ActionStateDto } from '../action-states/action.state.dto';
+import { ActionDto, ActionStateDto } from '../actions/action.dto';
 
 export type StackCounterInstanceDto<
   TAction extends ActionDto,

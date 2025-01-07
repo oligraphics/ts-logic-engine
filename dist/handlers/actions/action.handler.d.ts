@@ -3,8 +3,7 @@ import { EventPhaseEnum } from '../../enums/event-phase.enum';
 import { StatusStateDto } from '../../dto/states/status.state.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { IActionHandler } from '../../interfaces/action-handler.interface';
-import { ActionDto } from '../../dto/actions/action.dto';
-import { ActionStateDto } from '../../dto/action-states/action.state.dto';
+import { ActionDto, ActionStateDto } from '../../dto/actions/action.dto';
 import { ActionInstanceDto } from '../../dto/instances/action.instance.dto';
 export declare abstract class ActionHandler<TAction extends ActionDto, TActionState extends ActionStateDto> implements IActionHandler {
     apply(context: TriggerContextDto<TAction, TActionState>): Promise<boolean>;

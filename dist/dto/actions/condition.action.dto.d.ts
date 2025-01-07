@@ -1,6 +1,11 @@
-import { ActionDto } from './action.dto';
+import { ActionDto, ActionStateDto } from './action.dto';
 import { BuiltinActionTypeEnum } from '../../enums/builtin-action-type.enum';
-import { ConditionActionStateDto } from '../action-states/condition-action.state.dto';
+import { Condition, Computable } from 'ts-logic-framework';
+export type ConditionActionStateDto = {
+    condition: Condition;
+    true?: Computable<string>;
+    false?: Computable<string>;
+} & ActionStateDto;
 export type ConditionActionDto = {
     type: BuiltinActionTypeEnum.CONDITION;
     apply: ConditionActionStateDto;

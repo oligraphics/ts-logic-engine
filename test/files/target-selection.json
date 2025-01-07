@@ -24,11 +24,9 @@
         "select": {
           "from": "{items}",
           "where": {
-            "if": {
-              "type": "equal",
-              "value": "{value.shape}",
-              "equals": "round"
-            }
+            "type": "equal",
+            "value": "{value.shape}",
+            "equals": "round"
           }
         }
       }

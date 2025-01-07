@@ -1,19 +1,21 @@
-import { ActionStateDto } from '../action-states/action.state.dto';
 import { ActionTriggerDto } from '../triggers/action.trigger.dto';
-import { DynamicValue } from 'ts-logic-framework';
+import { Computable } from 'ts-logic-framework';
 import { StackCounterDto } from '../stacks/stack-counter.dto';
+import { ITargetable } from '../../interfaces/target.interface';
+
+export type ActionStateDto = object;
 
 export type ActionDto = {
   type: string;
   attachable?: boolean;
-  properties?: { [key: string]: DynamicValue };
-  computed?: { [key: string]: DynamicValue };
-  target?: DynamicValue;
-  targets?: DynamicValue;
+  properties?: { [key: string]: Computable<unknown> };
+  computed?: { [key: string]: Computable<unknown> };
+  target?: Computable<ITargetable>;
+  targets?: Computable<ITargetable[]>;
   triggers?: ActionTriggerDto[];
   apply: ActionStateDto;
   stacks?: StackCounterDto;
-  out?: { [key: string]: DynamicValue };
-  next?: DynamicValue;
+  out?: { [key: string]: Computable<unknown> };
+  next?: Computable<string>;
   debug?: boolean;
 };

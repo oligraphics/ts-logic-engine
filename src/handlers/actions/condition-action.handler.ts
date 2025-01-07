@@ -1,11 +1,9 @@
-import { ConditionActionDto } from '../../dto/actions/condition.action.dto';
-import { ConditionActionStateDto } from '../../dto/action-states/condition-action.state.dto';
-import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import {
-  ConditionService,
-  DynamicValue,
-  LogicService,
-} from 'ts-logic-framework';
+  ConditionActionDto,
+  ConditionActionStateDto,
+} from '../../dto/actions/condition.action.dto';
+import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
+import { ConditionService, Computable, LogicService } from 'ts-logic-framework';
 import { ActionHandler } from './action.handler';
 
 export const ConditionActionHandler =
@@ -44,10 +42,10 @@ export const ConditionActionHandler =
     }
     async handleCase(
       context: TriggerContextDto<ConditionActionDto, ConditionActionStateDto>,
-      subActionReference: DynamicValue,
+      subActionReference: Computable<string>,
     ): Promise<boolean> {
       const { action } = context;
-      const { engine, program, action: template, debug } = action;
+      const { engine, program, debug } = action;
       const subActionId = LogicService.resolve<string>(
         subActionReference,
         context,
@@ -56,23 +54,23 @@ export const ConditionActionHandler =
         console.error('Program missing in action', action);
         return false;
       }
-      const subAction = program.actions[subActionId];
-      if (!subAction) {
+      if (!subActionId) {
         if (debug) {
-          console.error('Condition true action not found:', subActionId);
+          console.error('Condition case invalid:', subActionReference);
         }
         return false;
       }
-      if (subAction) {
-        return await engine.tryRun({
-          ...context.action,
-          actionId: subActionId,
-          debug: debug || subAction.debug,
-        });
+      const subAction = program.actions[subActionId];
+      if (!subAction) {
+        if (debug) {
+          console.error('Condition case not found:', subActionId);
+        }
+        return false;
       }
-      if (debug) {
-        console.debug('Condition has no true case', template.type);
-      }
-      return false;
+      return await engine.tryRun({
+        ...context.action,
+        actionId: subActionId,
+        debug: debug || subAction.debug,
+      });
     }
   })();

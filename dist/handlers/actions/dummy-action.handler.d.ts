@@ -1,5 +1,4 @@
-import { DummyActionDto } from '../../dto/actions/dummy.action.dto';
-import { DummyActionStateDto } from '../../dto/action-states/dummy-action.state.dto';
+import { DummyActionDto, DummyActionStateDto } from '../../dto/actions/dummy.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 export declare const DummyActionHandler: {
     tryRun(context: TriggerContextDto<DummyActionDto, DummyActionStateDto>): Promise<boolean>;

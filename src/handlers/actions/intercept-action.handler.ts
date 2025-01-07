@@ -1,6 +1,8 @@
 import { ActionHandler } from './action.handler';
-import { InterceptActionDto } from '../../dto/actions/intercept.action.dto';
-import { InterceptActionStateDto } from '../../dto/action-states/intercept-action.state.dto';
+import {
+  InterceptActionDto,
+  InterceptActionStateDto,
+} from '../../dto/actions/intercept.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { ActionTriggerDto } from '../../dto/triggers/action.trigger.dto';
 import { DynamicContextService, LogicService } from 'ts-logic-framework';

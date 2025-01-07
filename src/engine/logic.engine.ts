@@ -1,5 +1,4 @@
 import { EventBus } from 'ts-event-bus';
-import { ActionStateDto } from '../dto/action-states/action.state.dto';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { ActionBuilderService } from '../services/action-builder.service';
@@ -10,7 +9,7 @@ import { IEngineContext } from '../interfaces/engine-context.interface';
 import { CreateEngineOptionsDto } from '../dto/options/create-engine-options.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
-import { DynamicContext, DynamicContextService } from 'ts-logic-framework';
+import { DynamicContextService } from 'ts-logic-framework';
 import { TargetService } from '../services/target.service';
 import { ITargetable } from '../interfaces/target.interface';
 import { EventDto } from '../dto/events/event.dto';
@@ -22,6 +21,7 @@ import { ActionEventDto } from '../dto/events/action.event.dto';
 import { EventSystem } from '../models/event-system.model';
 import { ITriggerHandler } from '../interfaces/trigger-handler.interface';
 import { BuiltinTriggerHandlers } from '../interfaces/builtin-trigger-handlers.interface';
+import { ActionStateDto } from '../dto/actions/action.dto';
 
 export class LogicEngine implements IActor {
   private readonly context: IEngineContext;

@@ -1,7 +1,6 @@
 import { EventDto } from '../events/event.dto';
 import { ITriggerContext } from '../../interfaces/trigger-context.interface';
-import { ActionDto } from '../actions/action.dto';
-import { ActionStateDto } from '../action-states/action.state.dto';
+import { ActionDto, ActionStateDto } from '../actions/action.dto';
 import { ActionInstanceDto } from '../instances/action.instance.dto';
 
 export type TriggerContextDto<

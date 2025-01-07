@@ -25,30 +25,30 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
     }
     async handleCase(context, subActionReference) {
         const { action } = context;
-        const { engine, program, action: template, debug } = action;
+        const { engine, program, debug } = action;
         const subActionId = ts_logic_framework_1.LogicService.resolve(subActionReference, context);
         if (!program) {
             console.error('Program missing in action', action);
             return false;
         }
-        const subAction = program.actions[subActionId];
-        if (!subAction) {
+        if (!subActionId) {
             if (debug) {
-                console.error('Condition true action not found:', subActionId);
+                console.error('Condition case invalid:', subActionReference);
             }
             return false;
         }
-        if (subAction) {
-            return await engine.tryRun({
-                ...context.action,
-                actionId: subActionId,
-                debug: debug || subAction.debug,
-            });
+        const subAction = program.actions[subActionId];
+        if (!subAction) {
+            if (debug) {
+                console.error('Condition case not found:', subActionId);
+            }
+            return false;
         }
-        if (debug) {
-            console.debug('Condition has no true case', template.type);
-        }
-        return false;
+        return await engine.tryRun({
+            ...context.action,
+            actionId: subActionId,
+            debug: debug || subAction.debug,
+        });
     }
 })();
 //# sourceMappingURL=condition-action.handler.js.map

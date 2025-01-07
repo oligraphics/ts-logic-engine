@@ -1,5 +1,4 @@
-import { RepeatActionDto } from '../../dto/actions/repeat.action.dto';
-import { RepeatActionStateDto } from '../../dto/action-states/repeat-action.state.dto';
+import { RepeatActionDto, RepeatActionStateDto } from '../../dto/actions/repeat.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 export declare const RepeatActionHandler: {
     tryRun(context: TriggerContextDto<RepeatActionDto, RepeatActionStateDto>): Promise<boolean>;

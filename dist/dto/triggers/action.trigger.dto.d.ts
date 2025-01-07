@@ -1,6 +1,6 @@
 import { TriggerDto } from './trigger.dto';
-import { DynamicValue } from 'ts-logic-framework';
+import { Computable } from 'ts-logic-framework';
 export type ActionTriggerDto = {
-    reaction?: DynamicValue;
+    reaction?: Computable<string>;
 } & TriggerDto;
 //# sourceMappingURL=action.trigger.dto.d.ts.map

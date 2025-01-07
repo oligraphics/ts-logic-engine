@@ -18,7 +18,8 @@ exports.MessageActionHandler = new (class MessageActionHandler extends action_ha
         const variables = {};
         if (state.variables) {
             for (const [key, valueBuilder] of Object.entries(state.variables)) {
-                variables[key] = ts_logic_framework_1.LogicService.resolve(valueBuilder, context, debug);
+                variables[key] =
+                    ts_logic_framework_1.LogicService.resolve(valueBuilder, context, debug) ?? '';
             }
         }
         const data = {};

@@ -6,7 +6,7 @@ const ts_logic_framework_1 = require("ts-logic-framework");
 const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum");
 exports.RepeatActionHandler = new (class RepeatActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
-        const repeat = ts_logic_framework_1.LogicService.resolve(context.action.state.repeat, context);
+        const repeat = ts_logic_framework_1.LogicService.resolve(context.action.state.repeat, context) ?? 0;
         if (context.action.debug) {
             console.warn(`Repeat action repeats ${repeat} times`);
         }

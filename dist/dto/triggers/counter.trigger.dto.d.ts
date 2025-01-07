@@ -1,7 +1,8 @@
 import { TriggerDto } from './trigger.dto';
-import { DynamicValue } from 'ts-logic-framework';
+import { Computable } from 'ts-logic-framework';
+import { CounterMethodEnum } from '../../enums/counter-method.enum';
 export type CounterTriggerDto = {
-    method?: DynamicValue;
-    amount?: DynamicValue;
+    method?: Computable<CounterMethodEnum>;
+    amount?: Computable<number>;
 } & TriggerDto;
 //# sourceMappingURL=counter.trigger.dto.d.ts.map

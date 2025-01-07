@@ -1,6 +1,8 @@
 import { ActionHandler } from './action.handler';
-import { RepeatActionDto } from '../../dto/actions/repeat.action.dto';
-import { RepeatActionStateDto } from '../../dto/action-states/repeat-action.state.dto';
+import {
+  RepeatActionDto,
+  RepeatActionStateDto,
+} from '../../dto/actions/repeat.action.dto';
 import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { DynamicContextService, LogicService } from 'ts-logic-framework';
 import { RepeatActionEventDto } from '../../dto/events/repeat-action.event.dto';
@@ -14,10 +16,8 @@ export const RepeatActionHandler =
     async tryRun(
       context: TriggerContextDto<RepeatActionDto, RepeatActionStateDto>,
     ): Promise<boolean> {
-      const repeat = LogicService.resolve<number>(
-        context.action.state.repeat,
-        context,
-      );
+      const repeat =
+        LogicService.resolve<number>(context.action.state.repeat, context) ?? 0;
       if (context.action.debug) {
         console.warn(`Repeat action repeats ${repeat} times`);
       }

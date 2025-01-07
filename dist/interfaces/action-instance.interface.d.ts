@@ -1,8 +1,8 @@
-import { ActionStateDto } from '../dto/action-states/action.state.dto';
 import { StatusStateDto } from '../dto/states/status.state.dto';
 import { ITriggerInstance } from './trigger-instance.interface';
 import { IActionContext } from './action-context.interface';
 import { IStackCounterInstance } from './stack-counter-instance.interface';
+import { ActionStateDto } from '../dto/actions/action.dto';
 export type IActionInstance = {
     get id(): string;
     get state(): ActionStateDto;

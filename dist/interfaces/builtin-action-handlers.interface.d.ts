@@ -10,7 +10,7 @@ export declare const BuiltinActionHandlers: {
     };
     condition: {
         tryRun(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>): Promise<boolean>;
-        handleCase(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>, subActionReference: import("ts-logic-framework").DynamicValue): Promise<boolean>;
+        handleCase(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>, subActionReference: import("ts-logic-framework").Computable<string>): Promise<boolean>;
         apply(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>): Promise<boolean>;
         trigger(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>): Promise<boolean>;
         perform(context: import("..").TriggerContextDto<import("..").ConditionActionDto, import("..").ConditionActionStateDto>, callNext: boolean): Promise<boolean>;
