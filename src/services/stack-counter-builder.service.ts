@@ -26,7 +26,7 @@ export const StackCounterBuilderService =
         counter.triggers.push(
           CounterTriggerBuilderService.build(
             configuration as TriggerDto,
-            BuiltinTriggerTypeEnum.COUNTER,
+            BuiltinTriggerTypeEnum.STACK,
             CounterMethodEnum.REDUCE,
             1,
             action,
@@ -39,7 +39,7 @@ export const StackCounterBuilderService =
               event: BuiltinEventTypeEnum.TRIGGER,
               phase: EventPhaseEnum.PERFORMED,
             },
-            BuiltinTriggerTypeEnum.COUNTER,
+            BuiltinTriggerTypeEnum.STACK,
             CounterMethodEnum.REDUCE,
             1,
             action,
