@@ -8,6 +8,8 @@ import { StackChangeEventDto } from '../dto/events/stack-change.event.dto';
 import { BuiltinEventTypeEnum } from '../enums/builtin-event-type.enum';
 import { IStackCounterInstance } from '../interfaces/stack-counter-instance.interface';
 import { StackRemoveEventDto } from '../dto/events/stack-remove.event.dto';
+import { LogicService } from 'ts-logic-framework';
+import { ParamsService } from './params.service';
 
 export const StackCounterService = new (class StackCounterService {
   async tryChange(
@@ -70,6 +72,14 @@ export const StackCounterService = new (class StackCounterService {
       console.error('Trying to remove an already removed stack');
       return;
     }
+    if (stack.action.debug) {
+      console.debug(
+        'Remove stack counter of action',
+        stack.action.program.id,
+        '>',
+        stack.action.actionId,
+      );
+    }
     stack.removed = true;
     const event = <StackRemoveEventDto>{
       type: BuiltinEventTypeEnum.STACK_REMOVE,
@@ -83,5 +93,28 @@ export const StackCounterService = new (class StackCounterService {
       },
       stack.action.debug,
     );
+    if (stack.after) {
+      const next = LogicService.resolve<string>(stack.after.next, stack.action);
+      if (!next) {
+        if (stack.action.debug) {
+          console.error(
+            'Stack specified after hook but returned no action id',
+            stack.after,
+          );
+        }
+        return;
+      }
+      const params = stack.after.params
+        ? ParamsService.resolve(stack.after.params, stack.action)
+        : {};
+      await stack.action.engine.tryRun({
+        engine: stack.action.engine,
+        initiator: stack.action.initiator,
+        source: stack.action.source,
+        program: stack.action.program,
+        actionId: next,
+        params,
+      });
+    }
   }
 })();

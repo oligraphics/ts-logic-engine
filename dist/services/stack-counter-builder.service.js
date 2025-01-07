@@ -22,6 +22,7 @@ exports.StackCounterBuilderService = new (class StackCounterBuilderService {
         return {
             ...counter,
             persistent: !!configuration.persistent,
+            after: configuration.after,
         };
     }
 })();

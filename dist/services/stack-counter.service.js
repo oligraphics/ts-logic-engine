@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StackCounterService = void 0;
 const counter_method_service_1 = require("./counter-method.service");
 const builtin_event_type_enum_1 = require("../enums/builtin-event-type.enum");
+const ts_logic_framework_1 = require("ts-logic-framework");
+const params_service_1 = require("./params.service");
 exports.StackCounterService = new (class StackCounterService {
     async tryChange(context, method, amount) {
         const { trigger, action } = context;
@@ -43,6 +45,9 @@ exports.StackCounterService = new (class StackCounterService {
             console.error('Trying to remove an already removed stack');
             return;
         }
+        if (stack.action.debug) {
+            console.debug('Remove stack counter of action', stack.action.program.id, '>', stack.action.actionId);
+        }
         stack.removed = true;
         const event = {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.STACK_REMOVE,
@@ -51,6 +56,26 @@ exports.StackCounterService = new (class StackCounterService {
         await stack.action.engine.callEvent(stack.action.target, event, async () => {
             stack.action.engine.remove(stack.action);
         }, stack.action.debug);
+        if (stack.after) {
+            const next = ts_logic_framework_1.LogicService.resolve(stack.after.next, stack.action);
+            if (!next) {
+                if (stack.action.debug) {
+                    console.error('Stack specified after hook but returned no action id', stack.after);
+                }
+                return;
+            }
+            const params = stack.after.params
+                ? params_service_1.ParamsService.resolve(stack.after.params, stack.action)
+                : {};
+            await stack.action.engine.tryRun({
+                engine: stack.action.engine,
+                initiator: stack.action.initiator,
+                source: stack.action.source,
+                program: stack.action.program,
+                actionId: next,
+                params,
+            });
+        }
     }
 })();
 //# sourceMappingURL=stack-counter.service.js.map

@@ -49,6 +49,7 @@ export const StackCounterBuilderService =
       return {
         ...counter,
         persistent: !!configuration.persistent,
+        after: configuration.after,
       };
     }
   })();

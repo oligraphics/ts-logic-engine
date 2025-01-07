@@ -2,7 +2,6 @@ import { EventBus } from 'ts-event-bus';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { ActionBuilderService } from '../services/action-builder.service';
-import { ICreateActionContext } from '../interfaces/create-action-context.interface';
 import { IActionContext } from '../interfaces/action-context.interface';
 import { IProgram } from '../interfaces/program.interface';
 import { IEngineContext } from '../interfaces/engine-context.interface';
@@ -21,7 +20,6 @@ import { ActionEventDto } from '../dto/events/action.event.dto';
 import { EventSystem } from '../models/event-system.model';
 import { ITriggerHandler } from '../interfaces/trigger-handler.interface';
 import { BuiltinTriggerHandlers } from '../interfaces/builtin-trigger-handlers.interface';
-import { ActionStateDto } from '../dto/actions/action.dto';
 
 export class LogicEngine implements IActor {
   private readonly context: IEngineContext;
@@ -31,7 +29,6 @@ export class LogicEngine implements IActor {
 
   private readonly eventSystem: EventSystem;
 
-  private _state: ActionStateDto | undefined = undefined;
   private _listeningStackActions: Map<string, IActionInstance> = new Map();
   private _listeningActions: Map<string, IActionInstance> = new Map();
 
@@ -41,10 +38,6 @@ export class LogicEngine implements IActor {
 
   get name() {
     return 'Root';
-  }
-
-  get state(): ActionStateDto | undefined {
-    return this._state;
   }
 
   get allowTargeting(): boolean {
@@ -97,20 +90,6 @@ export class LogicEngine implements IActor {
 
   stop() {
     this.bus.trigger('stop');
-  }
-
-  getValue<T>(property: string, debug?: boolean): T {
-    switch (property) {
-      case 'state':
-        return this.state as T;
-      default:
-        if (debug) {
-          console.error(
-            `Trying to read unknown property ${property} on LogicEngine`,
-          );
-        }
-        return undefined as T;
-    }
   }
 
   getActionHandler(actionType: string): IActionHandler | undefined {

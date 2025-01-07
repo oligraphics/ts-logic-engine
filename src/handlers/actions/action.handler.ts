@@ -26,6 +26,7 @@ export abstract class ActionHandler<
       if (statusHolder) {
         const effect = statusHolder.tryAddStatus(context.action, context);
         if (!effect) {
+          // Failed adding a status, clean up this action
           this.remove(context.action);
         }
       }
@@ -36,10 +37,8 @@ export abstract class ActionHandler<
     if ((context.action.triggers?.length ?? 0) > 0) {
       context.action.engine.attachTriggers(context.action);
       return true;
-    } else if (!context.action.stacks) {
-      return this.trigger(context);
     } else {
-      return true;
+      return this.trigger(context);
     }
   }
   async trigger(
@@ -107,6 +106,9 @@ export abstract class ActionHandler<
     context: TriggerContextDto<TAction, TActionState>,
   ): Promise<boolean>;
   remove(action: ActionInstanceDto<TAction, TActionState>) {
+    if (action.debug) {
+      console.debug('Removing action', action.program.id, '>', action.actionId);
+    }
     action.engine.detachStack(action);
     action.engine.detachTriggers(action);
   }

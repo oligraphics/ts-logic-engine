@@ -9,19 +9,16 @@ import { IActor } from '../interfaces/actor.interface';
 import { EventDto } from '../dto/events/event.dto';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { IEventSource } from '../interfaces/event-source.interface';
-import { ActionStateDto } from '../dto/actions/action.dto';
 export declare class LogicEngine implements IActor {
     private readonly context;
     private readonly program;
     private readonly triggerHandlers;
     private readonly actionHandlers;
     private readonly eventSystem;
-    private _state;
     private _listeningStackActions;
     private _listeningActions;
     get id(): string;
     get name(): string;
-    get state(): ActionStateDto | undefined;
     get allowTargeting(): boolean;
     get bus(): EventBus;
     toJSON(): {
@@ -31,7 +28,6 @@ export declare class LogicEngine implements IActor {
     constructor(program: IProgram | undefined, options: CreateEngineOptionsDto);
     start(): Promise<void>;
     stop(): void;
-    getValue<T>(property: string, debug?: boolean): T;
     getActionHandler(actionType: string): IActionHandler | undefined;
     update(deltaTime: number): void;
     tryRun(context: IRunProgramContext): Promise<boolean>;

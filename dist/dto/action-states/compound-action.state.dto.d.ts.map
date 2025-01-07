@@ -1,1 +1,0 @@
-{"version":3,"file":"compound-action.state.dto.d.ts","sourceRoot":"src/","sources":["dto/action-states/compound-action.state.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,oBAAoB,CAAC;AACpD,OAAO,EAAE,YAAY,EAAE,MAAM,oBAAoB,CAAC;AAElD,MAAM,MAAM,sBAAsB,GAAG;IACnC,QAAQ,EAAE,YAAY,EAAE,CAAC;CAC1B,GAAG,cAAc,CAAC"}

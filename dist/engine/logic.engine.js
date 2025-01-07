@@ -13,7 +13,6 @@ class LogicEngine {
     triggerHandlers;
     actionHandlers;
     eventSystem;
-    _state = undefined;
     _listeningStackActions = new Map();
     _listeningActions = new Map();
     get id() {
@@ -21,9 +20,6 @@ class LogicEngine {
     }
     get name() {
         return 'Root';
-    }
-    get state() {
-        return this._state;
     }
     get allowTargeting() {
         return true;
@@ -70,17 +66,6 @@ class LogicEngine {
     }
     stop() {
         this.bus.trigger('stop');
-    }
-    getValue(property, debug) {
-        switch (property) {
-            case 'state':
-                return this.state;
-            default:
-                if (debug) {
-                    console.error(`Trying to read unknown property ${property} on LogicEngine`);
-                }
-                return undefined;
-        }
     }
     getActionHandler(actionType) {
         return this.actionHandlers[actionType];

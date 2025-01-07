@@ -46,7 +46,10 @@
         }
       },
       "stacks": {
-        "value": 1
+        "value": 1,
+        "after": {
+          "next": "post-stack"
+        }
       }
     },
     "message": {
@@ -68,6 +71,12 @@
           "proof": "#proof",
           "second-proof": "#second-proof"
         }
+      }
+    },
+    "post-stack": {
+      "type": "message",
+      "apply": {
+        "message": "The stack just got removed!"
       }
     },
     "repeater": {
