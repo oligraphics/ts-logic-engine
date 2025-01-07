@@ -61,13 +61,14 @@ exports.InterceptActionHandler = new (class InterceptActionHandler extends actio
                 ]))
                 : {};
             await context.action.engine.tryRun({
+                params,
                 ...ts_logic_framework_1.DynamicContextService.createContext({
                     engine: context.action.engine,
                     program: context.action.program,
                     initiator: context.action.source,
                     source: context.action.source,
                     actionId: action,
-                }, params),
+                }),
             });
         }
         return true;

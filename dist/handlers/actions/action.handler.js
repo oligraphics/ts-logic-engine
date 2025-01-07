@@ -4,6 +4,7 @@ exports.ActionHandler = void 0;
 const builtin_event_type_enum_1 = require("../../enums/builtin-event-type.enum");
 const stack_counter_trigger_handler_1 = require("../triggers/stack-counter-trigger.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
+const params_service_1 = require("../../services/params.service");
 class ActionHandler {
     async apply(context) {
         if (context.action.action.attachable) {
@@ -52,11 +53,8 @@ class ActionHandler {
             const next = ts_logic_framework_1.LogicService.resolve(context.action.action.next, context);
             if (next) {
                 const params = context.action.action.out
-                    ? Object.fromEntries(Object.entries(context.action.action.out).map(([key, value]) => [
-                        key,
-                        ts_logic_framework_1.LogicService.resolve(value, context),
-                    ]))
-                    : {};
+                    ? params_service_1.ParamsService.resolve(context.action.action.out, context)
+                    : undefined;
                 await context.action.engine.tryRun({
                     ...ts_logic_framework_1.DynamicContextService.createContext({
                         engine: context.action.engine,
@@ -64,7 +62,8 @@ class ActionHandler {
                         initiator: context.action.source,
                         source: context.action.source,
                         actionId: next,
-                    }, params),
+                    }),
+                    params,
                 });
             }
             else if (context.action.debug) {

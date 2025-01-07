@@ -130,11 +130,21 @@ export class LogicEngine implements IActor {
         program: context.program,
         initiator: context.initiator,
         source: context.source,
+        params: context.params,
       },
       () =>
         this.run({
           ...this.context,
-          ...context,
+          ...DynamicContextService.createContext(
+            {
+              engine: context.engine,
+              initiator: context.initiator,
+              source: context.source,
+              program: context.program,
+              actionId: context.actionId,
+            },
+            context.params ?? {},
+          ),
         }),
       context.program.debug,
     );

@@ -101,16 +101,14 @@ export const InterceptActionHandler =
             )
           : {};
         await context.action.engine.tryRun({
-          ...DynamicContextService.createContext(
-            {
-              engine: context.action.engine,
-              program: context.action.program,
-              initiator: context.action.source,
-              source: context.action.source,
-              actionId: action,
-            },
-            params,
-          ),
+          params,
+          ...DynamicContextService.createContext({
+            engine: context.action.engine,
+            program: context.action.program,
+            initiator: context.action.source,
+            source: context.action.source,
+            actionId: action,
+          }),
         });
       }
 

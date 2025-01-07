@@ -95,9 +95,16 @@ class LogicEngine {
             program: context.program,
             initiator: context.initiator,
             source: context.source,
+            params: context.params,
         }, () => this.run({
             ...this.context,
-            ...context,
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                engine: context.engine,
+                initiator: context.initiator,
+                source: context.source,
+                program: context.program,
+                actionId: context.actionId,
+            }, context.params ?? {}),
         }), context.program.debug);
     }
     async run(context) {

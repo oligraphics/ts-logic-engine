@@ -11,6 +11,7 @@ import { BuiltinEventTypeEnum } from '../../enums/builtin-event-type.enum';
 import { StackCounterTriggerHandler } from '../triggers/stack-counter-trigger.handler';
 import { TriggerEventDto } from '../../dto/events/trigger.event.dto';
 import { DynamicContextService, LogicService } from 'ts-logic-framework';
+import { ParamsService } from '../../services/params.service';
 
 export abstract class ActionHandler<
   TAction extends ActionDto,
@@ -77,24 +78,17 @@ export abstract class ActionHandler<
       );
       if (next) {
         const params = context.action.action.out
-          ? Object.fromEntries(
-              Object.entries(context.action.action.out).map(([key, value]) => [
-                key,
-                LogicService.resolve(value, context),
-              ]),
-            )
-          : {};
+          ? ParamsService.resolve(context.action.action.out, context)
+          : undefined;
         await context.action.engine.tryRun({
-          ...DynamicContextService.createContext(
-            {
-              engine: context.action.engine,
-              program: context.action.program,
-              initiator: context.action.source,
-              source: context.action.source,
-              actionId: next,
-            },
-            params,
-          ),
+          ...DynamicContextService.createContext({
+            engine: context.action.engine,
+            program: context.action.program,
+            initiator: context.action.source,
+            source: context.action.source,
+            actionId: next,
+          }),
+          params,
         });
       } else if (context.action.debug) {
         console.warn(

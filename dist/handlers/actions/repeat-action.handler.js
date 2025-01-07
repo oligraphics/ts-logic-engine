@@ -41,7 +41,7 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
                     initiator: context.action.source,
                     source: context.action.source,
                     actionId: repeatAction,
-                    ...ts_logic_framework_1.DynamicContextService.createContext({ iteration: i }, params),
+                    params,
                 });
             }
             return true;

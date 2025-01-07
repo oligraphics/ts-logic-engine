@@ -59,7 +59,7 @@ export const RepeatActionHandler =
               initiator: context.action.source,
               source: context.action.source,
               actionId: repeatAction,
-              ...DynamicContextService.createContext({ iteration: i }, params),
+              params,
             });
           }
           return true;

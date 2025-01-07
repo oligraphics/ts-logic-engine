@@ -4,5 +4,6 @@ import { EventDto } from './event.dto';
 
 export type ProgramEventDto = {
   type: BuiltinEventTypeEnum.PROGRAM;
+  params?: { [key: string]: unknown };
 } & IProgramContext &
   EventDto;
