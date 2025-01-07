@@ -147,7 +147,11 @@ export class EventSystem {
     });
     for (const listener of phaseListeners.values()) {
       const filterResult = listener.filter
-        ? ConditionService.testCondition(listener.filter, context)
+        ? ConditionService.testCondition(
+            listener.filter,
+            context,
+            listener.debug,
+          )
         : true;
       if (filterResult !== true) {
         if (listener.debug) {

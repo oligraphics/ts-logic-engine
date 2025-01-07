@@ -78,7 +78,7 @@ class EventSystem {
         });
         for (const listener of phaseListeners.values()) {
             const filterResult = listener.filter
-                ? ts_logic_framework_1.ConditionService.testCondition(listener.filter, context)
+                ? ts_logic_framework_1.ConditionService.testCondition(listener.filter, context, listener.debug)
                 : true;
             if (filterResult !== true) {
                 if (listener.debug) {
