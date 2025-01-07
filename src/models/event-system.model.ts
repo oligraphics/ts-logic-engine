@@ -2,7 +2,12 @@ import { EventBus } from 'ts-event-bus';
 import { EventDto } from '../dto/events/event.dto';
 import { IEventSource } from '../interfaces/event-source.interface';
 import { EventPhaseEnum } from '../enums/event-phase.enum';
-import { ConditionService, DynamicContextService } from 'ts-logic-framework';
+import {
+  Condition,
+  ConditionService,
+  DynamicContext,
+  DynamicContextService,
+} from 'ts-logic-framework';
 import { ITriggerInstance } from '../interfaces/trigger-instance.interface';
 import { LogicEngine } from '../engine/logic.engine';
 type EventListeners = Map<string, PhaseListeners>;
@@ -146,13 +151,22 @@ export class EventSystem {
       phase,
     });
     for (const listener of phaseListeners.values()) {
-      const filterResult = listener.filter
-        ? ConditionService.testCondition(
-            listener.filter,
-            context,
-            listener.debug,
-          )
-        : true;
+      let filterResult: true | Condition;
+      if (listener.filter) {
+        const filterContext: DynamicContext = listener.action.context
+          ? {
+              ...listener.action.context,
+              ...context,
+            }
+          : context;
+        filterResult = ConditionService.testCondition(
+          listener.filter,
+          filterContext,
+          listener.debug,
+        );
+      } else {
+        filterResult = true;
+      }
       if (filterResult !== true) {
         if (listener.debug) {
           console.log(

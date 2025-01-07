@@ -77,9 +77,19 @@ class EventSystem {
             phase,
         });
         for (const listener of phaseListeners.values()) {
-            const filterResult = listener.filter
-                ? ts_logic_framework_1.ConditionService.testCondition(listener.filter, context, listener.debug)
-                : true;
+            let filterResult;
+            if (listener.filter) {
+                const filterContext = listener.action.context
+                    ? {
+                        ...listener.action.context,
+                        ...context,
+                    }
+                    : context;
+                filterResult = ts_logic_framework_1.ConditionService.testCondition(listener.filter, filterContext, listener.debug);
+            }
+            else {
+                filterResult = true;
+            }
             if (filterResult !== true) {
                 if (listener.debug) {
                     console.log('Filter no match:', listener.action.program.id, '>', listener.action.actionId, filterResult);
