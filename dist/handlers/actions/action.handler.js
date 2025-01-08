@@ -17,7 +17,7 @@ class ActionHandler {
                 }
             }
         }
-        if (context.action.stacks) {
+        if (context.action.stack) {
             context.action.engine.attachStack(context.action);
         }
         if ((context.action.triggers?.length ?? 0) > 0) {
@@ -42,11 +42,11 @@ class ActionHandler {
             }
             return false;
         }
-        if (context.action.stacks) {
+        if (context.action.stack) {
             const event = {
                 type: builtin_event_type_enum_1.BuiltinEventTypeEnum.TRIGGER,
             };
-            for (const trigger of context.action.stacks.triggers.filter((t) => t.event === builtin_event_type_enum_1.BuiltinEventTypeEnum.TRIGGER)) {
+            for (const trigger of context.action.stack.triggers.filter((t) => t.event === builtin_event_type_enum_1.BuiltinEventTypeEnum.TRIGGER)) {
                 await stack_counter_trigger_handler_1.StackCounterTriggerHandler.handle(trigger, event);
             }
         }

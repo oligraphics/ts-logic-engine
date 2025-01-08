@@ -8,7 +8,7 @@ export type IActionInstance = {
   get id(): string;
   get state(): ActionStateDto;
   triggers: ITriggerInstance[] | undefined;
-  stacks: IStackCounterInstance | undefined;
+  stack: IStackCounterInstance | undefined;
   get statusEffect(): StatusStateDto | undefined;
   get debug(): boolean | undefined;
 } & IActionContext;

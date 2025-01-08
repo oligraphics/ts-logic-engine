@@ -23,16 +23,16 @@ exports.ActionBuilderService = new (class ActionBuilderService {
                 actionId: context.actionId,
             }),
             triggers: undefined,
-            stacks: undefined,
+            stack: undefined,
             statusEffect: undefined,
             debug: action.debug || context.program.debug,
         };
         if (action.triggers) {
             result.triggers = action_trigger_builder_service_1.ActionTriggerBuilderService.buildAll(action.triggers, result);
         }
-        if (action.stacks) {
+        if (action.stack) {
             Object.assign(result, ts_logic_framework_1.DynamicContextService.createContext({
-                stacks: stack_counter_builder_service_1.StackCounterBuilderService.build(action.stacks, result),
+                stack: stack_counter_builder_service_1.StackCounterBuilderService.build(action.stack, result),
             }));
         }
         return result;

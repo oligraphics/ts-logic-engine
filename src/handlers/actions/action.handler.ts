@@ -31,7 +31,7 @@ export abstract class ActionHandler<
         }
       }
     }
-    if (context.action.stacks) {
+    if (context.action.stack) {
       context.action.engine.attachStack(context.action);
     }
     if ((context.action.triggers?.length ?? 0) > 0) {
@@ -62,11 +62,11 @@ export abstract class ActionHandler<
       }
       return false;
     }
-    if (context.action.stacks) {
+    if (context.action.stack) {
       const event = <TriggerEventDto>{
         type: BuiltinEventTypeEnum.TRIGGER,
       };
-      for (const trigger of context.action.stacks.triggers.filter(
+      for (const trigger of context.action.stack.triggers.filter(
         (t) => t.event === BuiltinEventTypeEnum.TRIGGER,
       )) {
         await StackCounterTriggerHandler.handle(trigger, event);

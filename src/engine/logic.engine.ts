@@ -255,7 +255,7 @@ export class LogicEngine implements IActor {
         action.actionId,
       );
     }
-    const stack = action.stacks;
+    const stack = action.stack;
     if (stack) {
       this.eventSystem.attachTriggers(stack.triggers);
     }
@@ -271,7 +271,7 @@ export class LogicEngine implements IActor {
         action.actionId,
       );
     }
-    const stack = action.stacks;
+    const stack = action.stack;
     if (stack) {
       this.eventSystem.detachTriggers(stack.triggers);
     }

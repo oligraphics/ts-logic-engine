@@ -27,7 +27,7 @@ export const ActionBuilderService = new (class ActionBuilderService {
         actionId: context.actionId,
       }),
       triggers: undefined,
-      stacks: undefined,
+      stack: undefined,
       statusEffect: undefined,
       debug: action.debug || context.program.debug,
     };
@@ -39,11 +39,11 @@ export const ActionBuilderService = new (class ActionBuilderService {
       );
     }
 
-    if (action.stacks) {
+    if (action.stack) {
       Object.assign(
         result,
         DynamicContextService.createContext({
-          stacks: StackCounterBuilderService.build(action.stacks, result),
+          stack: StackCounterBuilderService.build(action.stack, result),
         }),
       );
     }

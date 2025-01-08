@@ -165,7 +165,7 @@ class LogicEngine {
         if (action.debug) {
             console.debug('Attach stack of action', action.program.id, '>', action.actionId);
         }
-        const stack = action.stacks;
+        const stack = action.stack;
         if (stack) {
             this.eventSystem.attachTriggers(stack.triggers);
         }
@@ -175,7 +175,7 @@ class LogicEngine {
         if (action.debug) {
             console.debug('Detach stack of action', action.program.id, '>', action.actionId);
         }
-        const stack = action.stacks;
+        const stack = action.stack;
         if (stack) {
             this.eventSystem.detachTriggers(stack.triggers);
         }

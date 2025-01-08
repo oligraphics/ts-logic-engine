@@ -25,7 +25,7 @@ export const StackCounterService = new (class StackCounterService {
     if (trigger.debug) {
       console.warn(`Try changing counter: ${method} ${amount}`);
     }
-    const stack = action.stacks as IStackCounterInstance;
+    const stack = action.stack as IStackCounterInstance;
     const oldValue = stack.value;
     const newValue = CounterMethodService.getChangedValue(
       oldValue,

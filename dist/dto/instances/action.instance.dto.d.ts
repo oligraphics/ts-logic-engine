@@ -7,7 +7,7 @@ export type ActionInstanceDto<TAction extends ActionDto, TActionState extends Ac
     id: string;
     state: TActionState;
     triggers?: TriggerInstanceDto<TAction, TActionState>[];
-    stacks?: unknown;
+    stack?: unknown;
     statusEffect?: StatusStateDto;
     debug?: boolean;
 } & IActionInstance & ActionContextDto<TAction>;

@@ -16,7 +16,7 @@ export type ActionDto = {
     targets?: Computable<ITargetable[]>;
     triggers?: ActionTriggerDto[];
     apply: ActionStateDto;
-    stacks?: StackCounterDto;
+    stack?: StackCounterDto;
     out?: {
         [key: string]: Computable<unknown>;
     };

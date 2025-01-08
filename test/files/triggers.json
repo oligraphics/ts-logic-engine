@@ -25,7 +25,7 @@
           "event": "message",
           "phase": "perform",
           "filter": {
-            "type": "equal",
+            "type": "like",
             "value": "{event.action}",
             "equals": "{condition}"
           },
@@ -45,7 +45,7 @@
           }
         }
       },
-      "stacks": {
+      "stack": {
         "value": 1,
         "after": {
           "next": "post-stack"
