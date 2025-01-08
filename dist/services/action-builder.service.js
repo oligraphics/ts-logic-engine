@@ -9,20 +9,22 @@ exports.ActionBuilderService = new (class ActionBuilderService {
         const id = ts_logic_framework_1.IdService.createRandomId();
         const { action } = context;
         const result = {
-            ...ts_logic_framework_1.DynamicContextService.createContext(properties, variables),
             params: variables,
-            id,
-            engine: context.engine,
-            program: context.program,
-            initiator: context.initiator,
-            source: context.source,
-            target: context.target,
-            action: context.action,
-            actionId: context.actionId,
             state: { ...action.apply },
             triggers: undefined,
-            stacks: undefined,
-            statusEffect: undefined,
+            ...ts_logic_framework_1.DynamicContextService.createContext(properties, variables),
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                id,
+                engine: context.engine,
+                program: context.program,
+                initiator: context.initiator,
+                source: context.source,
+                target: context.target,
+                action: context.action,
+                actionId: context.actionId,
+                stacks: undefined,
+                statusEffect: undefined,
+            }),
             debug: action.debug || context.program.debug,
         };
         if (action.triggers) {

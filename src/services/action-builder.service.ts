@@ -13,20 +13,22 @@ export const ActionBuilderService = new (class ActionBuilderService {
     const id = IdService.createRandomId();
     const { action } = context;
     const result: IActionInstance = {
-      ...DynamicContextService.createContext(properties, variables),
       params: variables,
-      id,
-      engine: context.engine,
-      program: context.program,
-      initiator: context.initiator,
-      source: context.source,
-      target: context.target,
-      action: context.action,
-      actionId: context.actionId,
       state: { ...action.apply },
       triggers: undefined,
-      stacks: undefined,
-      statusEffect: undefined,
+      ...DynamicContextService.createContext(properties, variables),
+      ...DynamicContextService.createContext({
+        id,
+        engine: context.engine,
+        program: context.program,
+        initiator: context.initiator,
+        source: context.source,
+        target: context.target,
+        action: context.action,
+        actionId: context.actionId,
+        stacks: undefined,
+        statusEffect: undefined,
+      }),
       debug: action.debug || context.program.debug,
     };
 
