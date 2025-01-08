@@ -15,7 +15,6 @@ export const ActionBuilderService = new (class ActionBuilderService {
     const result: IActionInstance = {
       params: variables,
       state: { ...action.apply },
-      triggers: undefined,
       ...DynamicContextService.createContext(properties, variables),
       ...DynamicContextService.createContext({
         id,
@@ -26,9 +25,10 @@ export const ActionBuilderService = new (class ActionBuilderService {
         target: context.target,
         action: context.action,
         actionId: context.actionId,
-        stacks: undefined,
-        statusEffect: undefined,
       }),
+      triggers: undefined,
+      stacks: undefined,
+      statusEffect: undefined,
       debug: action.debug || context.program.debug,
     };
 
@@ -40,7 +40,12 @@ export const ActionBuilderService = new (class ActionBuilderService {
     }
 
     if (action.stacks) {
-      result.stacks = StackCounterBuilderService.build(action.stacks, result);
+      Object.assign(
+        result,
+        DynamicContextService.createContext({
+          stacks: StackCounterBuilderService.build(action.stacks, result),
+        }),
+      );
     }
 
     return result;
