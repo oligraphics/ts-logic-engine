@@ -17,7 +17,11 @@ export const CompoundActionHandler =
     ): Promise<boolean> {
       const debug = context.action.debug;
       const params = context.action.state.params
-        ? ParamsService.resolve(context.action.state.params, context.action)
+        ? ParamsService.resolve(
+            context.action.state.params,
+            context.action,
+            debug,
+          )
         : {};
       const innerContext = DynamicContextService.createContext(
         {

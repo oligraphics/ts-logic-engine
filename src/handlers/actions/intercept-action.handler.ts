@@ -7,6 +7,7 @@ import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { ActionTriggerDto } from '../../dto/triggers/action.trigger.dto';
 import { DynamicContextService, LogicService } from 'ts-logic-framework';
 import { EventDto } from '../../dto/events/event.dto';
+import { ParamsService } from '../../services/params.service';
 
 export const InterceptActionHandler =
   new (class InterceptActionHandler extends ActionHandler<
@@ -16,16 +17,23 @@ export const InterceptActionHandler =
     async tryRun(
       context: TriggerContextDto<InterceptActionDto, InterceptActionStateDto>,
     ): Promise<boolean> {
-      const debug = context.action.debug;
       const trigger = context.trigger as ActionTriggerDto;
+      const debug = context.action.debug || trigger.debug;
+      const innerContext = {
+        ...context.action,
+        ...DynamicContextService.createContext({
+          event: context.event,
+          trigger: context.trigger,
+        }),
+      };
       const reactionId =
         trigger && trigger.reaction
-          ? LogicService.resolve<string>(trigger.reaction, context, debug)
+          ? LogicService.resolve<string>(trigger.reaction, innerContext, debug)
           : undefined;
 
       if (!reactionId) {
         if (debug) {
-          console.warn('Intercept trigger has no reaction property.', trigger);
+          console.debug('Intercept trigger has no reaction property.', trigger);
         }
         return true;
       }
@@ -33,7 +41,7 @@ export const InterceptActionHandler =
       const reactions = context.action.state.actions ?? {};
       const reaction = reactions[reactionId];
       if (!reaction) {
-        if (debug || trigger.debug) {
+        if (debug) {
           console.warn(
             'Intercept reaction',
             reactionId,
@@ -54,7 +62,7 @@ export const InterceptActionHandler =
         for (const [property, value] of Object.entries(reaction.change)) {
           const previousValue = event[property];
           const modifiedValue = LogicService.resolve(value, {
-            ...context,
+            ...innerContext,
             ...DynamicContextService.createContext({
               value: previousValue,
             }),
@@ -69,7 +77,7 @@ export const InterceptActionHandler =
       if (reaction.action) {
         const action = LogicService.resolve<string>(
           reaction.action,
-          context,
+          innerContext,
           debug,
         );
         if (debug) {
@@ -93,12 +101,7 @@ export const InterceptActionHandler =
         }
 
         const params = reaction.params
-          ? Object.fromEntries(
-              Object.entries(reaction.params).map(([key, value]) => [
-                key,
-                LogicService.resolve(value, context, debug),
-              ]),
-            )
+          ? ParamsService.resolve(reaction.params, innerContext, debug)
           : {};
         await context.action.engine.tryRun({
           params,

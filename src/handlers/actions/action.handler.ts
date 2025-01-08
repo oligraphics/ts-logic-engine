@@ -79,7 +79,11 @@ export abstract class ActionHandler<
       );
       if (next) {
         const params = context.action.action.out
-          ? ParamsService.resolve(context.action.action.out, context)
+          ? ParamsService.resolve(
+              context.action.action.out,
+              context,
+              context.action.debug,
+            )
           : undefined;
         await context.action.engine.tryRun({
           ...DynamicContextService.createContext({

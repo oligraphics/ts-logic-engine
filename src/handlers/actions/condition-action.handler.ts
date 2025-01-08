@@ -87,7 +87,7 @@ export const ConditionActionHandler =
         console.debug('Run', subActionId);
       }
       const params = action.state.params
-        ? ParamsService.resolve(action.state.params, context.action)
+        ? ParamsService.resolve(action.state.params, context.action, debug)
         : {};
       return await engine.tryRun({
         ...DynamicContextService.createContext(

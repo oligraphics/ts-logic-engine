@@ -34,7 +34,7 @@ exports.RepeatActionHandler = new (class RepeatActionHandler extends action_hand
                     ...ts_logic_framework_1.DynamicContextService.createContext({
                         iteration: i,
                     }),
-                });
+                }, context.action.debug);
                 await context.action.engine.tryRun({
                     engine: context.action.engine,
                     program: context.action.program,

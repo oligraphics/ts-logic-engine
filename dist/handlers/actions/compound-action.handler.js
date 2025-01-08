@@ -8,7 +8,7 @@ exports.CompoundActionHandler = new (class CompoundActionHandler extends action_
     async tryRun(context) {
         const debug = context.action.debug;
         const params = context.action.state.params
-            ? params_service_1.ParamsService.resolve(context.action.state.params, context.action)
+            ? params_service_1.ParamsService.resolve(context.action.state.params, context.action, debug)
             : {};
         const innerContext = ts_logic_framework_1.DynamicContextService.createContext({
             engine: context.action.engine,

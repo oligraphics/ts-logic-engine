@@ -65,7 +65,7 @@ exports.StackCounterService = new (class StackCounterService {
                 return;
             }
             const params = stack.after.params
-                ? params_service_1.ParamsService.resolve(stack.after.params, stack.action)
+                ? params_service_1.ParamsService.resolve(stack.after.params, stack.action, stack.action.debug)
                 : {};
             await stack.action.engine.tryRun({
                 engine: stack.action.engine,

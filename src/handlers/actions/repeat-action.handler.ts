@@ -47,12 +47,16 @@ export const RepeatActionHandler =
         event,
         async (event) => {
           for (let i = 0; i < event.repeat; i++) {
-            const params = ParamsService.resolve(event.params, {
-              ...context,
-              ...DynamicContextService.createContext({
-                iteration: i,
-              }),
-            });
+            const params = ParamsService.resolve(
+              event.params,
+              {
+                ...context,
+                ...DynamicContextService.createContext({
+                  iteration: i,
+                }),
+              },
+              context.action.debug,
+            );
             await context.action.engine.tryRun({
               engine: context.action.engine,
               program: context.action.program,

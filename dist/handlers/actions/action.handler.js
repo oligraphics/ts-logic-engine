@@ -54,7 +54,7 @@ class ActionHandler {
             const next = ts_logic_framework_1.LogicService.resolve(context.action.action.next, context);
             if (next) {
                 const params = context.action.action.out
-                    ? params_service_1.ParamsService.resolve(context.action.action.out, context)
+                    ? params_service_1.ParamsService.resolve(context.action.action.out, context, context.action.debug)
                     : undefined;
                 await context.action.engine.tryRun({
                     ...ts_logic_framework_1.DynamicContextService.createContext({

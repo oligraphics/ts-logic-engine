@@ -61,7 +61,7 @@ exports.ConditionActionHandler = new (class ConditionActionHandler extends actio
             console.debug('Run', subActionId);
         }
         const params = action.state.params
-            ? params_service_1.ParamsService.resolve(action.state.params, context.action)
+            ? params_service_1.ParamsService.resolve(action.state.params, context.action, debug)
             : {};
         return await engine.tryRun({
             ...ts_logic_framework_1.DynamicContextService.createContext({

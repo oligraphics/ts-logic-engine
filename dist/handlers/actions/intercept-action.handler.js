@@ -3,23 +3,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InterceptActionHandler = void 0;
 const action_handler_1 = require("./action.handler");
 const ts_logic_framework_1 = require("ts-logic-framework");
+const params_service_1 = require("../../services/params.service");
 exports.InterceptActionHandler = new (class InterceptActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
-        const debug = context.action.debug;
         const trigger = context.trigger;
+        const debug = context.action.debug || trigger.debug;
+        const innerContext = {
+            ...context.action,
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                event: context.event,
+                trigger: context.trigger,
+            }),
+        };
         const reactionId = trigger && trigger.reaction
-            ? ts_logic_framework_1.LogicService.resolve(trigger.reaction, context, debug)
+            ? ts_logic_framework_1.LogicService.resolve(trigger.reaction, innerContext, debug)
             : undefined;
         if (!reactionId) {
             if (debug) {
-                console.warn('Intercept trigger has no reaction property.', trigger);
+                console.debug('Intercept trigger has no reaction property.', trigger);
             }
             return true;
         }
         const reactions = context.action.state.actions ?? {};
         const reaction = reactions[reactionId];
         if (!reaction) {
-            if (debug || trigger.debug) {
+            if (debug) {
                 console.warn('Intercept reaction', reactionId, 'not found. Available:', Object.keys(reactions));
             }
             return true;
@@ -32,7 +40,7 @@ exports.InterceptActionHandler = new (class InterceptActionHandler extends actio
             for (const [property, value] of Object.entries(reaction.change)) {
                 const previousValue = event[property];
                 const modifiedValue = ts_logic_framework_1.LogicService.resolve(value, {
-                    ...context,
+                    ...innerContext,
                     ...ts_logic_framework_1.DynamicContextService.createContext({
                         value: previousValue,
                     }),
@@ -44,7 +52,7 @@ exports.InterceptActionHandler = new (class InterceptActionHandler extends actio
             }
         }
         if (reaction.action) {
-            const action = ts_logic_framework_1.LogicService.resolve(reaction.action, context, debug);
+            const action = ts_logic_framework_1.LogicService.resolve(reaction.action, innerContext, debug);
             if (debug) {
                 console.debug('Call action ', action, ' in response to the intercepted event', reaction.change);
             }
@@ -55,10 +63,7 @@ exports.InterceptActionHandler = new (class InterceptActionHandler extends actio
                 return true;
             }
             const params = reaction.params
-                ? Object.fromEntries(Object.entries(reaction.params).map(([key, value]) => [
-                    key,
-                    ts_logic_framework_1.LogicService.resolve(value, context, debug),
-                ]))
+                ? params_service_1.ParamsService.resolve(reaction.params, innerContext, debug)
                 : {};
             await context.action.engine.tryRun({
                 params,

@@ -105,7 +105,11 @@ export const StackCounterService = new (class StackCounterService {
         return;
       }
       const params = stack.after.params
-        ? ParamsService.resolve(stack.after.params, stack.action)
+        ? ParamsService.resolve(
+            stack.after.params,
+            stack.action,
+            stack.action.debug,
+          )
         : {};
       await stack.action.engine.tryRun({
         engine: stack.action.engine,
