@@ -20,6 +20,10 @@ export declare enum BuiltinActionTypeEnum {
      */
     MESSAGE = "message",
     /**
+     * Run a different program
+     */
+    PROGRAM = "program",
+    /**
      * Action which can repeat other actions after they are performed
      */
     REPEAT = "repeat"

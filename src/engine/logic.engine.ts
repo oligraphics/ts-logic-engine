@@ -4,11 +4,10 @@ import { IActionInstance } from '../interfaces/action-instance.interface';
 import { ActionBuilderService } from '../services/action-builder.service';
 import { IActionContext } from '../interfaces/action-context.interface';
 import { IProgram } from '../interfaces/program.interface';
-import { IEngineContext } from '../interfaces/engine-context.interface';
 import { CreateEngineOptionsDto } from '../dto/options/create-engine-options.dto';
 import { IRunProgramContext } from '../interfaces/run-program-context.interface';
 import { IActor } from '../interfaces/actor.interface';
-import { DynamicContextService } from 'ts-logic-framework';
+import { DynamicContext, DynamicContextService } from 'ts-logic-framework';
 import { TargetService } from '../services/target.service';
 import { ITargetable } from '../interfaces/target.interface';
 import { EventDto } from '../dto/events/event.dto';
@@ -22,10 +21,12 @@ import { ITriggerHandler } from '../interfaces/trigger-handler.interface';
 import { BuiltinTriggerHandlers } from '../interfaces/builtin-trigger-handlers.interface';
 
 export class LogicEngine implements IActor {
-  private readonly context: IEngineContext;
+  private readonly context: DynamicContext;
   private readonly program: IProgram | undefined;
   private readonly triggerHandlers: { [triggerType: string]: ITriggerHandler };
   private readonly actionHandlers: { [actionType: string]: IActionHandler };
+
+  readonly programs: IProgram[];
 
   private readonly eventSystem: EventSystem;
 
@@ -66,6 +67,7 @@ export class LogicEngine implements IActor {
       }),
     };
     this.program = program;
+    this.programs = options.programs ?? [];
     this.actionHandlers = options.actionHandlers;
     this.triggerHandlers = options.triggerHandlers ?? {
       ...BuiltinTriggerHandlers,

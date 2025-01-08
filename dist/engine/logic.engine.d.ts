@@ -14,6 +14,7 @@ export declare class LogicEngine implements IActor {
     private readonly program;
     private readonly triggerHandlers;
     private readonly actionHandlers;
+    readonly programs: IProgram[];
     private readonly eventSystem;
     private _listeningStackActions;
     private _listeningActions;

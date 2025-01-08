@@ -24,6 +24,10 @@ var BuiltinActionTypeEnum;
      */
     BuiltinActionTypeEnum["MESSAGE"] = "message";
     /**
+     * Run a different program
+     */
+    BuiltinActionTypeEnum["PROGRAM"] = "program";
+    /**
      * Action which can repeat other actions after they are performed
      */
     BuiltinActionTypeEnum["REPEAT"] = "repeat";

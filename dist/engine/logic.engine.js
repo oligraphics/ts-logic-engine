@@ -12,6 +12,7 @@ class LogicEngine {
     program;
     triggerHandlers;
     actionHandlers;
+    programs;
     eventSystem;
     _listeningStackActions = new Map();
     _listeningActions = new Map();
@@ -44,6 +45,7 @@ class LogicEngine {
             }),
         };
         this.program = program;
+        this.programs = options.programs ?? [];
         this.actionHandlers = options.actionHandlers;
         this.triggerHandlers = options.triggerHandlers ?? {
             ...builtin_trigger_handlers_interface_1.BuiltinTriggerHandlers,

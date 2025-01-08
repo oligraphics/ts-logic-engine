@@ -5,6 +5,7 @@ export * from './dto/actions/condition.action.dto';
 export * from './dto/actions/dummy.action.dto';
 export * from './dto/actions/intercept.action.dto';
 export * from './dto/actions/message.action.dto';
+export * from './dto/actions/program.action.dto';
 export * from './dto/actions/repeat.action.dto';
 export * from './dto/configurations/intercept-reaction.configuration.dto';
 export * from './dto/contexts/action.context.dto';

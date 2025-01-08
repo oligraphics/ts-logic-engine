@@ -1,1 +1,1 @@
-{"version":3,"file":"builtin-action-handlers.interface.d.ts","sourceRoot":"src/","sources":["interfaces/builtin-action-handlers.interface.ts"],"names":[],"mappings":"AAQA,eAAO,MAAM,qBAAqB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAOjC,CAAC"}
+{"version":3,"file":"builtin-action-handlers.interface.d.ts","sourceRoot":"src/","sources":["interfaces/builtin-action-handlers.interface.ts"],"names":[],"mappings":"AASA,eAAO,MAAM,qBAAqB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAQjC,CAAC"}

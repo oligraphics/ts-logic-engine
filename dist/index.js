@@ -21,6 +21,7 @@ __exportStar(require("./dto/actions/condition.action.dto"), exports);
 __exportStar(require("./dto/actions/dummy.action.dto"), exports);
 __exportStar(require("./dto/actions/intercept.action.dto"), exports);
 __exportStar(require("./dto/actions/message.action.dto"), exports);
+__exportStar(require("./dto/actions/program.action.dto"), exports);
 __exportStar(require("./dto/actions/repeat.action.dto"), exports);
 __exportStar(require("./dto/configurations/intercept-reaction.configuration.dto"), exports);
 __exportStar(require("./dto/contexts/action.context.dto"), exports);

@@ -45,6 +45,15 @@ export declare const BuiltinActionHandlers: {
         onEvent(action: import("..").ActionInstanceDto<import("..").MessageActionDto, import("..").MessageActionStateDto>, event: import("..").EventDto, phase: import("..").EventPhaseEnum): Promise<void>;
         setAttached(effect: import("..").StatusStateDto, triggerContext: import("..").TriggerContextDto<import("..").MessageActionDto, import("..").MessageActionStateDto>): void;
     };
+    program: {
+        tryRun(context: import("..").TriggerContextDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>): Promise<boolean>;
+        apply(context: import("..").TriggerContextDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>): Promise<boolean>;
+        trigger(context: import("..").TriggerContextDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>): Promise<boolean>;
+        perform(context: import("..").TriggerContextDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>, callNext: boolean): Promise<boolean>;
+        remove(action: import("..").ActionInstanceDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>): void;
+        onEvent(action: import("..").ActionInstanceDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>, event: import("..").EventDto, phase: import("..").EventPhaseEnum): Promise<void>;
+        setAttached(effect: import("..").StatusStateDto, triggerContext: import("..").TriggerContextDto<import("..").ProgramActionDto, import("..").ProgramActionStateDto>): void;
+    };
     repeat: {
         tryRun(context: import("..").TriggerContextDto<import("..").RepeatActionDto, import("..").RepeatActionStateDto>): Promise<boolean>;
         apply(context: import("..").TriggerContextDto<import("..").RepeatActionDto, import("..").RepeatActionStateDto>): Promise<boolean>;
