@@ -190,7 +190,7 @@ export class EventSystem {
       try {
         await listener.action.engine.trigger(listener, event);
       } catch (e) {
-        console.error(e);
+        console.error(e, 'event:', event, 'listener:', listener);
       }
 
       if (event.cancelable && event.canceled) {
