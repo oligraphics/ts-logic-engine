@@ -23,16 +23,16 @@ export const CompoundActionHandler =
             debug,
           )
         : {};
-      const innerContext = DynamicContextService.createContext(
-        {
+      const innerContext = {
+        params,
+        ...DynamicContextService.createContext({
           engine: context.action.engine,
           program: context.action.program,
           initiator: context.action.initiator,
           source: context.action.source,
           debug,
-        },
-        params,
-      );
+        }),
+      };
       for (const subActionReference of context.action.state.compound) {
         const subActionId = LogicService.resolve<string>(
           subActionReference,
@@ -50,7 +50,9 @@ export const CompoundActionHandler =
         if (
           !(await context.action.engine.tryRun({
             ...innerContext,
-            actionId: subActionId,
+            ...DynamicContextService.createContext({
+              actionId: subActionId,
+            }),
           }))
         ) {
           if (debug) {

@@ -10,13 +10,16 @@ exports.CompoundActionHandler = new (class CompoundActionHandler extends action_
         const params = context.action.state.params
             ? params_service_1.ParamsService.resolve(context.action.state.params, context.action, debug)
             : {};
-        const innerContext = ts_logic_framework_1.DynamicContextService.createContext({
-            engine: context.action.engine,
-            program: context.action.program,
-            initiator: context.action.initiator,
-            source: context.action.source,
-            debug,
-        }, params);
+        const innerContext = {
+            params,
+            ...ts_logic_framework_1.DynamicContextService.createContext({
+                engine: context.action.engine,
+                program: context.action.program,
+                initiator: context.action.initiator,
+                source: context.action.source,
+                debug,
+            }),
+        };
         for (const subActionReference of context.action.state.compound) {
             const subActionId = ts_logic_framework_1.LogicService.resolve(subActionReference, context);
             if (!subActionId) {
@@ -27,7 +30,9 @@ exports.CompoundActionHandler = new (class CompoundActionHandler extends action_
             }
             if (!(await context.action.engine.tryRun({
                 ...innerContext,
-                actionId: subActionId,
+                ...ts_logic_framework_1.DynamicContextService.createContext({
+                    actionId: subActionId,
+                }),
             }))) {
                 if (debug) {
                     console.warn('Compound action', subActionId, 'failed.');
