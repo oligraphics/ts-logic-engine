@@ -6,6 +6,8 @@ import { ITargetable } from '../../interfaces/target.interface';
 export type ActionStateDto = object;
 
 export type ActionDto = {
+  name?: string;
+  description?: string;
   type: string;
   attachable?: boolean;
   properties?: { [key: string]: Computable<unknown> };

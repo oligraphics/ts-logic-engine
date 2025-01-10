@@ -4,6 +4,8 @@ import { StackCounterDto } from '../stacks/stack-counter.dto';
 import { ITargetable } from '../../interfaces/target.interface';
 export type ActionStateDto = object;
 export type ActionDto = {
+    name?: string;
+    description?: string;
     type: string;
     attachable?: boolean;
     properties?: {
