@@ -17,8 +17,10 @@ export const InterceptActionHandler =
     async tryRun(
       context: TriggerContextDto<InterceptActionDto, InterceptActionStateDto>,
     ): Promise<boolean> {
-      const trigger = context.trigger as ActionTriggerDto;
-      const debug = context.action.debug || trigger.debug;
+      const trigger = context.trigger
+        ? (context.trigger as ActionTriggerDto)
+        : undefined;
+      const debug = context.action.debug || trigger?.debug;
       const innerContext = {
         ...context.action,
         ...DynamicContextService.createContext({

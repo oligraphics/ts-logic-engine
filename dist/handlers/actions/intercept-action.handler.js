@@ -6,8 +6,10 @@ const ts_logic_framework_1 = require("ts-logic-framework");
 const params_service_1 = require("../../services/params.service");
 exports.InterceptActionHandler = new (class InterceptActionHandler extends action_handler_1.ActionHandler {
     async tryRun(context) {
-        const trigger = context.trigger;
-        const debug = context.action.debug || trigger.debug;
+        const trigger = context.trigger
+            ? context.trigger
+            : undefined;
+        const debug = context.action.debug || trigger?.debug;
         const innerContext = {
             ...context.action,
             ...ts_logic_framework_1.DynamicContextService.createContext({
