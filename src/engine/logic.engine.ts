@@ -115,7 +115,6 @@ export class LogicEngine implements IActor {
       },
       () =>
         this.run({
-          ...this.context,
           ...context,
         }),
       context.program.debug,
@@ -135,6 +134,7 @@ export class LogicEngine implements IActor {
       );
     }
     const actionContext = {
+      ...this.context,
       ...DynamicContextService.createContext(
         {
           engine: context.engine,

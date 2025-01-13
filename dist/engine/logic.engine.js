@@ -84,7 +84,6 @@ class LogicEngine {
             source: context.source,
             params: context.params,
         }, () => this.run({
-            ...this.context,
             ...context,
         }), context.program.debug);
     }
@@ -94,6 +93,7 @@ class LogicEngine {
             console.error('Action', context.actionId, 'not found in program', context.program.id, '. Available:', ...Object.keys(context.program.actions));
         }
         const actionContext = {
+            ...this.context,
             ...ts_logic_framework_1.DynamicContextService.createContext({
                 engine: context.engine,
                 initiator: context.initiator,
