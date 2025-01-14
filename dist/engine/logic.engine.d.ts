@@ -1,4 +1,4 @@
-import { EventBus } from 'ts-event-bus';
+import { AsyncEventBus } from 'ts-event-bus';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { IActionContext } from '../interfaces/action-context.interface';
@@ -21,7 +21,7 @@ export declare class LogicEngine implements IActor {
     get id(): string;
     get name(): string;
     get allowTargeting(): boolean;
-    get bus(): EventBus;
+    get bus(): AsyncEventBus;
     toJSON(): {
         id: string;
         name: string;

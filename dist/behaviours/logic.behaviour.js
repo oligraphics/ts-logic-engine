@@ -8,11 +8,11 @@ class LogicBehaviour extends ts_state_machines_1.Behaviour {
     constructor(engine) {
         super();
         this.engine = engine;
-        this.completionListener = () => this.complete();
-        this.engine.bus.on('stop', () => this.completionListener);
+        this.completionListener = async () => this.complete();
+        this.engine.bus.on('stop', this.completionListener);
     }
-    initialize() {
-        this.engine.start();
+    async initialize() {
+        await this.engine.start();
     }
     update(deltaTime) {
         this.engine.update(deltaTime);

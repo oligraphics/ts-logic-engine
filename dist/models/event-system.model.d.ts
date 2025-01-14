@@ -1,4 +1,4 @@
-import { EventBus } from 'ts-event-bus';
+import { AsyncEventBus } from 'ts-event-bus';
 import { EventDto } from '../dto/events/event.dto';
 import { IEventSource } from '../interfaces/event-source.interface';
 import { EventPhaseEnum } from '../enums/event-phase.enum';
@@ -7,7 +7,7 @@ import { LogicEngine } from '../engine/logic.engine';
 type EventListeners = Map<string, PhaseListeners>;
 type PhaseListeners = Map<string, ITriggerInstance>;
 export declare class EventSystem {
-    readonly bus: EventBus;
+    readonly bus: AsyncEventBus;
     readonly engine: LogicEngine;
     private readonly listeners;
     constructor(engine: LogicEngine);

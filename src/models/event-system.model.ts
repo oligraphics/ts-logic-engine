@@ -1,4 +1,4 @@
-import { EventBus } from 'ts-event-bus';
+import { AsyncEventBus } from 'ts-event-bus';
 import { EventDto } from '../dto/events/event.dto';
 import { IEventSource } from '../interfaces/event-source.interface';
 import { EventPhaseEnum } from '../enums/event-phase.enum';
@@ -14,7 +14,7 @@ type EventListeners = Map<string, PhaseListeners>;
 type PhaseListeners = Map<string, ITriggerInstance>;
 
 export class EventSystem {
-  readonly bus: EventBus = new EventBus();
+  readonly bus: AsyncEventBus = new AsyncEventBus();
   readonly engine: LogicEngine;
 
   private readonly listeners = new Map<string, EventListeners>();
@@ -50,7 +50,7 @@ export class EventSystem {
       if (debug) {
         console.debug('Call the event', event.type, 'publicly');
       }
-      this.bus.trigger(event.type, event);
+      await this.bus.trigger(event.type, event);
       return true;
     }
     if (
@@ -93,7 +93,7 @@ export class EventSystem {
       return false;
     }
     event.performed = true;
-    this.bus.trigger(event.type, event);
+    await this.bus.trigger(event.type, event);
     await this._callPhase(
       eventListeners,
       source,

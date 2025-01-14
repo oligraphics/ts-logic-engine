@@ -4,7 +4,7 @@ export declare class LogicBehaviour extends Behaviour {
     private readonly engine;
     private readonly completionListener;
     constructor(engine: LogicEngine);
-    initialize(): void;
+    initialize(): Promise<void>;
     update(deltaTime: number): void;
     onComplete(): void;
 }

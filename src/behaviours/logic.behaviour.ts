@@ -3,17 +3,17 @@ import { LogicEngine } from '../engine/logic.engine';
 
 export class LogicBehaviour extends Behaviour {
   private readonly engine: LogicEngine;
-  private readonly completionListener: () => void;
+  private readonly completionListener: () => Promise<void>;
 
   constructor(engine: LogicEngine) {
     super();
     this.engine = engine;
-    this.completionListener = () => this.complete();
-    this.engine.bus.on('stop', () => this.completionListener);
+    this.completionListener = async () => this.complete();
+    this.engine.bus.on('stop', this.completionListener);
   }
 
-  initialize() {
-    this.engine.start();
+  async initialize() {
+    await this.engine.start();
   }
 
   update(deltaTime: number) {

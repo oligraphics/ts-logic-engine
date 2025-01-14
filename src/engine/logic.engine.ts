@@ -1,4 +1,4 @@
-import { EventBus } from 'ts-event-bus';
+import { AsyncEventBus } from 'ts-event-bus';
 import { IActionHandler } from '../interfaces/action-handler.interface';
 import { IActionInstance } from '../interfaces/action-instance.interface';
 import { ActionBuilderService } from '../services/action-builder.service';
@@ -45,7 +45,7 @@ export class LogicEngine implements IActor {
     return true;
   }
 
-  get bus(): EventBus {
+  get bus(): AsyncEventBus {
     return this.eventSystem.bus;
   }
 

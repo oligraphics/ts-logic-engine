@@ -5,7 +5,7 @@ const ts_event_bus_1 = require("ts-event-bus");
 const event_phase_enum_1 = require("../enums/event-phase.enum");
 const ts_logic_framework_1 = require("ts-logic-framework");
 class EventSystem {
-    bus = new ts_event_bus_1.EventBus();
+    bus = new ts_event_bus_1.AsyncEventBus();
     engine;
     listeners = new Map();
     constructor(engine) {
@@ -29,7 +29,7 @@ class EventSystem {
             if (debug) {
                 console.debug('Call the event', event.type, 'publicly');
             }
-            this.bus.trigger(event.type, event);
+            await this.bus.trigger(event.type, event);
             return true;
         }
         if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW, debug))) {
@@ -48,7 +48,7 @@ class EventSystem {
             return false;
         }
         event.performed = true;
-        this.bus.trigger(event.type, event);
+        await this.bus.trigger(event.type, event);
         await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED, debug);
         await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER, debug);
         return true;
