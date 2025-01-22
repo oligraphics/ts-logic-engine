@@ -25,6 +25,8 @@ export const TargetService = new (class TargetService {
           ? [<ITargetable>result]
           : [];
     }
-    return action.targets ? validTargets : [new GroupTarget(validTargets)];
+    return action.targets || validTargets.length <= 1
+      ? validTargets
+      : [new GroupTarget(validTargets)];
   }
 })();

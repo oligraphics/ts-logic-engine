@@ -22,7 +22,9 @@ exports.TargetService = new (class TargetService {
                     ? [result]
                     : [];
         }
-        return action.targets ? validTargets : [new group_target_model_1.GroupTarget(validTargets)];
+        return action.targets || validTargets.length <= 1
+            ? validTargets
+            : [new group_target_model_1.GroupTarget(validTargets)];
     }
 })();
 //# sourceMappingURL=target.service.js.map
