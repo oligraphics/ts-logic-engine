@@ -112,7 +112,7 @@ class EventSystem {
         }
         return !event.cancelable || !event.canceled;
     }
-    attachTriggers(triggers) {
+    attachTriggers(triggers, debug) {
         for (const trigger of triggers) {
             const eventListeners = this.listeners.get(trigger.event) ?? new Map();
             const phaseListeners = eventListeners.get(trigger.phase) ??
@@ -120,12 +120,12 @@ class EventSystem {
             phaseListeners.set(trigger.id, trigger);
             eventListeners.set(trigger.phase, phaseListeners);
             this.listeners.set(trigger.event, eventListeners);
-            if (trigger.debug) {
+            if (trigger.debug || debug) {
                 console.debug('Attach trigger', trigger.event, '>', trigger.phase);
             }
         }
     }
-    detachTriggers(triggers) {
+    detachTriggers(triggers, debug) {
         for (const trigger of triggers) {
             const eventListeners = this.listeners.get(trigger.event);
             if (eventListeners) {
@@ -134,7 +134,7 @@ class EventSystem {
                     phaseListeners.delete(trigger.id);
                 }
             }
-            if (trigger.debug) {
+            if (trigger.debug || debug) {
                 console.debug('Detach trigger', trigger.event, '>', trigger.phase);
             }
         }

@@ -201,7 +201,7 @@ export class EventSystem {
     return !event.cancelable || !event.canceled;
   }
 
-  attachTriggers(triggers: ITriggerInstance[]) {
+  attachTriggers(triggers: ITriggerInstance[], debug?: boolean) {
     for (const trigger of triggers) {
       const eventListeners =
         this.listeners.get(trigger.event) ?? new Map<string, PhaseListeners>();
@@ -211,13 +211,13 @@ export class EventSystem {
       phaseListeners.set(trigger.id, trigger);
       eventListeners.set(trigger.phase, phaseListeners);
       this.listeners.set(trigger.event, eventListeners);
-      if (trigger.debug) {
+      if (trigger.debug || debug) {
         console.debug('Attach trigger', trigger.event, '>', trigger.phase);
       }
     }
   }
 
-  detachTriggers(triggers: ITriggerInstance[]) {
+  detachTriggers(triggers: ITriggerInstance[], debug?: boolean) {
     for (const trigger of triggers) {
       const eventListeners = this.listeners.get(trigger.event);
       if (eventListeners) {
@@ -226,7 +226,7 @@ export class EventSystem {
           phaseListeners.delete(trigger.id);
         }
       }
-      if (trigger.debug) {
+      if (trigger.debug || debug) {
         console.debug('Detach trigger', trigger.event, '>', trigger.phase);
       }
     }

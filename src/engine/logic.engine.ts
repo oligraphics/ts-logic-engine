@@ -248,8 +248,8 @@ export class LogicEngine implements IActor {
     handler.remove(action);
   }
 
-  attachStack(action: IActionInstance) {
-    if (action.debug) {
+  attachStack(action: IActionInstance, debug?: boolean) {
+    if (action.debug || debug) {
       console.debug(
         'Attach stack of action',
         action.program.id,
@@ -259,13 +259,13 @@ export class LogicEngine implements IActor {
     }
     const stack = action.stack;
     if (stack) {
-      this.eventSystem.attachTriggers(stack.triggers);
+      this.eventSystem.attachTriggers(stack.triggers, action.debug || debug);
     }
     this._listeningStackActions.set(action.id, action);
   }
 
-  detachStack(action: IActionInstance) {
-    if (action.debug) {
+  detachStack(action: IActionInstance, debug?: boolean) {
+    if (action.debug || debug) {
       console.debug(
         'Detach stack of action',
         action.program.id,
@@ -275,13 +275,13 @@ export class LogicEngine implements IActor {
     }
     const stack = action.stack;
     if (stack) {
-      this.eventSystem.detachTriggers(stack.triggers);
+      this.eventSystem.detachTriggers(stack.triggers, action.debug || debug);
     }
     this._listeningStackActions.delete(action.id);
   }
 
-  attachTriggers(action: IActionInstance) {
-    if (action.debug) {
+  attachTriggers(action: IActionInstance, debug?: boolean) {
+    if (action.debug || debug) {
       console.debug(
         'Attach triggers of action',
         action.program.id,
@@ -291,11 +291,11 @@ export class LogicEngine implements IActor {
     }
     this._listeningActions.set(action.id, action);
     if (action.triggers) {
-      this.eventSystem.attachTriggers(action.triggers);
+      this.eventSystem.attachTriggers(action.triggers, action.debug || debug);
     }
   }
 
-  detachTriggers(action: IActionInstance) {
+  detachTriggers(action: IActionInstance, debug?: boolean) {
     if (action.debug) {
       console.debug(
         'Detach triggers of action',
@@ -306,7 +306,7 @@ export class LogicEngine implements IActor {
     }
     this._listeningActions.delete(action.id);
     if (action.triggers) {
-      this.eventSystem.detachTriggers(action.triggers);
+      this.eventSystem.detachTriggers(action.triggers, action.debug || debug);
     }
   }
 }

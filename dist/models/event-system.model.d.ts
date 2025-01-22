@@ -14,8 +14,8 @@ export declare class EventSystem {
     callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean | void>, debug?: boolean): Promise<boolean>;
     _callCanceled(eventListeners: EventListeners, source: IEventSource, event: EventDto): Promise<void>;
     _callPhase(eventListeners: EventListeners, source: IEventSource, event: EventDto, phase: EventPhaseEnum, debug?: boolean): Promise<boolean>;
-    attachTriggers(triggers: ITriggerInstance[]): void;
-    detachTriggers(triggers: ITriggerInstance[]): void;
+    attachTriggers(triggers: ITriggerInstance[], debug?: boolean): void;
+    detachTriggers(triggers: ITriggerInstance[], debug?: boolean): void;
 }
 export {};
 //# sourceMappingURL=event-system.model.d.ts.map

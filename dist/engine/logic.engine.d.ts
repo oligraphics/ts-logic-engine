@@ -37,9 +37,9 @@ export declare class LogicEngine implements IActor {
     callEvent<T extends EventDto>(source: IEventSource, event: T, perform?: (event: T) => Promise<boolean | void>, debug?: boolean): Promise<boolean>;
     trigger(trigger: ITriggerInstance, event: EventDto): Promise<void>;
     remove(action: IActionInstance): void;
-    attachStack(action: IActionInstance): void;
-    detachStack(action: IActionInstance): void;
-    attachTriggers(action: IActionInstance): void;
-    detachTriggers(action: IActionInstance): void;
+    attachStack(action: IActionInstance, debug?: boolean): void;
+    detachStack(action: IActionInstance, debug?: boolean): void;
+    attachTriggers(action: IActionInstance, debug?: boolean): void;
+    detachTriggers(action: IActionInstance, debug?: boolean): void;
 }
 //# sourceMappingURL=logic.engine.d.ts.map

@@ -163,42 +163,42 @@ class LogicEngine {
         }
         handler.remove(action);
     }
-    attachStack(action) {
-        if (action.debug) {
+    attachStack(action, debug) {
+        if (action.debug || debug) {
             console.debug('Attach stack of action', action.program.id, '>', action.actionId);
         }
         const stack = action.stack;
         if (stack) {
-            this.eventSystem.attachTriggers(stack.triggers);
+            this.eventSystem.attachTriggers(stack.triggers, action.debug || debug);
         }
         this._listeningStackActions.set(action.id, action);
     }
-    detachStack(action) {
-        if (action.debug) {
+    detachStack(action, debug) {
+        if (action.debug || debug) {
             console.debug('Detach stack of action', action.program.id, '>', action.actionId);
         }
         const stack = action.stack;
         if (stack) {
-            this.eventSystem.detachTriggers(stack.triggers);
+            this.eventSystem.detachTriggers(stack.triggers, action.debug || debug);
         }
         this._listeningStackActions.delete(action.id);
     }
-    attachTriggers(action) {
-        if (action.debug) {
+    attachTriggers(action, debug) {
+        if (action.debug || debug) {
             console.debug('Attach triggers of action', action.program.id, '>', action.actionId);
         }
         this._listeningActions.set(action.id, action);
         if (action.triggers) {
-            this.eventSystem.attachTriggers(action.triggers);
+            this.eventSystem.attachTriggers(action.triggers, action.debug || debug);
         }
     }
-    detachTriggers(action) {
+    detachTriggers(action, debug) {
         if (action.debug) {
             console.debug('Detach triggers of action', action.program.id, '>', action.actionId);
         }
         this._listeningActions.delete(action.id);
         if (action.triggers) {
-            this.eventSystem.detachTriggers(action.triggers);
+            this.eventSystem.detachTriggers(action.triggers, action.debug || debug);
         }
     }
 }
