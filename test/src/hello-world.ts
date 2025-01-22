@@ -22,7 +22,7 @@ const engine = new LogicEngine(program, {
 });
 engine.bus.on(
   BuiltinEventTypeEnum.MESSAGE,
-  (event: MessageEventDto | undefined) => console.log(event?.message),
+  async (event: MessageEventDto | undefined) => console.log(event?.message),
 );
 engine
   .start()

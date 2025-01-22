@@ -8,10 +8,14 @@ exports.MessageActionHandler = new (class MessageActionHandler extends action_ha
     async tryRun(context) {
         const { action } = context;
         const { state, debug } = action;
-        const message = ts_logic_framework_1.LogicService.resolve(state.message, context, debug);
+        const innerContext = {
+            ...context,
+            ...action,
+        };
+        const message = ts_logic_framework_1.LogicService.resolve(state.message, innerContext, debug);
         if (!message) {
             if (debug) {
-                console.error('Action generated no message', context.action.state);
+                console.error('Action generated no message', state);
             }
             return false;
         }
@@ -19,23 +23,22 @@ exports.MessageActionHandler = new (class MessageActionHandler extends action_ha
         if (state.variables) {
             for (const [key, valueBuilder] of Object.entries(state.variables)) {
                 variables[key] =
-                    ts_logic_framework_1.LogicService.resolve(valueBuilder, context, debug) ?? '';
+                    ts_logic_framework_1.LogicService.resolve(valueBuilder, innerContext, debug) ?? '';
             }
         }
         const data = {};
         if (state.data) {
             for (const [key, valueBuilder] of Object.entries(state.data)) {
-                data[key] = ts_logic_framework_1.LogicService.resolve(valueBuilder, context, debug);
+                data[key] = ts_logic_framework_1.LogicService.resolve(valueBuilder, innerContext, debug);
             }
         }
-        return await context.action.engine.callEvent(context.action, {
+        return await action.engine.callEvent(action, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.MESSAGE,
-            action,
             message,
             variables,
             data,
         }, async (event) => {
-            if (context.action.debug) {
+            if (debug) {
                 console.log('DEBUG Message:', event.message);
             }
             return true;

@@ -11,7 +11,7 @@ class EventSystem {
     constructor(engine) {
         this.engine = engine;
     }
-    async callEvent(source, event, perform, debug) {
+    async callEvent(event, perform, debug) {
         if (debug) {
             console.debug('Call event', event.type);
         }
@@ -32,32 +32,32 @@ class EventSystem {
             await this.bus.trigger(event.type, event);
             return true;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.ALLOW, debug))) {
+        if (!(await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.ALLOW, debug))) {
             return false;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PREPARE, debug))) {
-            await this._callCanceled(eventListeners, source, event);
+        if (!(await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.PREPARE, debug))) {
+            await this._callCanceled(eventListeners, event);
             return false;
         }
-        if (!(await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORM, debug))) {
-            await this._callCanceled(eventListeners, source, event);
+        if (!(await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.PERFORM, debug))) {
+            await this._callCanceled(eventListeners, event);
             return false;
         }
         if (perform && (await perform(event)) === false) {
-            await this._callCanceled(eventListeners, source, event);
+            await this._callCanceled(eventListeners, event);
             return false;
         }
         event.performed = true;
         await this.bus.trigger(event.type, event);
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.PERFORMED, debug);
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER, debug);
+        await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.PERFORMED, debug);
+        await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.AFTER, debug);
         return true;
     }
-    async _callCanceled(eventListeners, source, event) {
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.CANCELED);
-        await this._callPhase(eventListeners, source, event, event_phase_enum_1.EventPhaseEnum.AFTER);
+    async _callCanceled(eventListeners, event) {
+        await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.CANCELED);
+        await this._callPhase(eventListeners, event, event_phase_enum_1.EventPhaseEnum.AFTER);
     }
-    async _callPhase(eventListeners, source, event, phase, debug) {
+    async _callPhase(eventListeners, event, phase, debug) {
         if (debug) {
             console.debug('Call phase', phase, 'for event', event.type);
         }
@@ -72,7 +72,6 @@ class EventSystem {
             console.debug(phaseListeners.size, 'listeners found');
         }
         const context = ts_logic_framework_1.DynamicContextService.createContext({
-            source,
             event,
             phase,
         });

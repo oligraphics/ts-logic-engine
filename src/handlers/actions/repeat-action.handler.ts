@@ -8,6 +8,8 @@ import { DynamicContextService, LogicService } from 'ts-logic-framework';
 import { RepeatActionEventDto } from '../../dto/events/repeat-action.event.dto';
 import { BuiltinEventTypeEnum } from '../../enums/builtin-event-type.enum';
 import { ParamsService } from '../../services/params.service';
+import { ITargetable } from '../../interfaces/target.interface';
+import { IActor } from '../../interfaces/actor.interface';
 
 export const RepeatActionHandler =
   new (class RepeatActionHandler extends ActionHandler<
@@ -17,17 +19,24 @@ export const RepeatActionHandler =
     async tryRun(
       context: TriggerContextDto<RepeatActionDto, RepeatActionStateDto>,
     ): Promise<boolean> {
+      const { action } = context;
+      const { state, debug } = action;
+      const innerContext = {
+        ...context,
+        ...action,
+      };
+
       const repeat =
-        LogicService.resolve<number>(context.action.state.repeat, context) ?? 0;
-      if (context.action.debug) {
+        LogicService.resolve<number>(state.repeat, innerContext) ?? 0;
+      if (debug) {
         console.warn(`Repeat action repeats ${repeat} times`);
       }
       if (repeat <= 0) {
         return true;
       }
       const repeatAction = LogicService.resolve<string>(
-        context.action.state.action,
-        context,
+        state.action,
+        innerContext,
       );
       if (!repeatAction) {
         console.warn(`Repeat action produced no action to repeat`);
@@ -36,32 +45,34 @@ export const RepeatActionHandler =
 
       const event = <RepeatActionEventDto>{
         type: BuiltinEventTypeEnum.REPEAT_ACTION,
-        action: context.action,
         repeat,
         repeatAction,
-        params: context.action.state.params ?? {},
+        params: state.params ?? {},
         cancelable: true,
       };
-      return await context.action.engine.callEvent(
-        context.action.source,
+      return await action.engine.callEvent(
+        action,
         event,
         async (event) => {
           for (let i = 0; i < event.repeat; i++) {
             const params = ParamsService.resolve(
               event.params,
               {
-                ...context,
+                ...innerContext,
                 ...DynamicContextService.createContext({
                   iteration: i,
                 }),
               },
-              context.action.debug,
+              debug,
             );
-            await context.action.engine.tryRun({
-              engine: context.action.engine,
-              program: context.action.program,
-              initiator: context.action.source,
-              source: context.action.source,
+            await action.engine.tryRun({
+              engine: action.engine,
+              program: action.program,
+              initiator: action.source,
+              source:
+                (action.target as IActor)?.id !== undefined
+                  ? (action.target as IActor)
+                  : action.source,
               actionId: repeatAction,
               params,
             });

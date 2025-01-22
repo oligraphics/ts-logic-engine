@@ -18,14 +18,18 @@ export const MessageActionHandler =
     ): Promise<boolean> {
       const { action } = context;
       const { state, debug } = action;
+      const innerContext = {
+        ...context,
+        ...action,
+      };
       const message = LogicService.resolve<string>(
         state.message,
-        context,
+        innerContext,
         debug,
       );
       if (!message) {
         if (debug) {
-          console.error('Action generated no message', context.action.state);
+          console.error('Action generated no message', state);
         }
         return false;
       }
@@ -34,28 +38,27 @@ export const MessageActionHandler =
       if (state.variables) {
         for (const [key, valueBuilder] of Object.entries(state.variables)) {
           variables[key] =
-            LogicService.resolve(valueBuilder, context, debug) ?? '';
+            LogicService.resolve(valueBuilder, innerContext, debug) ?? '';
         }
       }
 
       const data: { [key: string]: string | undefined } = {};
       if (state.data) {
         for (const [key, valueBuilder] of Object.entries(state.data)) {
-          data[key] = LogicService.resolve(valueBuilder, context, debug);
+          data[key] = LogicService.resolve(valueBuilder, innerContext, debug);
         }
       }
 
-      return await context.action.engine.callEvent(
-        context.action,
+      return await action.engine.callEvent(
+        action,
         <MessageEventDto>{
           type: BuiltinEventTypeEnum.MESSAGE,
-          action,
           message,
           variables,
           data,
         },
         async (event) => {
-          if (context.action.debug) {
+          if (debug) {
             console.log('DEBUG Message:', event.message);
           }
           return true;

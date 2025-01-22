@@ -25,7 +25,7 @@ const engine = new LogicEngine(program, {
   actionHandlers,
 });
 // Demonstrate that you can listen to engine events from outside
-engine.bus.on(BuiltinEventTypeEnum.MESSAGE, (event) =>
+engine.bus.on(BuiltinEventTypeEnum.MESSAGE, async (event) =>
   console.log(
     'Message:',
     (<MessageEventDto>event).message,

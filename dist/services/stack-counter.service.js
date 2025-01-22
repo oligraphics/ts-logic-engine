@@ -17,7 +17,6 @@ exports.StackCounterService = new (class StackCounterService {
         const change = newValue - oldValue;
         const event = {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.STACK_CHANGE,
-            action: context.action,
             stack,
             method,
             amount,
@@ -26,7 +25,7 @@ exports.StackCounterService = new (class StackCounterService {
             change,
             cancelable: true,
         };
-        const success = await action.engine.callEvent(trigger.action.target, event, async (event) => {
+        const success = await action.engine.callEvent(trigger.action, event, async (event) => {
             stack.value = counter_method_service_1.CounterMethodService.getChangedValue(stack.value, event.method, event.amount);
             return true;
         }, trigger.action.debug);
@@ -53,7 +52,7 @@ exports.StackCounterService = new (class StackCounterService {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.STACK_REMOVE,
             stack,
         };
-        await stack.action.engine.callEvent(stack.action.target, event, async () => {
+        await stack.action.engine.callEvent(stack.action, event, async () => {
             stack.action.engine.remove(stack.action);
         }, stack.action.debug);
         if (stack.after) {

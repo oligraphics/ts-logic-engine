@@ -3,6 +3,7 @@ import { ITriggerInstance } from './trigger-instance.interface';
 import { IActionContext } from './action-context.interface';
 import { IStackCounterInstance } from './stack-counter-instance.interface';
 import { ActionStateDto } from '../dto/actions/action.dto';
+import { IEventSource } from './event-source.interface';
 export type IActionInstance = {
     get id(): string;
     get state(): ActionStateDto;
@@ -10,5 +11,5 @@ export type IActionInstance = {
     stack: IStackCounterInstance | undefined;
     get statusEffect(): StatusStateDto | undefined;
     get debug(): boolean | undefined;
-} & IActionContext;
+} & IActionContext & IEventSource;
 //# sourceMappingURL=action-instance.interface.d.ts.map

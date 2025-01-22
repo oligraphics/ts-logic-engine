@@ -76,7 +76,11 @@ class LogicEngine {
         this.bus.trigger('update', deltaTime);
     }
     async tryRun(context) {
-        return await this.callEvent(context.source, {
+        return await this.callEvent({
+            initiator: context.initiator,
+            source: context.source,
+            target: context.source,
+        }, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.PROGRAM,
             engine: context.engine,
             program: context.program,
@@ -129,9 +133,8 @@ class LogicEngine {
             throw new Error(`No action handler found for action of type ${context.action.type}\n${JSON.stringify(context.action, null, 2)}`);
         }
         const instance = action_builder_service_1.ActionBuilderService.build(context, { ...context.action.properties, ...context.action.computed }, context.params);
-        return this.callEvent(context.source, {
+        return this.callEvent(instance, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.ACTION,
-            action: instance,
             cancelable: true,
         }, () => {
             return resolver.apply({
@@ -144,7 +147,15 @@ class LogicEngine {
         }, context.action.debug);
     }
     async callEvent(source, event, perform, debug) {
-        return await this.eventSystem.callEvent(source, event, perform, debug);
+        return await this.eventSystem.callEvent({
+            action: source?.actionId
+                ? source
+                : source.action,
+            initiator: source.initiator,
+            source: source.source,
+            target: source.target,
+            ...event,
+        }, perform, debug);
     }
     async trigger(trigger, event) {
         const handler = this.triggerHandlers[trigger.type];

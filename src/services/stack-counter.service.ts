@@ -35,7 +35,6 @@ export const StackCounterService = new (class StackCounterService {
     const change = newValue - oldValue;
     const event: StackChangeEventDto = <StackChangeEventDto>{
       type: BuiltinEventTypeEnum.STACK_CHANGE,
-      action: context.action,
       stack,
       method,
       amount,
@@ -45,7 +44,7 @@ export const StackCounterService = new (class StackCounterService {
       cancelable: true,
     };
     const success = await action.engine.callEvent(
-      trigger.action.target,
+      trigger.action,
       event,
       async (event) => {
         stack.value = CounterMethodService.getChangedValue(
@@ -86,7 +85,7 @@ export const StackCounterService = new (class StackCounterService {
       stack,
     };
     await stack.action.engine.callEvent(
-      stack.action.target,
+      stack.action,
       event,
       async () => {
         stack.action.engine.remove(stack.action);

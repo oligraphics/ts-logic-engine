@@ -104,7 +104,11 @@ export class LogicEngine implements IActor {
 
   async tryRun(context: IRunProgramContext): Promise<boolean> {
     return await this.callEvent(
-      context.source,
+      {
+        initiator: context.initiator,
+        source: context.source,
+        target: context.source,
+      },
       <ProgramEventDto>{
         type: BuiltinEventTypeEnum.PROGRAM,
         engine: context.engine,
@@ -193,10 +197,9 @@ export class LogicEngine implements IActor {
       context.params,
     );
     return this.callEvent(
-      context.source,
+      instance,
       <ActionEventDto>{
         type: BuiltinEventTypeEnum.ACTION,
-        action: instance,
         cancelable: true,
       },
       () => {
@@ -218,7 +221,19 @@ export class LogicEngine implements IActor {
     perform?: (event: T) => Promise<boolean | void>,
     debug?: boolean,
   ): Promise<boolean> {
-    return await this.eventSystem.callEvent(source, event, perform, debug);
+    return await this.eventSystem.callEvent(
+      {
+        action: (source as IActionInstance)?.actionId
+          ? (source as IActionInstance)
+          : source.action,
+        initiator: source.initiator,
+        source: source.source,
+        target: source.target,
+        ...event,
+      },
+      perform,
+      debug,
+    );
   }
 
   async trigger(trigger: ITriggerInstance, event: EventDto) {

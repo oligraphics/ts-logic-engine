@@ -1,6 +1,5 @@
 import { AsyncEventBus } from 'ts-event-bus';
 import { EventDto } from '../dto/events/event.dto';
-import { IEventSource } from '../interfaces/event-source.interface';
 import { EventPhaseEnum } from '../enums/event-phase.enum';
 import {
   Condition,
@@ -24,7 +23,6 @@ export class EventSystem {
   }
 
   async callEvent<T extends EventDto>(
-    source: IEventSource,
     event: T,
     perform?: (event: T) => Promise<boolean | void>,
     debug?: boolean,
@@ -56,7 +54,6 @@ export class EventSystem {
     if (
       !(await this._callPhase(
         eventListeners,
-        source,
         event,
         EventPhaseEnum.ALLOW,
         debug,
@@ -67,67 +64,48 @@ export class EventSystem {
     if (
       !(await this._callPhase(
         eventListeners,
-        source,
         event,
         EventPhaseEnum.PREPARE,
         debug,
       ))
     ) {
-      await this._callCanceled(eventListeners, source, event);
+      await this._callCanceled(eventListeners, event);
       return false;
     }
     if (
       !(await this._callPhase(
         eventListeners,
-        source,
         event,
         EventPhaseEnum.PERFORM,
         debug,
       ))
     ) {
-      await this._callCanceled(eventListeners, source, event);
+      await this._callCanceled(eventListeners, event);
       return false;
     }
     if (perform && (await perform(event)) === false) {
-      await this._callCanceled(eventListeners, source, event);
+      await this._callCanceled(eventListeners, event);
       return false;
     }
     event.performed = true;
     await this.bus.trigger(event.type, event);
     await this._callPhase(
       eventListeners,
-      source,
       event,
       EventPhaseEnum.PERFORMED,
       debug,
     );
-    await this._callPhase(
-      eventListeners,
-      source,
-      event,
-      EventPhaseEnum.AFTER,
-      debug,
-    );
+    await this._callPhase(eventListeners, event, EventPhaseEnum.AFTER, debug);
     return true;
   }
 
-  async _callCanceled(
-    eventListeners: EventListeners,
-    source: IEventSource,
-    event: EventDto,
-  ) {
-    await this._callPhase(
-      eventListeners,
-      source,
-      event,
-      EventPhaseEnum.CANCELED,
-    );
-    await this._callPhase(eventListeners, source, event, EventPhaseEnum.AFTER);
+  async _callCanceled(eventListeners: EventListeners, event: EventDto) {
+    await this._callPhase(eventListeners, event, EventPhaseEnum.CANCELED);
+    await this._callPhase(eventListeners, event, EventPhaseEnum.AFTER);
   }
 
   async _callPhase(
     eventListeners: EventListeners,
-    source: IEventSource,
     event: EventDto,
     phase: EventPhaseEnum,
     debug?: boolean,
@@ -146,7 +124,6 @@ export class EventSystem {
       console.debug(phaseListeners.size, 'listeners found');
     }
     const context = DynamicContextService.createContext({
-      source,
       event,
       phase,
     });
