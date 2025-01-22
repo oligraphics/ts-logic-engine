@@ -218,7 +218,7 @@ export class LogicEngine implements IActor {
   async callEvent<T extends EventDto>(
     source: IEventSource,
     event: T,
-    perform?: (event: T) => Promise<boolean | void>,
+    perform?: (event: T) => Promise<boolean | void> | void,
     debug?: boolean,
   ): Promise<boolean> {
     return await this.eventSystem.callEvent(

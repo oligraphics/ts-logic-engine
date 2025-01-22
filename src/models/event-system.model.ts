@@ -24,7 +24,7 @@ export class EventSystem {
 
   async callEvent<T extends EventDto>(
     event: T,
-    perform?: (event: T) => Promise<boolean | void>,
+    perform?: (event: T) => Promise<boolean | void> | void,
     debug?: boolean,
   ): Promise<boolean> {
     if (debug) {

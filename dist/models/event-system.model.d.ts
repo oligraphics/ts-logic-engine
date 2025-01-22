@@ -10,7 +10,7 @@ export declare class EventSystem {
     readonly engine: LogicEngine;
     private readonly listeners;
     constructor(engine: LogicEngine);
-    callEvent<T extends EventDto>(event: T, perform?: (event: T) => Promise<boolean | void>, debug?: boolean): Promise<boolean>;
+    callEvent<T extends EventDto>(event: T, perform?: (event: T) => Promise<boolean | void> | void, debug?: boolean): Promise<boolean>;
     _callCanceled(eventListeners: EventListeners, event: EventDto): Promise<void>;
     _callPhase(eventListeners: EventListeners, event: EventDto, phase: EventPhaseEnum, debug?: boolean): Promise<boolean>;
     attachTriggers(triggers: ITriggerInstance[], debug?: boolean): void;
