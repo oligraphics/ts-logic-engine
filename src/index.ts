@@ -10,7 +10,9 @@ export * from './dto/actions/program.action.dto';
 export * from './dto/actions/repeat.action.dto';
 export * from './dto/actions/schedule.action.dto';
 
+export * from './dto/configurations/after-block.configuration.dto';
 export * from './dto/configurations/intercept-reaction.configuration.dto';
+export * from './dto/configurations/params-block.configuration.dto';
 
 export * from './dto/contexts/action.context.dto';
 export * from './dto/options/create-engine-options.dto';
