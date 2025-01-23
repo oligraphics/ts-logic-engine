@@ -72,19 +72,14 @@ export abstract class ActionHandler<
         await StackCounterTriggerHandler.handle(trigger, event);
       }
     }
-    if (callNext && context.action.action.next) {
-      const next = LogicService.resolve<string>(
-        context.action.action.next,
-        context,
-      );
+    if (callNext && context.action.action.after !== undefined) {
+      const after = context.action.action.after;
+      const next = LogicService.resolve<string>(after.next, context);
       if (next) {
-        const params = context.action.action.out
-          ? ParamsService.resolve(
-              context.action.action.out,
-              context,
-              context.action.debug,
-            )
-          : undefined;
+        const params =
+          after.params !== undefined
+            ? ParamsService.resolve(after.params, context, context.action.debug)
+            : undefined;
         await context.action.engine.tryRun({
           ...DynamicContextService.createContext({
             engine: context.action.engine,

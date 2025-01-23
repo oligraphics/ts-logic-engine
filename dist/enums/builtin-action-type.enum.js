@@ -31,5 +31,9 @@ var BuiltinActionTypeEnum;
      * Action which can repeat other actions after they are performed
      */
     BuiltinActionTypeEnum["REPEAT"] = "repeat";
+    /**
+     * Action which performs other actions based on the flow of time
+     */
+    BuiltinActionTypeEnum["SCHEDULE"] = "schedule";
 })(BuiltinActionTypeEnum || (exports.BuiltinActionTypeEnum = BuiltinActionTypeEnum = {}));
 //# sourceMappingURL=builtin-action-type.enum.js.map

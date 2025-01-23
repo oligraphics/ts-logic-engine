@@ -53,7 +53,7 @@ class LogicEngine {
         this.eventSystem = new event_system_model_1.EventSystem(this);
     }
     async start() {
-        this.bus.trigger('start');
+        await this.bus.trigger('start');
         if (this.program) {
             await this.tryRun({
                 engine: this,
@@ -66,14 +66,14 @@ class LogicEngine {
             });
         }
     }
-    stop() {
-        this.bus.trigger('stop');
+    async stop() {
+        await this.bus.trigger('stop');
     }
     getActionHandler(actionType) {
         return this.actionHandlers[actionType];
     }
     update(deltaTime) {
-        this.bus.trigger('update', deltaTime);
+        this.bus.trigger('update', deltaTime).catch(console.error);
     }
     async tryRun(context) {
         return await this.callEvent({
@@ -211,6 +211,12 @@ class LogicEngine {
         if (action.triggers) {
             this.eventSystem.detachTriggers(action.triggers, action.debug || debug);
         }
+    }
+    attach(trigger, debug) {
+        this.eventSystem.attachTriggers(Array.isArray(trigger) ? trigger : [trigger], debug);
+    }
+    detach(trigger, debug) {
+        this.eventSystem.detachTriggers(Array.isArray(trigger) ? trigger : [trigger], debug);
     }
 }
 exports.LogicEngine = LogicEngine;

@@ -26,6 +26,10 @@ export declare enum BuiltinActionTypeEnum {
     /**
      * Action which can repeat other actions after they are performed
      */
-    REPEAT = "repeat"
+    REPEAT = "repeat",
+    /**
+     * Action which performs other actions based on the flow of time
+     */
+    SCHEDULE = "schedule"
 }
 //# sourceMappingURL=builtin-action-type.enum.d.ts.map

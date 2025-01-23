@@ -76,7 +76,7 @@ export class LogicEngine implements IActor {
   }
 
   async start() {
-    this.bus.trigger('start');
+    await this.bus.trigger('start');
     if (this.program) {
       await this.tryRun({
         engine: this,
@@ -90,8 +90,8 @@ export class LogicEngine implements IActor {
     }
   }
 
-  stop() {
-    this.bus.trigger('stop');
+  async stop() {
+    await this.bus.trigger('stop');
   }
 
   getActionHandler(actionType: string): IActionHandler | undefined {
@@ -99,7 +99,7 @@ export class LogicEngine implements IActor {
   }
 
   update(deltaTime: number) {
-    this.bus.trigger('update', deltaTime);
+    this.bus.trigger('update', deltaTime).catch(console.error);
   }
 
   async tryRun(context: IRunProgramContext): Promise<boolean> {
@@ -323,5 +323,19 @@ export class LogicEngine implements IActor {
     if (action.triggers) {
       this.eventSystem.detachTriggers(action.triggers, action.debug || debug);
     }
+  }
+
+  attach(trigger: ITriggerInstance | ITriggerInstance[], debug?: boolean) {
+    this.eventSystem.attachTriggers(
+      Array.isArray(trigger) ? trigger : [trigger],
+      debug,
+    );
+  }
+
+  detach(trigger: ITriggerInstance | ITriggerInstance[], debug?: boolean) {
+    this.eventSystem.detachTriggers(
+      Array.isArray(trigger) ? trigger : [trigger],
+      debug,
+    );
   }
 }

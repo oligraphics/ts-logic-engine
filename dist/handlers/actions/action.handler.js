@@ -50,11 +50,12 @@ class ActionHandler {
                 await stack_counter_trigger_handler_1.StackCounterTriggerHandler.handle(trigger, event);
             }
         }
-        if (callNext && context.action.action.next) {
-            const next = ts_logic_framework_1.LogicService.resolve(context.action.action.next, context);
+        if (callNext && context.action.action.after !== undefined) {
+            const after = context.action.action.after;
+            const next = ts_logic_framework_1.LogicService.resolve(after.next, context);
             if (next) {
-                const params = context.action.action.out
-                    ? params_service_1.ParamsService.resolve(context.action.action.out, context, context.action.debug)
+                const params = after.params !== undefined
+                    ? params_service_1.ParamsService.resolve(after.params, context, context.action.debug)
                     : undefined;
                 await context.action.engine.tryRun({
                     ...ts_logic_framework_1.DynamicContextService.createContext({

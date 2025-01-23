@@ -57,11 +57,13 @@
       "apply": {
         "message": "#message"
       },
-      "out": {
-        "proof": "#message",
-        "second-proof": "second proof"
-      },
-      "next": "follow-up"
+      "after": {
+        "params": {
+          "proof": "#message",
+          "second-proof": "second proof"
+        },
+        "next": "follow-up"
+      }
     },
     "follow-up": {
       "type": "message",

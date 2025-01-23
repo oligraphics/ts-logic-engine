@@ -1,14 +1,10 @@
 import { BuiltinActionTypeEnum } from '../../enums/builtin-action-type.enum';
 import { ActionDto, ActionStateDto } from './action.dto';
-import { Computable } from 'ts-logic-framework';
+import { ParamsBlockConfigurationDto } from '../configurations/params-block.configuration.dto';
 export type MessageActionStateDto = {
     message: unknown;
-    variables?: {
-        [key: string]: Computable<unknown>;
-    };
-    data?: {
-        [key: string]: Computable<unknown>;
-    };
+    variables?: ParamsBlockConfigurationDto;
+    data?: ParamsBlockConfigurationDto;
 } & ActionStateDto;
 export type MessageActionDto = {
     type: BuiltinActionTypeEnum.MESSAGE;

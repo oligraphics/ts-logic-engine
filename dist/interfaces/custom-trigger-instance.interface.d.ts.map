@@ -1,0 +1,1 @@
+{"version":3,"file":"custom-trigger-instance.interface.d.ts","sourceRoot":"src/","sources":["interfaces/custom-trigger-instance.interface.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,yBAAyB,CAAC;AACnD,OAAO,EAAE,gBAAgB,EAAE,MAAM,8BAA8B,CAAC;AAEhE,MAAM,MAAM,sBAAsB,GAAG;IACnC,OAAO,EAAE,CAAC,KAAK,EAAE,QAAQ,KAAK,OAAO,CAAC,IAAI,CAAC,GAAG,IAAI,CAAC;CACpD,GAAG,gBAAgB,CAAC"}

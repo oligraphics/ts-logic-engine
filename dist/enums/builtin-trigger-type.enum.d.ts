@@ -8,6 +8,10 @@ export declare enum BuiltinTriggerTypeEnum {
      */
     COUNTER = "counter",
     /**
+     * Custom programmatic trigger
+     */
+    CUSTOM = "custom",
+    /**
      * Trigger used by stack counters
      */
     STACK = "stack"

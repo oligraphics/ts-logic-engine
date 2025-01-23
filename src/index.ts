@@ -8,6 +8,7 @@ export * from './dto/actions/intercept.action.dto';
 export * from './dto/actions/message.action.dto';
 export * from './dto/actions/program.action.dto';
 export * from './dto/actions/repeat.action.dto';
+export * from './dto/actions/schedule.action.dto';
 
 export * from './dto/configurations/intercept-reaction.configuration.dto';
 
@@ -32,6 +33,7 @@ export * from './dto/instances/action.instance.dto';
 export * from './dto/instances/counter.instance.dto';
 export * from './dto/instances/counter-trigger.instance.dto';
 export * from './dto/instances/intercept-trigger.instance.dto';
+export * from './dto/instances/schedule.instance.dto';
 export * from './dto/instances/stack-counter.instance.dto';
 export * from './dto/instances/trigger.instance.dto';
 
@@ -43,6 +45,7 @@ export * from './dto/states/status.state.dto';
 
 export * from './dto/triggers/action.trigger.dto';
 export * from './dto/triggers/counter.trigger.dto';
+export * from './dto/triggers/custom.trigger.dto';
 export * from './dto/triggers/trigger.dto';
 
 export * from './engine/logic.engine';
@@ -68,6 +71,7 @@ export * from './interfaces/cancelable-event.interface';
 export * from './interfaces/counter-instance.interface';
 export * from './interfaces/counter-trigger-instance.interface';
 export * from './interfaces/create-action-context.interface';
+export * from './interfaces/custom-trigger-instance.interface';
 export * from './interfaces/engine-context.interface';
 export * from './interfaces/event-source.interface';
 export * from './interfaces/program.interface';
@@ -85,6 +89,7 @@ export * from './services/action-trigger-builder.service';
 export * from './services/counter-builder.service';
 export * from './services/counter-method.service';
 export * from './services/counter-trigger-builder.service';
+export * from './services/custom-trigger-builder.service';
 export * from './services/engine-context.service';
 export * from './services/intercept-trigger-builder.service';
 export * from './services/params.service';

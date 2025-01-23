@@ -6,6 +6,7 @@ import { MessageActionHandler } from '../handlers/actions/message-action.handler
 import { RepeatActionHandler } from '../handlers/actions/repeat-action.handler';
 import { InterceptActionHandler } from '../handlers/actions/intercept-action.handler';
 import { ProgramActionHandler } from '../handlers/actions/program-action.handler';
+import { ScheduleActionHandler } from '../handlers/actions/schedule-action.handler';
 
 export const BuiltinActionHandlers = {
   [BuiltinActionTypeEnum.COMPOUND]: CompoundActionHandler,
@@ -15,4 +16,5 @@ export const BuiltinActionHandlers = {
   [BuiltinActionTypeEnum.MESSAGE]: MessageActionHandler,
   [BuiltinActionTypeEnum.PROGRAM]: ProgramActionHandler,
   [BuiltinActionTypeEnum.REPEAT]: RepeatActionHandler,
+  [BuiltinActionTypeEnum.SCHEDULE]: ScheduleActionHandler,
 };

@@ -1,8 +1,7 @@
-import { Computable, DynamicContext } from 'ts-logic-framework';
+import { DynamicContext } from 'ts-logic-framework';
+import { ParamsBlockConfigurationDto } from '../dto/configurations/params-block.configuration.dto';
 export declare const ParamsService: {
-    resolve(params: {
-        [key: string]: Computable<unknown>;
-    }, context: DynamicContext, debug?: boolean): {
+    resolve(params: ParamsBlockConfigurationDto, context: DynamicContext, debug?: boolean): {
         [key: string]: unknown;
     };
 };

@@ -28,7 +28,7 @@ export declare class LogicEngine implements IActor {
     };
     constructor(program: IProgram | undefined, options: CreateEngineOptionsDto);
     start(): Promise<void>;
-    stop(): void;
+    stop(): Promise<void>;
     getActionHandler(actionType: string): IActionHandler | undefined;
     update(deltaTime: number): void;
     tryRun(context: IRunProgramContext): Promise<boolean>;
@@ -41,5 +41,7 @@ export declare class LogicEngine implements IActor {
     detachStack(action: IActionInstance, debug?: boolean): void;
     attachTriggers(action: IActionInstance, debug?: boolean): void;
     detachTriggers(action: IActionInstance, debug?: boolean): void;
+    attach(trigger: ITriggerInstance | ITriggerInstance[], debug?: boolean): void;
+    detach(trigger: ITriggerInstance | ITriggerInstance[], debug?: boolean): void;
 }
 //# sourceMappingURL=logic.engine.d.ts.map

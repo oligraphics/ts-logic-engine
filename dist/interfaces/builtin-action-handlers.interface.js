@@ -9,6 +9,7 @@ const message_action_handler_1 = require("../handlers/actions/message-action.han
 const repeat_action_handler_1 = require("../handlers/actions/repeat-action.handler");
 const intercept_action_handler_1 = require("../handlers/actions/intercept-action.handler");
 const program_action_handler_1 = require("../handlers/actions/program-action.handler");
+const schedule_action_handler_1 = require("../handlers/actions/schedule-action.handler");
 exports.BuiltinActionHandlers = {
     [builtin_action_type_enum_1.BuiltinActionTypeEnum.COMPOUND]: compound_action_handler_1.CompoundActionHandler,
     [builtin_action_type_enum_1.BuiltinActionTypeEnum.CONDITION]: condition_action_handler_1.ConditionActionHandler,
@@ -17,5 +18,6 @@ exports.BuiltinActionHandlers = {
     [builtin_action_type_enum_1.BuiltinActionTypeEnum.MESSAGE]: message_action_handler_1.MessageActionHandler,
     [builtin_action_type_enum_1.BuiltinActionTypeEnum.PROGRAM]: program_action_handler_1.ProgramActionHandler,
     [builtin_action_type_enum_1.BuiltinActionTypeEnum.REPEAT]: repeat_action_handler_1.RepeatActionHandler,
+    [builtin_action_type_enum_1.BuiltinActionTypeEnum.SCHEDULE]: schedule_action_handler_1.ScheduleActionHandler,
 };
 //# sourceMappingURL=builtin-action-handlers.interface.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"custom.trigger.dto.d.ts","sourceRoot":"src/","sources":["dto/triggers/custom.trigger.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,eAAe,CAAC;AAC3C,OAAO,EAAE,QAAQ,EAAE,MAAM,qBAAqB,CAAC;AAE/C,MAAM,MAAM,gBAAgB,GAAG;IAC7B,OAAO,EAAE,CAAC,KAAK,EAAE,QAAQ,KAAK,OAAO,CAAC,IAAI,CAAC,GAAG,IAAI,CAAC;CACpD,GAAG,UAAU,CAAC"}

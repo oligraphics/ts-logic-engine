@@ -1,0 +1,1 @@
+{"version":3,"file":"after-block.configuration.dto.d.ts","sourceRoot":"src/","sources":["dto/configurations/after-block.configuration.dto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,oBAAoB,CAAC;AAChD,OAAO,EAAE,2BAA2B,EAAE,MAAM,kCAAkC,CAAC;AAE/E,MAAM,MAAM,0BAA0B,GAAG;IACvC,MAAM,EAAE,2BAA2B,CAAC;IACpC,IAAI,EAAE,UAAU,CAAC,MAAM,CAAC,CAAC;CAC1B,CAAC"}

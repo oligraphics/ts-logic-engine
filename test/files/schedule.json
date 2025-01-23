@@ -1,0 +1,43 @@
+{
+  "id": "test:schedule",
+  "actions": {
+    "main": {
+      "type": "schedule",
+      "apply": {
+        "schedule": [
+          {
+            "action": "start-message"
+          },
+          {
+            "action": "update-message",
+            "delay": 1000,
+            "every": 1000,
+            "times": 4
+          },
+          {
+            "action": "stop-message",
+            "delay": 5000
+          }
+        ]
+      }
+    },
+    "start-message": {
+      "type": "message",
+      "apply": {
+        "message": "Schedule started!"
+      }
+    },
+    "update-message": {
+      "type": "message",
+      "apply": {
+        "message": "Update!"
+      }
+    },
+    "stop-message": {
+      "type": "message",
+      "apply": {
+        "message": "Schedule done!"
+      }
+    }
+  }
+}

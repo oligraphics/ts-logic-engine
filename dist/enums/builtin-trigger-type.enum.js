@@ -12,6 +12,10 @@ var BuiltinTriggerTypeEnum;
      */
     BuiltinTriggerTypeEnum["COUNTER"] = "counter";
     /**
+     * Custom programmatic trigger
+     */
+    BuiltinTriggerTypeEnum["CUSTOM"] = "custom";
+    /**
      * Trigger used by stack counters
      */
     BuiltinTriggerTypeEnum["STACK"] = "stack";

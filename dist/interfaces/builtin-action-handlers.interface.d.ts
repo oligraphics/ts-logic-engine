@@ -63,5 +63,16 @@ export declare const BuiltinActionHandlers: {
         onEvent(action: import("..").ActionInstanceDto<import("..").RepeatActionDto, import("..").RepeatActionStateDto>, event: import("..").EventDto, phase: import("..").EventPhaseEnum): Promise<void>;
         setAttached(effect: import("..").StatusStateDto, triggerContext: import("..").TriggerContextDto<import("..").RepeatActionDto, import("..").RepeatActionStateDto>): void;
     };
+    schedule: {
+        tryRun(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;
+        createUpdateHandler(action: import("./action-instance.interface").IActionInstance, schedule: import("..").ScheduleInstanceDto[], context: import("ts-logic-framework").DynamicContext, debug?: boolean): (deltaTime: number) => Promise<void>;
+        runScheduledAction(action: import("./action-instance.interface").IActionInstance, instance: import("..").ScheduleInstanceDto, context: import("ts-logic-framework").DynamicContext, debug?: boolean): Promise<void>;
+        apply(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;
+        trigger(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;
+        perform(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>, callNext: boolean): Promise<boolean>;
+        remove(action: import("..").ActionInstanceDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): void;
+        onEvent(action: import("..").ActionInstanceDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>, event: import("..").EventDto, phase: import("..").EventPhaseEnum): Promise<void>;
+        setAttached(effect: import("..").StatusStateDto, triggerContext: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): void;
+    };
 };
 //# sourceMappingURL=builtin-action-handlers.interface.d.ts.map

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionTriggerBuilderService = void 0;
 const ts_logic_framework_1 = require("ts-logic-framework");
 const builtin_trigger_type_enum_1 = require("../enums/builtin-trigger-type.enum");
-exports.ActionTriggerBuilderService = new (class TriggerBuilderService {
+exports.ActionTriggerBuilderService = new (class ActionTriggerBuilderService {
     buildAll(configurations, action) {
         return configurations.map((c) => this.build(c, action));
     }

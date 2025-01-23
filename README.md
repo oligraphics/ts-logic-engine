@@ -18,6 +18,9 @@ npm run test:triggers
 
 // Demonstrate target selection
 npm run test:target-selection
+
+// Demonstrate task scheduling
+npm run test:schedule
 ````
 
 The test configuration is located here:

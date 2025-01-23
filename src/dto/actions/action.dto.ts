@@ -2,6 +2,8 @@ import { ActionTriggerDto } from '../triggers/action.trigger.dto';
 import { Computable } from 'ts-logic-framework';
 import { StackCounterDto } from '../stacks/stack-counter.dto';
 import { ITargetable } from '../../interfaces/target.interface';
+import { AfterBlockConfigurationDto } from '../configurations/after-block.configuration.dto';
+import { ParamsBlockConfigurationDto } from '../configurations/params-block.configuration.dto';
 
 export type ActionStateDto = object;
 
@@ -10,14 +12,13 @@ export type ActionDto = {
   description?: string;
   type: string;
   attachable?: boolean;
-  properties?: { [key: string]: Computable<unknown> };
-  computed?: { [key: string]: Computable<unknown> };
+  properties?: ParamsBlockConfigurationDto;
+  computed?: ParamsBlockConfigurationDto;
   target?: Computable<ITargetable>;
   targets?: Computable<ITargetable[]>;
   triggers?: ActionTriggerDto[];
   apply: ActionStateDto;
   stack?: StackCounterDto;
-  out?: { [key: string]: Computable<unknown> };
-  next?: Computable<string>;
+  after?: AfterBlockConfigurationDto;
   debug?: boolean;
 };

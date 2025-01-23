@@ -5,6 +5,9 @@ export declare const BuiltinTriggerHandlers: {
     counter: {
         handle(trigger: import("./counter-trigger-instance.interface").ICounterTriggerInstance, event: import("..").EventDto): Promise<void>;
     };
+    custom: {
+        handle(trigger: import("./custom-trigger-instance.interface").ICustomTriggerInstance, event: import("..").EventDto): Promise<void>;
+    };
     stack: {
         handle(trigger: import("./counter-trigger-instance.interface").ICounterTriggerInstance, event: import("..").EventDto): Promise<void>;
     };

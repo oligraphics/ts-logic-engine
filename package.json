@@ -13,6 +13,7 @@
     "test:hello-world": "tsx test/src/hello-world.ts",
     "test:triggers": "tsx test/src/triggers.ts",
     "test:target-selection": "tsx test/src/target-selection.ts",
+    "test:schedule": "tsx test/src/schedule.ts",
     "lint": "eslint src/**/* --fix --ignore-pattern '!**/.gitignore'"
   },
   "repository": {
