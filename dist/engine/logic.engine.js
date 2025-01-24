@@ -96,6 +96,12 @@ class LogicEngine {
         if (!action) {
             console.error('Action', context.actionId, 'not found in program', context.program.id, '. Available:', ...Object.keys(context.program.actions));
         }
+        if (action.enabled === false) {
+            if (action.debug) {
+                console.error('Action', action, 'is disabled');
+            }
+            return true;
+        }
         const actionContext = {
             ...this.context,
             ...ts_logic_framework_1.DynamicContextService.createContext({

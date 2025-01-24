@@ -137,6 +137,13 @@ export class LogicEngine implements IActor {
         ...Object.keys(context.program.actions),
       );
     }
+
+    if (action.enabled === false) {
+      if (action.debug) {
+        console.error('Action', action, 'is disabled');
+      }
+      return true;
+    }
     const actionContext = {
       ...this.context,
       ...DynamicContextService.createContext(

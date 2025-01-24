@@ -8,6 +8,7 @@ import { ParamsBlockConfigurationDto } from '../configurations/params-block.conf
 export type ActionStateDto = object;
 
 export type ActionDto = {
+  enabled?: boolean;
   name?: string;
   description?: string;
   type: string;

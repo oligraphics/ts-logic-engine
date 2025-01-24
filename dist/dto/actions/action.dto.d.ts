@@ -6,6 +6,7 @@ import { AfterBlockConfigurationDto } from '../configurations/after-block.config
 import { ParamsBlockConfigurationDto } from '../configurations/params-block.configuration.dto';
 export type ActionStateDto = object;
 export type ActionDto = {
+    enabled?: boolean;
     name?: string;
     description?: string;
     type: string;
