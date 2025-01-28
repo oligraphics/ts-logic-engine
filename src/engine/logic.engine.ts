@@ -146,6 +146,7 @@ export class LogicEngine implements IActor {
     }
     const actionContext = {
       ...this.context,
+      ...(context.program.context ?? {}),
       ...DynamicContextService.createContext(
         {
           engine: context.engine,

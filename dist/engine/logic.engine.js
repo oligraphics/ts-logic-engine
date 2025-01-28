@@ -104,6 +104,7 @@ class LogicEngine {
         }
         const actionContext = {
             ...this.context,
+            ...(context.program.context ?? {}),
             ...ts_logic_framework_1.DynamicContextService.createContext({
                 engine: context.engine,
                 initiator: context.initiator,

@@ -1,6 +1,7 @@
 import { ActionDto } from '../actions/action.dto';
 import { EngineContextDto } from '../contexts/engine.context.dto';
 import { IProgram } from '../../interfaces/program.interface';
+import { DynamicContext } from 'ts-logic-framework';
 export type ProgramDto = {
     id: string;
     main?: string;
@@ -8,5 +9,6 @@ export type ProgramDto = {
     actions: {
         [id: string]: ActionDto;
     };
+    context?: DynamicContext;
 } & EngineContextDto & IProgram;
 //# sourceMappingURL=program.dto.d.ts.map

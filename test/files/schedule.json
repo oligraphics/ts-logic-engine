@@ -1,5 +1,10 @@
 {
   "id": "test:schedule",
+  "context": {
+    "#start-message": "Schedule started!",
+    "#update-message": "Update!",
+    "#stop-message": "Schedule done!"
+  },
   "actions": {
     "main": {
       "type": "schedule",
@@ -24,19 +29,19 @@
     "start-message": {
       "type": "message",
       "apply": {
-        "message": "Schedule started!"
+        "message": "#start-message"
       }
     },
     "update-message": {
       "type": "message",
       "apply": {
-        "message": "Update!"
+        "message": "#update-message"
       }
     },
     "stop-message": {
       "type": "message",
       "apply": {
-        "message": "Schedule done!"
+        "message": "#stop-message"
       }
     }
   }
