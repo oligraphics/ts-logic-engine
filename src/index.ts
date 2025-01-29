@@ -1,5 +1,3 @@
-export * from './behaviours/logic.behaviour';
-
 export * from './dto/actions/action.dto';
 export * from './dto/actions/compound.action.dto';
 export * from './dto/actions/condition.action.dto';

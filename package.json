@@ -49,7 +49,6 @@
   "dependencies": {
     "rand-seed": "^2.1.7",
     "ts-event-bus": "github:oligraphics/ts-event-bus",
-    "ts-logic-framework": "github:oligraphics/ts-logic-framework",
-    "ts-state-machines": "github:oligraphics/ts-state-machines"
+    "ts-logic-framework": "github:oligraphics/ts-logic-framework"
   }
 }
