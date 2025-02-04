@@ -208,6 +208,7 @@ export class LogicEngine implements IActor {
       instance,
       <ActionEventDto>{
         type: BuiltinEventTypeEnum.ACTION,
+        action: instance,
         cancelable: true,
       },
       () => {

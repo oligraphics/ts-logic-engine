@@ -19,7 +19,10 @@ exports.ActionBuilderService = new (class ActionBuilderService {
                 initiator: context.initiator,
                 source: context.source,
                 target: context.target,
-                action: context.action,
+                action: {
+                    ...context.action,
+                    apply: JSON.parse(JSON.stringify(context.action)),
+                },
                 actionId: context.actionId,
             }),
             triggers: undefined,

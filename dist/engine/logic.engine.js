@@ -142,6 +142,7 @@ class LogicEngine {
         const instance = action_builder_service_1.ActionBuilderService.build(context, { ...context.action.properties, ...context.action.computed }, context.params);
         return this.callEvent(instance, {
             type: builtin_event_type_enum_1.BuiltinEventTypeEnum.ACTION,
+            action: instance,
             cancelable: true,
         }, () => {
             return resolver.apply({
