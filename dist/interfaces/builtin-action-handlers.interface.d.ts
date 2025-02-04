@@ -65,8 +65,8 @@ export declare const BuiltinActionHandlers: {
     };
     schedule: {
         tryRun(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;
-        createUpdateHandler(action: import("./action-instance.interface").IActionInstance, schedule: import("..").ScheduleInstanceDto[], cancelTriggers: import("./custom-trigger-instance.interface").ICustomTriggerInstance[], context: import("ts-logic-framework").DynamicContext, debug?: boolean): (deltaTime?: number) => Promise<void>;
-        createCancelHandler(action: import("./action-instance.interface").IActionInstance, updateHandler: () => Promise<void>, cancelTriggers: import("./custom-trigger-instance.interface").ICustomTriggerInstance[], cancelled: import("..").AfterBlockConfigurationDto | undefined, context: import("ts-logic-framework").DynamicContext, debug?: boolean): () => Promise<void>;
+        createUpdateHandler(action: import("./action-instance.interface").IActionInstance, schedule: import("..").ScheduleInstanceDto[], cancelTriggers: import("./custom-trigger-instance.interface").ICustomTriggerInstance[], context: import("ts-logic-framework").DynamicContext, debug?: boolean): (deltaTime: number) => Promise<void>;
+        createCancelHandler(action: import("./action-instance.interface").IActionInstance, updateHandler: (deltaTime: number) => Promise<void>, cancelTriggers: import("./custom-trigger-instance.interface").ICustomTriggerInstance[], cancelled: import("..").AfterBlockConfigurationDto | undefined, context: import("ts-logic-framework").DynamicContext, debug?: boolean): () => Promise<void>;
         runScheduledAction(action: import("./action-instance.interface").IActionInstance, instance: import("..").ScheduleInstanceDto, context: import("ts-logic-framework").DynamicContext, debug?: boolean): Promise<void>;
         apply(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;
         trigger(context: import("..").TriggerContextDto<import("..").ScheduleActionDto, import("..").ScheduleActionStateDto>): Promise<boolean>;

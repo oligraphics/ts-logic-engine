@@ -134,8 +134,8 @@ export const ScheduleActionHandler =
       cancelTriggers: ICustomTriggerInstance[],
       context: DynamicContext,
       debug?: boolean,
-    ): (deltaTime?: number) => Promise<void> {
-      const result = async (deltaTime?: number): Promise<void> => {
+    ): (deltaTime: number) => Promise<void> {
+      const result = async (deltaTime: number): Promise<void> => {
         for (let i = schedule.length - 1; i >= 0; i -= 1) {
           const entry = schedule[i];
           entry.timeout -= deltaTime ?? 0;
@@ -173,7 +173,7 @@ export const ScheduleActionHandler =
 
     createCancelHandler(
       action: IActionInstance,
-      updateHandler: () => Promise<void>,
+      updateHandler: (deltaTime: number) => Promise<void>,
       cancelTriggers: ICustomTriggerInstance[],
       cancelled: AfterBlockConfigurationDto | undefined,
       context: DynamicContext,
