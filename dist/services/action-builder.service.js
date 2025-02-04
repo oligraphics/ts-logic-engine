@@ -9,6 +9,7 @@ exports.ActionBuilderService = new (class ActionBuilderService {
         const id = ts_logic_framework_1.IdService.createRandomId();
         const { action } = context;
         const result = {
+            ...(context.program.context ?? {}),
             params: variables,
             state: { ...action.apply },
             ...ts_logic_framework_1.DynamicContextService.createContext(properties, variables),

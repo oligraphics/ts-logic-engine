@@ -13,6 +13,7 @@ export const ActionBuilderService = new (class ActionBuilderService {
     const id = IdService.createRandomId();
     const { action } = context;
     const result: IActionInstance = {
+      ...(context.program.context ?? {}),
       params: variables,
       state: { ...action.apply },
       ...DynamicContextService.createContext(properties, variables),
