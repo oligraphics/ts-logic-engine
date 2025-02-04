@@ -1,5 +1,6 @@
 import {
   BuiltinActionHandlers,
+  BuiltinActionTypeEnum,
   IActionHandler,
   IProgram,
   LogicEngine,
@@ -55,3 +56,16 @@ const tick = () => {
   setTimeout(() => tick(), tickLength);
 };
 tick();
+
+setTimeout(() => {
+  console.log('Run the schedule a second time.');
+  engine
+    .tryRun({
+      engine,
+      program,
+      actionId: 'main',
+      source: engine,
+      initiator: engine,
+    })
+    .catch(console.error);
+}, 6000);

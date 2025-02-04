@@ -3,9 +3,12 @@ import { TriggerContextDto } from '../../dto/contexts/trigger.context.dto';
 import { DynamicContext } from 'ts-logic-framework';
 import { ScheduleInstanceDto } from '../../dto/instances/schedule.instance.dto';
 import { IActionInstance } from '../../interfaces/action-instance.interface';
+import { ICustomTriggerInstance } from '../../interfaces/custom-trigger-instance.interface';
+import { AfterBlockConfigurationDto } from '../../dto/configurations/after-block.configuration.dto';
 export declare const ScheduleActionHandler: {
     tryRun(context: TriggerContextDto<ScheduleActionDto, ScheduleActionStateDto>): Promise<boolean>;
-    createUpdateHandler(action: IActionInstance, schedule: ScheduleInstanceDto[], context: DynamicContext, debug?: boolean): (deltaTime: number) => Promise<void>;
+    createUpdateHandler(action: IActionInstance, schedule: ScheduleInstanceDto[], cancelTriggers: ICustomTriggerInstance[], context: DynamicContext, debug?: boolean): (deltaTime?: number) => Promise<void>;
+    createCancelHandler(action: IActionInstance, updateHandler: () => Promise<void>, cancelTriggers: ICustomTriggerInstance[], cancelled: AfterBlockConfigurationDto | undefined, context: DynamicContext, debug?: boolean): () => Promise<void>;
     runScheduledAction(action: IActionInstance, instance: ScheduleInstanceDto, context: DynamicContext, debug?: boolean): Promise<void>;
     apply(context: TriggerContextDto<ScheduleActionDto, ScheduleActionStateDto>): Promise<boolean>;
     trigger(context: TriggerContextDto<ScheduleActionDto, ScheduleActionStateDto>): Promise<boolean>;

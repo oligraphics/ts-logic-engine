@@ -3,10 +3,37 @@
   "context": {
     "#start-message": "Schedule started!",
     "#update-message": "Update!",
-    "#stop-message": "Schedule done!"
+    "#stop-message": "Schedule done!",
+    "#cancel-message": "Schedule cancelled!"
   },
   "actions": {
     "main": {
+      "type": "compound",
+      "apply": {
+        "compound": [
+          "cancel-timer",
+          "schedule"
+        ]
+      }
+    },
+    "cancel-timer": {
+      "type": "schedule",
+      "apply": {
+        "schedule": [
+          {
+            "action": "cancel",
+            "delay": 2500
+          }
+        ]
+      }
+    },
+    "cancel": {
+      "type": "message",
+      "apply": {
+        "message": "Cancel"
+      }
+    },
+    "schedule": {
       "type": "schedule",
       "apply": {
         "schedule": [
@@ -23,7 +50,19 @@
             "action": "stop-message",
             "delay": 5000
           }
-        ]
+        ],
+        "cancel": {
+          "event": "message",
+          "phase": "performed",
+          "filter": {
+            "type": "equal",
+            "value": "{event.message}",
+            "equals": "Cancel"
+          }
+        },
+        "cancelled": {
+          "next": "cancel-message"
+        }
       }
     },
     "start-message": {
@@ -42,6 +81,12 @@
       "type": "message",
       "apply": {
         "message": "#stop-message"
+      }
+    },
+    "cancel-message": {
+      "type": "message",
+      "apply": {
+        "message": "#cancel-message"
       }
     }
   }

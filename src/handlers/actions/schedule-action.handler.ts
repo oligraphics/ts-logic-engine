@@ -15,6 +15,10 @@ import { ScheduleInstanceDto } from '../../dto/instances/schedule.instance.dto';
 import { IActionInstance } from '../../interfaces/action-instance.interface';
 import { ParamsService } from '../../services/params.service';
 import { IActor } from '../../interfaces/actor.interface';
+import { CustomTriggerDto } from '../../dto/triggers/custom.trigger.dto';
+import { CustomTriggerBuilderService } from '../../services/custom-trigger-builder.service';
+import { ICustomTriggerInstance } from '../../interfaces/custom-trigger-instance.interface';
+import { AfterBlockConfigurationDto } from '../../dto/configurations/after-block.configuration.dto';
 
 export const ScheduleActionHandler =
   new (class ScheduleActionHandler extends ActionHandler<
@@ -65,20 +69,59 @@ export const ScheduleActionHandler =
         };
       });
 
-      if (debug) {
-        console.debug('Run Schedule:', schedule);
-      }
-
+      const cancelTriggers: ICustomTriggerInstance[] = [];
       const updateHandler = this.createUpdateHandler(
         action,
         schedule.reverse(),
+        cancelTriggers,
         innerContext,
         debug,
       );
-      action.engine.bus.on<number>(
-        'update',
-        updateHandler as (deltaTime: number | undefined) => Promise<void>,
+      const cancelHandler = this.createCancelHandler(
+        action,
+        updateHandler,
+        cancelTriggers,
+        state.cancelled,
+        innerContext,
+        debug,
       );
+
+      const cancelInput =
+        state.cancel !== undefined
+          ? LogicService.resolve<CustomTriggerDto | CustomTriggerDto[]>(
+              state.cancel,
+              innerContext,
+              debug,
+            )
+          : undefined;
+      cancelTriggers.push(
+        ...CustomTriggerBuilderService.buildAll(
+          (Array.isArray(cancelInput)
+            ? cancelInput
+            : cancelInput
+            ? [cancelInput]
+            : []
+          ).map((t) => {
+            t.trigger = async () => {
+              // Cancel schedule
+              await cancelHandler();
+            };
+            return t;
+          }),
+          action,
+        ),
+      );
+
+      if (debug) {
+        console.debug('Run Schedule:', schedule);
+        if (cancelTriggers.length > 0) {
+          console.log('Cancellation triggers:', cancelTriggers);
+        }
+      }
+
+      action.engine.bus.on('update', updateHandler);
+
+      action.engine.attach(cancelTriggers, debug);
 
       await updateHandler(0);
 
@@ -88,13 +131,14 @@ export const ScheduleActionHandler =
     createUpdateHandler(
       action: IActionInstance,
       schedule: ScheduleInstanceDto[],
+      cancelTriggers: ICustomTriggerInstance[],
       context: DynamicContext,
       debug?: boolean,
-    ): (deltaTime: number) => Promise<void> {
-      const result = async (deltaTime: number): Promise<void> => {
+    ): (deltaTime?: number) => Promise<void> {
+      const result = async (deltaTime?: number): Promise<void> => {
         for (let i = schedule.length - 1; i >= 0; i -= 1) {
           const entry = schedule[i];
-          entry.timeout -= deltaTime;
+          entry.timeout -= deltaTime ?? 0;
           if (entry.timeout > 0) {
             continue;
           }
@@ -121,9 +165,44 @@ export const ScheduleActionHandler =
             'update',
             result as (data: unknown) => Promise<void>,
           );
+          action.engine.detach(cancelTriggers);
         }
       };
       return result;
+    }
+
+    createCancelHandler(
+      action: IActionInstance,
+      updateHandler: () => Promise<void>,
+      cancelTriggers: ICustomTriggerInstance[],
+      cancelled: AfterBlockConfigurationDto | undefined,
+      context: DynamicContext,
+      debug?: boolean,
+    ) {
+      return async () => {
+        action.engine.bus.off('update', updateHandler);
+        action.engine.detach(cancelTriggers, debug);
+        const next = cancelled?.next
+          ? LogicService.resolve<string>(cancelled.next, context, debug)
+          : undefined;
+        if (next) {
+          const params = cancelled?.params
+            ? ParamsService.resolve(cancelled.params, context, debug)
+            : undefined;
+          await action.engine.tryRun({
+            ...DynamicContextService.createContext({
+              actionId: next,
+              program: action.program,
+              initiator: action.initiator,
+              source: (action.target as IActor)?.id
+                ? (action.target as IActor)
+                : action.source,
+              engine: action.engine,
+            }),
+            params,
+          });
+        }
+      };
     }
 
     async runScheduledAction(

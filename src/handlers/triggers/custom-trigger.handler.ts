@@ -4,8 +4,10 @@ import { ICustomTriggerInstance } from '../../interfaces/custom-trigger-instance
 
 export const CustomTriggerHandler =
   new (class CustomTriggerHandler extends TriggerHandler<ICustomTriggerInstance> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handle(trigger: ICustomTriggerInstance, event: EventDto) {
-      throw new Error('Not yet implemented');
+      const callback = trigger.trigger;
+      if (callback) {
+        await callback(event);
+      }
     }
   })();
