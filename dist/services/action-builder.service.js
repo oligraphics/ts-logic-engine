@@ -11,7 +11,7 @@ exports.ActionBuilderService = new (class ActionBuilderService {
         const result = {
             ...(context.program.context ?? {}),
             params: variables,
-            state: { ...action.apply },
+            state: { ...JSON.parse(JSON.stringify(action.apply ?? {})) },
             ...ts_logic_framework_1.DynamicContextService.createContext(properties, variables),
             ...ts_logic_framework_1.DynamicContextService.createContext({
                 id,
