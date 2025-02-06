@@ -78,7 +78,14 @@ export abstract class ActionHandler<
       if (next) {
         const params =
           after.params !== undefined
-            ? ParamsService.resolve(after.params, context, context.action.debug)
+            ? ParamsService.resolve(
+                after.params,
+                {
+                  ...context,
+                  ...context.action,
+                },
+                context.action.debug,
+              )
             : undefined;
         await context.action.engine.tryRun({
           ...DynamicContextService.createContext({
