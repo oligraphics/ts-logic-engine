@@ -212,6 +212,21 @@ export class LogicEngine implements IActor {
         cancelable: true,
       },
       () => {
+        if (instance.debug) {
+          console.debug(
+            instance.initiator?.name,
+            'has',
+            instance.source?.name,
+            'run',
+            instance.program.id,
+            '>',
+            instance.actionId,
+            'of type',
+            instance.action.type,
+            'on',
+            instance.target?.name,
+          );
+        }
         return resolver.apply({
           ...context,
           ...DynamicContextService.createContext({
